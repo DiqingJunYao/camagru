@@ -1,0 +1,46 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	height: 100vh;
+	header {
+		border: 1px solid black;
+		height: 10%;
+		display: flex;
+		flex-wrap: wrap;
+		h1 {
+			margin: 0;
+			padding: 0;
+		}
+		.logo {
+			height: 60px;
+			width: 60px;
+			border: 1px solid green;
+		}
+		nav {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			width: 100vw;
+			border: 5px solid rgb(255, 0, 0);
+			div {
+				width: auto;
+				text-align: center;
+				border: 5px solid rgb(0, 0, 0);
+				background-color: aquamarine;
+				cursor: pointer;
+				&:hover {
+					background-color: yellow;
+				}
+			}
+		}
+	}
+	main {
+		display: flex;
+		border: 5px solid rgb(4, 255, 0);
+		height: 80%;
+	}
+	footer {
+		border: 5px solid blue;
+		height: 10%;
+	}
+}

@@ -5,22 +5,51 @@
 	height: 100vh;
 	header {
 		border: 1px solid black;
-		height: 10%;
+		min-height: 100px;
+		// height: 10%;
 		display: flex;
 		flex-wrap: wrap;
-		h1 {
-			margin: 0;
-			padding: 0;
-		}
-		.logo {
-			height: 60px;
-			width: 60px;
-			border: 1px solid green;
+		justify-content: space-between;
+		align-items: center;
+		.logo-login-container {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			justify-content: space-between;
+			.logo-container{
+				display: flex;
+				align-items: center;
+				h1 {
+					margin: 0;
+					padding: 0;
+				}
+				.logo {
+					height: 60px;
+					width: 60px;
+					border: 1px solid green;
+				}
+			}
+			.login-container {
+			display: flex;
+			gap: 10px;
+			margin-right: 50px;
+			align-items: center;
+				button {
+					padding: 5px 10px;
+					border: 1px solid black;
+					background-color: lightgray;
+					cursor: pointer;
+					&:hover {
+						background-color: gray;
+						color: white;
+					}
+				}
+			}
 		}
 		nav {
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			width: 100vw;
+			width: 100%;
 			border: 5px solid rgb(255, 0, 0);
 			div {
 				width: auto;
@@ -37,7 +66,16 @@
 	main {
 		display: flex;
 		border: 5px solid rgb(4, 255, 0);
-		height: 80%;
+		// height: 80%;
+		flex: 1 1 auto;
+		.main-container {
+			border: 5px solid rgb(255, 0, 255);
+			width: 80%;
+		}
+		.main-side {
+			border: 5px solid rgb(0, 17, 255);
+			width: 20%;	
+		}
 	}
 	footer {
 		border: 5px solid blue;

@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "fastify": "^5.7.4",
-    "@fastify/static": "latest"
+    "@fastify/static": "latest",
+    "bcrypt": "latest"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "test_project",
+  "name": "camagru",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -7,6 +7,6 @@
   },
   "dependencies": {
     "fastify": "^5.7.4",
-    "@fastify/static": "^5.0.0"
+    "@fastify/static": "latest"
   }
 }

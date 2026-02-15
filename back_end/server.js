@@ -1,9 +1,15 @@
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import Fastify from "fastify";
-export const fastify = Fastify();
+const fastify = Fastify({
+  https: {
+    key: fs.readFileSync(path.join(process.cwd(), "server.key")),
+    cert: fs.readFileSync(path.join(process.cwd(), "server.cert")),
+  },
+});
 import fastifyStatic from "@fastify/static";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
@@ -38,7 +44,7 @@ fastify.post("/register", async (req, reply) => {
     const hash = await bcrypt.hash(password, saltRounds);
     // generate a random verification token
     const verificationToken = crypto.randomBytes(32).toString("hex");
-    const verificationLink = `http://0.0.0.0:4000/verify?token=${verificationToken}`;
+    const verificationLink = `https://localhost/verify?token=${verificationToken}`;
     // send verification email
     await transporter.sendMail({
       from: '"Camagru" <no-reply@camagru.com>',
@@ -86,5 +92,11 @@ fastify.get("/verify", async (req, reply) => {
   }
 });
 
-const port = 4000;
-fastify.listen({ port, host: "0.0.0.0" });
+
+fastify.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log(`Server running at ${address}`);
+});

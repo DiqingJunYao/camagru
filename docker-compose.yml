@@ -2,13 +2,13 @@ services:
   web:
     build: .
     ports:
-      - "4000:4000"
+      - "443:4000"
     volumes:
       - ./:/app
       - /app/node_modules
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=4000
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=password

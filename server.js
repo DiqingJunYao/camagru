@@ -29,5 +29,5 @@ fastify.post("/register", async (req, reply) => {
   }
 });
 
-const port = Number(process.env.PORT) || 3000;
+const port = Number(process.env.PORT) || 4000;
 fastify.listen({ port, host: "0.0.0.0" });

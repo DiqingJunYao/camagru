@@ -2,11 +2,27 @@ services:
   web:
     build: .
     ports:
-      - "3000:3000"
+      - "4000:4000"
     volumes:
       - ./:/app
       - /app/node_modules
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=camagru
     restart: unless-stopped
+    depends_on:
+      - db
+
+      
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: camagru
+    ports:
+      - "3306:3306"

@@ -1,6 +1,15 @@
 const path = require("path");
 const fastify = require("fastify")({ logger: true });
 const fastifyStatic = require("@fastify/static");
+const mysql = require("mysql2/promise");
+
+// create a MySQL connection pool
+const db = mysql.createPool({
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "password",
+  database: process.env.DB_NAME || "camagru",
+});
 
 fastify.register(fastifyStatic, {
   root: path.join(__dirname, "front_end"),
@@ -14,12 +23,17 @@ fastify.get("/", (req, reply) => {
 const bcrypt = require("bcrypt");
 fastify.post("/register", async (req, reply) => {
   console.log("Received registration data: ", req.body);
-  const { username, password, email } = req.body;  
+  const { username, password, email } = req.body;
   const saltRounds = 10;
   try {
     const hash = await bcrypt.hash(password, saltRounds);
     console.log("Hashed Password:", hash);
-    // Here you would typically save the username, hashed password, and email to your database
+    // insert user into database
+    const [result] = await db.execute(
+      "INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+      [username, hash, email],
+    );
+    console.log("Database Insert Result:", result);
     reply
       .status(201)
       .send({ success: true, message: "User registered successfully" });

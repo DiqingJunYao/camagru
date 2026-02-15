@@ -1,7 +1,6 @@
 document.getElementById("logout").style.display = "none";
 
 document.getElementById("register").addEventListener("click", function () {
-  alert("register button clicked");
   const newDiv = document.createElement("div");
   newDiv.id = "background-div";
   document.body.insertBefore(newDiv, document.body.firstChild);
@@ -78,34 +77,40 @@ document.getElementById("register").addEventListener("click", function () {
     }
   });
 
-  document.getElementById("submit-button").addEventListener("click", function (event) {
-	event.preventDefault();
-	const username = usernameInput.value;
-	const password = passwordInput.value;
-	const email = emailInput.value;
-	console.log("Username:", username);
-	console.log("Password:", password);
-	console.log("Email:", email);
-	fetch("register", {
-	  method: "POST",
-	  headers: {
-		"Content-Type": "application/json"
-	  },
-	  body: JSON.stringify({ username, password, email })
-	})
-	.then(response => response.json())
-	.then(data => {
-	  console.log("Response from server:", data);
-	  if (data.success) {
-		alert("Registration successful!");
-		document.body.removeChild(newDiv);
-	  } else {
-		alert("Registration failed: " + data.message);
-	  }
-	})
-	.catch(error => {
-	  console.error("Error:", error);
-	  alert("An error occurred during registration.");
-	});
-  });
+  function registerUser(username, password, email) {
+    fetch("register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password, email }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response from server:", data);
+        if (data.success) {
+          alert("Registration successful!");
+          document.body.removeChild(newDiv);
+        } else {
+          alert("Registration failed: " + data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred during registration.");
+      });
+  }
+
+  document
+    .getElementById("submit-button")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      const email = emailInput.value;
+      console.log("Username:", username);
+      console.log("Password:", password);
+      console.log("Email:", email);
+      registerUser(username, password, email);
+    });
 });

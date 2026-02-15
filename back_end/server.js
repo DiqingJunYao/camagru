@@ -1,9 +1,21 @@
-const path = require("path");
-const fastify = require("fastify")({ logger: true });
-const fastifyStatic = require("@fastify/static");
-const mysql = require("mysql2/promise");
+import path from "path";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+import Fastify from "fastify";
+const fastify = Fastify();
+import fastifyStatic from "@fastify/static";
+import bcrypt from "bcrypt";
+import mysql from "mysql2/promise";
 
-// create a MySQL connection pool
+fastify.register(fastifyStatic, {
+  root: path.join(__dirname, '../front_end'),
+});
+
+fastify.get("/", (req, reply) => {
+  reply.sendFile("index.html");
+});
+
 const db = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
@@ -11,16 +23,7 @@ const db = mysql.createPool({
   database: process.env.DB_NAME || "camagru",
 });
 
-fastify.register(fastifyStatic, {
-  root: path.join(__dirname, "front_end"),
-  prefix: "/",
-});
-
-fastify.get("/", (req, reply) => {
-  reply.sendFile("index.html");
-});
 // password hashing
-const bcrypt = require("bcrypt");
 fastify.post("/register", async (req, reply) => {
   console.log("Received registration data: ", req.body);
   const { username, password, email } = req.body;
@@ -43,5 +46,5 @@ fastify.post("/register", async (req, reply) => {
   }
 });
 
-const port = Number(process.env.PORT) || 4000;
+const port = 4000;
 fastify.listen({ port, host: "0.0.0.0" });

@@ -89,7 +89,9 @@ document.getElementById("register").addEventListener("click", function () {
       .then((data) => {
         console.log("Response from server:", data);
         if (data.success) {
-          alert("Registration successful!");
+          alert(
+            "Registration successful! Please check your email to verify your account. Or your account might be erased after two days if you don't verify it.",
+          );
           document.body.removeChild(newDiv);
         } else {
           alert("Registration failed: " + data.message);

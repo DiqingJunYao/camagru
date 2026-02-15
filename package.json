@@ -10,6 +10,8 @@
   "dependencies": {
     "fastify": "^5.7.4",
     "@fastify/static": "latest",
-    "bcrypt": "latest"
+    "bcrypt": "latest",
+    "mysql2": "latest",
+    "nodemailer": "latest"
   }
 }

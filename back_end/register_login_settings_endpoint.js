@@ -3,6 +3,11 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
+/**
+ * 
+ * this function registers the endpoints for user registration, login, email verification, password reset, and updating user settings. It uses bcrypt for password hashing, crypto for generating random tokens, and nodemailer for sending emails.
+ * @param {*} fastify 
+ */
 export function registerLoginSettingsEndpoint(fastify) {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",

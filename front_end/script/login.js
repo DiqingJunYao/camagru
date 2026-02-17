@@ -1,10 +1,10 @@
 export let currentUsername = "";
 export function setCurrentUsername(username) {
-	currentUsername = username;
-	console.log("Current username set to: " + currentUsername);
+  currentUsername = username;
+  console.log("Current username set to: " + currentUsername);
 }
 
-export function loginUsers() {
+export function loginLogoutUsers() {
   document.getElementById("login").addEventListener("click", function () {
     const newDiv = document.createElement("div");
     newDiv.id = "background-div";
@@ -92,7 +92,7 @@ export function loginUsers() {
       })
         .then((response) => response.json())
         .then((data) => {
-        //   console.log("Response from server:", data);
+          //   console.log("Response from server:", data);
           if (data.success) {
             alert("Temporary password sent to your email successfully!");
           } else {
@@ -115,7 +115,7 @@ export function loginUsers() {
       })
         .then((response) => response.json())
         .then((data) => {
-        //   console.log("Response from server:", data);
+          //   console.log("Response from server:", data);
           if (data.success) {
             alert("Login successful!");
             document.getElementById("logout").style.display = "inline";
@@ -123,7 +123,7 @@ export function loginUsers() {
             document.getElementById("login").style.display = "none";
             document.getElementById("register").style.display = "none";
             document.body.removeChild(newDiv);
-			currentUsername = username;
+            currentUsername = username;
           } else {
             alert("Login failed: " + data.message);
           }
@@ -140,11 +140,33 @@ export function loginUsers() {
         event.preventDefault();
         const username = usernameInput.value;
         const password = passwordInput.value;
-		if (!username || !password) {
-			alert("Please enter both username and password to login.");
-			return;
-		}
+        if (!username || !password) {
+          alert("Please enter both username and password to login.");
+          return;
+        }
         loginUser(username, password);
+      });
+  });
+
+  document.getElementById("logout").addEventListener("click", function () {
+    alert("Logged out successfully!");
+    fetch("logout", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          document.getElementById("logout").style.display = "none";
+          document.getElementById("settings").style.display = "none";
+          document.getElementById("login").style.display = "inline";
+          document.getElementById("register").style.display = "inline";
+        } else {
+          alert("Logout failed: " + data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred during logout.");
       });
   });
 }

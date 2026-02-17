@@ -147,7 +147,8 @@ fastify.post("/forget-password", async (req, reply) => {
       from: '"Camagru" <no-reply@camagru.com>',
       to: user.email,
       subject: "Temporary Password",
-      html: `Your temporary password is: <b>${tempPassword}</b>`,
+      html: `Your temporary password is: <b>${tempPassword}</b>, please log in and change it immediately.
+             If you received this email by mistake, please ignore it.`,
     });
     reply.send({ success: true, message: "Temporary password sent to your email" });
   } catch (err) {

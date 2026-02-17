@@ -86,7 +86,7 @@ export function registerUsers() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Response from server:", data);
+        //   console.log("Response from server:", data);
           if (data.success) {
             alert(
               "Registration successful! Please check your email to verify your account. Or your account might be erased after two days if you don't verify it.",

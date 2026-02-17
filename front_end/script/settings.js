@@ -106,10 +106,6 @@ export function settings() {
 		const newUsername = usernameInput.value;
 		const newEmail = emailInput.value;
 		const newPassword = passwordInput.value;
-		console.log("Updating settings for:");
-		console.log("New Username:", typeof newUsername, newUsername.length, newUsername);
-		console.log("New Email:", typeof newEmail, newEmail.length, newEmail);
-		console.log("New Password:", typeof newPassword, newPassword.length, newPassword);
 		fetch("/update-settings", {
 			method: "POST",
 			headers: {

@@ -70,8 +70,8 @@ fastify.post("/register", async (req, reply) => {
 fastify.get("/verify", async (req, reply) => {
   const { token } = req.query;
   try {
-	// find the user with the given verification token
-	const [rows] = await db.execute(
+    // find the user with the given verification token
+    const [rows] = await db.execute(
       "SELECT * FROM users WHERE verification_token = ?",
       [token],
     );
@@ -92,6 +92,34 @@ fastify.get("/verify", async (req, reply) => {
   }
 });
 
+fastify.post("/login", async (req, reply) => {
+  const { username, password } = req.body;
+  try {
+    // find the user by username
+    const [rows] = await db.execute("SELECT * FROM users WHERE username = ?", [
+      username,
+    ]);
+    if (rows.length === 0) {
+      reply.status(404).send({ error: "User not found" });
+      return;
+    }
+    const user = rows[0];
+    // check if the password matches
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      reply.status(401).send({ error: "Invalid password" });
+      return;
+    }
+    // if (!user.is_verified) {
+    //   reply.status(403).send({ error: "Email not verified" });
+    //   return;
+    // }
+    reply.send({ success: true, message: "Login successful" });
+  } catch (err) {
+    console.error("Error during login:", err);
+    reply.status(500).send({ error: "Internal Server Error" });
+  }
+});
 
 fastify.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
   if (err) {

@@ -12,6 +12,8 @@
     "@fastify/static": "latest",
     "bcrypt": "latest",
     "mysql2": "latest",
-    "nodemailer": "latest"
+    "nodemailer": "latest",
+    "@fastify/cookie": "11.0.2",
+    "@fastify/jwt": "10.0.0"
   }
 }

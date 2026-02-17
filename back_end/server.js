@@ -10,10 +10,21 @@ const fastify = Fastify({
     cert: fs.readFileSync(path.join(process.cwd(), "server.cert")),
   },
 });
-import fastifyStatic from "@fastify/static";
 
+// register plugins
+import fastifyStatic from "@fastify/static";
 fastify.register(fastifyStatic, {
   root: path.join(__dirname, "../front_end"),
+});
+import fastifyCookie from "@fastify/cookie";
+import fastifyJwt from "@fastify/jwt";
+fastify.register(fastifyCookie);
+fastify.register(fastifyJwt, {
+  secret: `Dyao is the best!`,//TODO: use environment variable for secret in production
+  cookie: {
+    cookieName: "token",
+    signed: false,
+  }
 });
 
 fastify.get("/", (req, reply) => {

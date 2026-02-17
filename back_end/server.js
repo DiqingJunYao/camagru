@@ -121,6 +121,41 @@ fastify.post("/login", async (req, reply) => {
   }
 });
 
+fastify.post("/forget-password", async (req, reply) => {
+  const { username } = req.body;
+  try {
+    // find the user by username
+    const [rows] = await db.execute("SELECT * FROM users WHERE username = ?", [
+      username,
+    ]);
+    if (rows.length === 0) {
+      reply.status(404).send({ error: "User not found" });
+      return;
+    }
+    const user = rows[0];
+    // generate a temporary password
+    const tempPassword = crypto.randomBytes(8).toString("hex");
+    const saltRounds = 10;
+    const hash = await bcrypt.hash(tempPassword, saltRounds);
+    // update the user's password in the database
+    await db.execute("UPDATE users SET password = ? WHERE id = ?", [
+      hash,
+      user.id,
+    ]);
+    // send the temporary password to the user's email
+    await transporter.sendMail({
+      from: '"Camagru" <no-reply@camagru.com>',
+      to: user.email,
+      subject: "Temporary Password",
+      html: `Your temporary password is: <b>${tempPassword}</b>`,
+    });
+    reply.send({ success: true, message: "Temporary password sent to your email" });
+  } catch (err) {
+    console.error("Error during forget password:", err);
+    reply.status(500).send({ error: "Internal Server Error" });
+  }
+});
+
 fastify.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);

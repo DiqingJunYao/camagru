@@ -117,7 +117,6 @@ document.getElementById("register").addEventListener("click", function () {
     });
 });
 
-
 document.getElementById("login").addEventListener("click", function () {
   const newDiv = document.createElement("div");
   newDiv.id = "background-div";
@@ -159,6 +158,11 @@ document.getElementById("login").addEventListener("click", function () {
   submitButton.type = "submit";
   submitButton.textContent = "Login";
 
+  const forgetPasswordButton = document.createElement("button");
+  forgetPasswordButton.type = "button";
+  forgetPasswordButton.textContent = "Forget Password?";
+  forgetPasswordButton.style.marginTop = "10px";
+
   const closeButton = document.createElement("button");
   closeButton.type = "button";
   closeButton.textContent = "X";
@@ -177,6 +181,7 @@ document.getElementById("login").addEventListener("click", function () {
   form.appendChild(document.createElement("br"));
   form.appendChild(submitButton);
   form.appendChild(closeButton);
+  form.appendChild(forgetPasswordButton);
 
   newDiv.appendChild(form);
 
@@ -184,6 +189,32 @@ document.getElementById("login").addEventListener("click", function () {
     if (event.target === newDiv) {
       document.body.removeChild(newDiv);
     }
+  });
+
+  forgetPasswordButton.addEventListener("click", function () {
+    alert(
+      "An email with the temporary password has been sent to your email address, please check your inbox.",
+    );
+    fetch("forget-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: usernameInput.value }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response from server:", data);
+        if (data.success) {
+          alert("Temporary password sent to your email successfully!");
+        } else {
+          alert("Failed to send temporary password: " + data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while sending temporary password.");
+      });
   });
 
   function loginUser(username, password) {

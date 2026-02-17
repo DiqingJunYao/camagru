@@ -1,4 +1,8 @@
 export let currentUsername = "";
+export function setCurrentUsername(username) {
+	currentUsername = username;
+	console.log("Current username set to: " + currentUsername);
+}
 
 export function loginUsers() {
   document.getElementById("login").addEventListener("click", function () {

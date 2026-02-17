@@ -26,6 +26,13 @@ fastify.register(fastifyJwt, {
     signed: false,
   }
 });
+fastify.decorate("authenticate", async function (request, reply) {
+  try {
+    await request.jwtVerify()
+  } catch (err) {
+    reply.code(401).send({ error: 'Unauthorized' })
+  }
+})
 
 fastify.get("/", (req, reply) => {
   reply.sendFile("index.html");

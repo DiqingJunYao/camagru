@@ -1,4 +1,4 @@
-import { currentUsername } from "./login.js";
+import { currentUsername, setCurrentUsername } from "./login.js";
 
 export function settings() {
   document.getElementById("settings").addEventListener("click", function () {
@@ -118,6 +118,8 @@ export function settings() {
 			if (data.success) {
 				alert("Settings updated successfully!");
 				document.body.removeChild(newDiv);
+				setCurrentUsername(newUsername || currentUsername);
+				console.log("this is the current username after update: " + currentUsername);
 			} else {
 				alert("Error updating settings: " + data.error);
 			}

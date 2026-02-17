@@ -4,9 +4,9 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 
 /**
- * 
+ *
  * this function registers the endpoints for user registration, login, email verification, password reset, and updating user settings. It uses bcrypt for password hashing, crypto for generating random tokens, and nodemailer for sending emails.
- * @param {*} fastify 
+ * @param {*} fastify
  */
 export function registerLoginSettingsEndpoint(fastify) {
   const transporter = nodemailer.createTransport({
@@ -95,11 +95,18 @@ export function registerLoginSettingsEndpoint(fastify) {
         reply.status(401).send({ error: "Invalid password" });
         return;
       }
-      // if (!user.is_verified) {
-      //   reply.status(403).send({ error: "Email not verified" });
-      //   return;
-      // }
-      reply.send({ success: true, message: "Login successful" });
+      const token = fastify.jwt.sign(
+        { id: user.id, username: user.username },
+        { expiresIn: "1h" },
+      );
+      reply
+        .setCookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          path: "/",
+        })
+        .send({ success: true, message: "Login successful" });
     } catch (err) {
       console.error("Error during login:", err);
       reply.status(500).send({ error: "Internal Server Error" });
@@ -165,50 +172,64 @@ export function registerLoginSettingsEndpoint(fastify) {
     }
   });
 
-  fastify.post("/update-settings", async (req, reply) => {
-    const { currentUsername, currentEmail, username, email, password } =
-      req.body;
-    let id = null;
-    try {
-      const [rows] = await db.execute(
-        "SELECT id FROM users WHERE username = ?",
-        [currentUsername],
-      );
-      if (rows.length === 0) {
-        reply.status(404).send({ error: "User not found" });
+  fastify.post(
+    "/update-settings",
+    { preHandler: [fastify.authenticate] },
+    async (req, reply) => {
+      const { currentUsername, currentEmail, username, email, password } =
+        req.body;
+      let id = null;
+      try {
+        const [rows] = await db.execute(
+          "SELECT id FROM users WHERE username = ?",
+          [currentUsername],
+        );
+        if (rows.length === 0) {
+          reply.status(404).send({ error: "User not found" });
+          return;
+        }
+        id = rows[0].id;
+      } catch (err) {
+        console.error("Error fetching user ID:", err);
+        reply.status(500).send({ error: "Internal Server Error" });
         return;
       }
-      id = rows[0].id;
-    } catch (err) {
-      console.error("Error fetching user ID:", err);
-      reply.status(500).send({ error: "Internal Server Error" });
-      return;
-    }
 
+      try {
+        if (username && username !== currentUsername && username.length > 0) {
+          await db.execute("UPDATE users SET username = ? WHERE id = ?", [
+            username,
+            id,
+          ]);
+        }
+        if (email && email !== currentEmail && email.length > 0) {
+          await db.execute("UPDATE users SET email = ? WHERE id = ?", [
+            email,
+            id,
+          ]);
+        }
+        if (password && password.length > 0) {
+          const saltRounds = 10;
+          const hash = await bcrypt.hash(password, saltRounds);
+          await db.execute("UPDATE users SET password = ? WHERE id = ?", [
+            hash,
+            id,
+          ]);
+        }
+        reply.send({ success: true, message: "Settings updated successfully" });
+      } catch (err) {
+        console.error("Error updating settings:", err);
+        reply.status(500).send({ error: "Internal Server Error" });
+      }
+    },
+  );
+
+  fastify.get("/logout", async (req, reply) => {
     try {
-      if (username && username !== currentUsername && username.length > 0) {
-        await db.execute("UPDATE users SET username = ? WHERE id = ?", [
-          username,
-          id,
-        ]);
-      }
-      if (email && email !== currentEmail && email.length > 0) {
-        await db.execute("UPDATE users SET email = ? WHERE id = ?", [
-          email,
-          id,
-        ]);
-      }
-      if (password && password.length > 0) {
-        const saltRounds = 10;
-        const hash = await bcrypt.hash(password, saltRounds);
-        await db.execute("UPDATE users SET password = ? WHERE id = ?", [
-          hash,
-          id,
-        ]);
-      }
-      reply.send({ success: true, message: "Settings updated successfully" });
+      reply.clearCookie("token", { path: "/" });
+      reply.send({ success: true, message: "Logout successful" });
     } catch (err) {
-      console.error("Error updating settings:", err);
+      console.error("Error during logout:", err);
       reply.status(500).send({ error: "Internal Server Error" });
     }
   });

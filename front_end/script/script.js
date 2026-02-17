@@ -10,6 +10,10 @@ import { loginUsers } from "./login.js";
 
 loginUsers();
 
+import { settings } from "./settings.js";
+
+settings();
+
 document.getElementById("logout").addEventListener("click", function () {
   alert("Logged out successfully!");
   document.getElementById("logout").style.display = "none";

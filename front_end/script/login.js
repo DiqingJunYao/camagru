@@ -1,3 +1,5 @@
+export let currentUsername = "";
+
 export function loginUsers() {
   document.getElementById("login").addEventListener("click", function () {
     const newDiv = document.createElement("div");
@@ -117,6 +119,7 @@ export function loginUsers() {
             document.getElementById("login").style.display = "none";
             document.getElementById("register").style.display = "none";
             document.body.removeChild(newDiv);
+			currentUsername = username;
           } else {
             alert("Login failed: " + data.message);
           }
@@ -133,6 +136,10 @@ export function loginUsers() {
         event.preventDefault();
         const username = usernameInput.value;
         const password = passwordInput.value;
+		if (!username || !password) {
+			alert("Please enter both username and password to login.");
+			return;
+		}
         loginUser(username, password);
       });
   });

@@ -150,9 +150,74 @@ fastify.post("/forget-password", async (req, reply) => {
       html: `Your temporary password is: <b>${tempPassword}</b>, please log in and change it immediately.
              If you received this email by mistake, please ignore it.`,
     });
-    reply.send({ success: true, message: "Temporary password sent to your email" });
+    reply.send({
+      success: true,
+      message: "Temporary password sent to your email",
+    });
   } catch (err) {
     console.error("Error during forget password:", err);
+    reply.status(500).send({ error: "Internal Server Error" });
+  }
+});
+
+fastify.post("/get-user-info", async (req, reply) => {
+  const { username } = req.body;
+  try {
+    const [rows] = await db.execute(
+      "SELECT email FROM users WHERE username = ?",
+      [username],
+    );
+    if (rows.length === 0) {
+      reply.status(404).send({ error: "User not found" });
+      return;
+    }
+    const user = rows[0];
+    reply.send({ success: true, email: user.email });
+  } catch (err) {
+    console.error("Error fetching user info:", err);
+    reply.status(500).send({ error: "Internal Server Error" });
+  }
+});
+
+fastify.post("/update-settings", async (req, reply) => {
+  const { currentUsername, currentEmail, username, email, password } = req.body;
+  let id = null;
+  try {
+    const [rows] = await db.execute("SELECT id FROM users WHERE username = ?", [
+      currentUsername,
+    ]);
+    if (rows.length === 0) {
+      reply.status(404).send({ error: "User not found" });
+      return;
+    }
+    id = rows[0].id;
+  } catch (err) {
+    console.error("Error fetching user ID:", err);
+    reply.status(500).send({ error: "Internal Server Error" });
+    return;
+  }
+
+  try {
+    if (username && username !== currentUsername && username.length > 0) {
+      await db.execute("UPDATE users SET username = ? WHERE id = ?", [
+        username,
+        id,
+      ]);
+    }
+    if (email && email !== currentEmail && email.length > 0) {
+      await db.execute("UPDATE users SET email = ? WHERE id = ?", [email, id]);
+    }
+    if (password && password.length > 0) {
+      const saltRounds = 10;
+      const hash = await bcrypt.hash(password, saltRounds);
+      await db.execute("UPDATE users SET password = ? WHERE id = ?", [
+        hash,
+        id,
+      ]);
+    }
+    reply.send({ success: true, message: "Settings updated successfully" });
+  } catch (err) {
+    console.error("Error updating settings:", err);
     reply.status(500).send({ error: "Internal Server Error" });
   }
 });

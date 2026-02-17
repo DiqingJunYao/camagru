@@ -109,9 +109,10 @@ export function registerUsers() {
         const username = usernameInput.value;
         const password = passwordInput.value;
         const email = emailInput.value;
-        console.log("Username:", username);
-        console.log("Password:", password);
-        console.log("Email:", email);
+		if (!username || !password || !email) {
+			alert("Please fill in all fields to register.");
+			return;
+		}
         registerUser(username, password, email);
       });
   });

@@ -233,4 +233,12 @@ export function registerLoginSettingsEndpoint(fastify) {
       reply.status(500).send({ error: "Internal Server Error" });
     }
   });
+
+  fastify.get(
+    "/verify-login",
+    { preHandler: [fastify.authenticate] },
+    async (req, reply) => {
+      reply.send({ loggedIn: true });
+    },
+  );
 }

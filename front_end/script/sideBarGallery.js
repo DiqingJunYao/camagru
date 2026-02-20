@@ -15,10 +15,10 @@ export function sideBarGallery() {
         galleryCardWrapper.appendChild(img);
         const cardButtons = document.createElement("div");
         cardButtons.className = "card-buttons";
-        const cardLike = document.createElement("div");
+        const cardLike = document.createElement("button");
         cardLike.className = "card-like";
         cardLike.textContent = `heart ${item.likes || 0}`;
-        const commentButton = document.createElement("div");
+        const commentButton = document.createElement("button");
         commentButton.id = "comment-button";
         commentButton.className = "card-comment-button";
         commentButton.textContent = "comments";

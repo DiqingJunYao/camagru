@@ -33,6 +33,9 @@ fastify.decorate("authenticate", async function (request, reply) {
     reply.code(401).send({ error: 'Unauthorized' })
   }
 })
+import fastifyMultipart from "@fastify/multipart";
+fastify.register(fastifyMultipart);
+
 
 fastify.get("/", (req, reply) => {
   reply.sendFile("index.html");

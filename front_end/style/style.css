@@ -125,7 +125,7 @@
 }
 .container main .main-side .gallery-card-wrapper .card-comments {
   border: 5px solid rgb(255, 0, 255);
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 5px;
 }

@@ -53,6 +53,7 @@ fastify.get("/test.json", async (req, reply) => {
   reply.send(json);
 });
 
+
 fastify.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);

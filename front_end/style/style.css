@@ -78,26 +78,57 @@
   width: 20%;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+}
+.container main .main-side .main-side-page {
+  border: 5px solid rgb(255, 255, 0);
+  display: flex;
+}
+.container main .main-side .main-side-page #previous-page,
+.container main .main-side .main-side-page #next-page {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container main .main-side .main-side-page #page-numbers {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container main .main-side .main-side-page #page-numbers button,
+.container main .main-side .main-side-page #page-numbers label {
+  flex: 1;
+}
+.container main .main-side .main-side-page #page-numbers label {
+  text-align: center;
+}
+.container main .main-side .main-side-gallery {
+  border: 5px solid rgb(0, 17, 255);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   overflow-y: auto;
 }
-.container main .main-side .gallery-card-wrapper {
+.container main .main-side .main-side-gallery .gallery-card-wrapper {
   border: solid 5px rgb(255, 255, 0);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
 }
-.container main .main-side .gallery-card-wrapper img {
+.container main .main-side .main-side-gallery .gallery-card-wrapper img {
   width: 100%;
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.container main .main-side .gallery-card-wrapper .card-buttons {
+.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons {
   display: flex;
   justify-content: center;
 }
-.container main .main-side .gallery-card-wrapper .card-buttons .card-like {
+.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons .card-like {
   border: 1px solid black;
   padding: 5px 10px;
   background-color: lightgray;
@@ -107,11 +138,11 @@
   justify-content: center;
   align-items: center;
 }
-.container main .main-side .gallery-card-wrapper .card-buttons .card-like:hover {
+.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons .card-like:hover {
   background-color: gray;
   color: white;
 }
-.container main .main-side .gallery-card-wrapper .card-buttons .card-comment-button {
+.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons .card-comment-button {
   border: 1px solid black;
   padding: 5px 10px;
   background-color: lightgray;
@@ -121,17 +152,17 @@
   justify-content: center;
   align-items: center;
 }
-.container main .main-side .gallery-card-wrapper .card-buttons .card-comment-button:hover {
+.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons .card-comment-button:hover {
   background-color: gray;
   color: white;
 }
-.container main .main-side .gallery-card-wrapper .card-comments {
+.container main .main-side .main-side-gallery .gallery-card-wrapper .card-comments {
   border: 5px solid rgb(255, 0, 255);
   display: none;
   flex-direction: column;
   gap: 5px;
 }
-.container main .main-side .gallery-card-wrapper .card-comments .comment {
+.container main .main-side .main-side-gallery .gallery-card-wrapper .card-comments .comment {
   border: 1px solid black;
   display: flex;
   gap: 10px;

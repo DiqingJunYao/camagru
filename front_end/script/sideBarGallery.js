@@ -39,26 +39,55 @@ function createComments(galleryCardWrapper, item) {
   galleryCardWrapper.appendChild(cardComments);
 }
 
-export function sideBarGallery() {
+function fetchData() {
   fetch("/test.json", {
     method: "GET",
   })
     .then((response) => response.json())
     .then((data) => {
-      const galleryContainer = document.querySelector(".main-side");
-      Object.values(data).forEach((item) => {
+      const galleryContainer = document.querySelector(".main-side-gallery");
+      const resultArray = Object.values(data);
+      if (resultArray.length % cardPerPage === 0) {
+        maxPage = resultArray.length / cardPerPage;
+      } else {
+        maxPage = Math.floor(resultArray.length / cardPerPage) + 1;
+      }
+      maxPage = Math.ceil(resultArray.length / cardPerPage);
+      for (
+        counter = (page - 1) * cardPerPage;
+        counter < page * cardPerPage && counter < resultArray.length;
+        counter++
+      ) {
         const galleryCardWrapper = document.createElement("div");
         galleryCardWrapper.className = "gallery-card-wrapper";
-        createImg(galleryCardWrapper, item);
-        createButtons(galleryCardWrapper, item);
-        createComments(galleryCardWrapper, item);
+        createImg(galleryCardWrapper, resultArray[counter]);
+        createButtons(galleryCardWrapper, resultArray[counter]);
+        createComments(galleryCardWrapper, resultArray[counter]);
         galleryContainer.appendChild(galleryCardWrapper);
-      });
+      }
     })
     .catch((error) => {
       console.error("Error fetching test data:", error);
     });
+  if (page === 1) {
+    document.getElementById("previous-page").style.display = "none";
+  } else if (page > 1) {
+    document.getElementById("previous-page").style.display = "block";
+  }
+  if (page === maxPage) {
+    document.getElementById("next-page").style.display = "none";
+  } else if (page < maxPage) {
+    document.getElementById("next-page").style.display = "block";
+  }
+  console.log("Current page:", page);
+}
 
+let page = 1;
+let counter = 0;
+let maxPage = 0;
+let cardPerPage = 2;
+export function sideBarGallery() {
+  fetchData();
   const galleryContainer = document.querySelector(".main-side");
   galleryContainer.addEventListener("click", function (event) {
     if (event.target.classList.contains("card-comment-button")) {
@@ -70,5 +99,31 @@ export function sideBarGallery() {
         cardComments.style.display = "none";
       }
     }
+  });
+
+  document
+    .getElementById("previous-page")
+    .addEventListener("click", function () {
+      if (page > 1) {
+        page--;
+        document.querySelector(".main-side-gallery").innerHTML = "";
+        fetchData();
+      }
+    });
+  document.getElementById("next-page").addEventListener("click", function () {
+    page++;
+
+    document.querySelector(".main-side-gallery").innerHTML = "";
+    fetchData();
+  });
+  document.getElementById("page-1").addEventListener("click", function () {
+    page = 1;
+    document.querySelector(".main-side-gallery").innerHTML = "";
+    fetchData();
+  });
+  document.getElementById("last-page").addEventListener("click", function () {
+    page = maxPage;
+    document.querySelector(".main-side-gallery").innerHTML = "";
+    fetchData();
   });
 }

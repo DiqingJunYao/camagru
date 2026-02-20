@@ -51,7 +51,7 @@ export function sideBarGallery() {
         galleryCardWrapper.className = "gallery-card-wrapper";
         createImg(galleryCardWrapper, item);
         createButtons(galleryCardWrapper, item);
-		createComments(galleryCardWrapper,item);
+        createComments(galleryCardWrapper, item);
         galleryContainer.appendChild(galleryCardWrapper);
       });
     })

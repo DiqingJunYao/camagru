@@ -17,3 +17,7 @@ settings();
 import { verifyLoginStatus } from "./login.js";
 
 verifyLoginStatus();
+
+import { sideBarGallery } from "./sideBarGallery.js";
+
+sideBarGallery();

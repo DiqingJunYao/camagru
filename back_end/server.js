@@ -36,6 +36,7 @@ fastify.decorate("authenticate", async function (request, reply) {
 import fastifyMultipart from "@fastify/multipart";
 fastify.register(fastifyMultipart);
 
+import fsPromises from "fs/promises";
 
 fastify.get("/", (req, reply) => {
   reply.sendFile("index.html");
@@ -45,6 +46,12 @@ import { registerLoginSettingsEndpoint } from "./register_login_settings_endpoin
 
 registerLoginSettingsEndpoint(fastify);
 
+
+fastify.get("/test.json", async (req, reply) => {
+  const data = await fsPromises.readFile("./test.json", "utf-8");
+  const json = JSON.parse(data);
+  reply.send(json);
+});
 
 fastify.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
   if (err) {

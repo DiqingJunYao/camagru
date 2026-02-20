@@ -15,6 +15,6 @@
     "nodemailer": "latest",
     "@fastify/cookie": "11.0.2",
     "@fastify/jwt": "10.0.0",
-    "@fastify/multipart": "7.0.0"
+    "@fastify/multipart": "latest"
   }
 }

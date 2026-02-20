@@ -4,7 +4,6 @@ export function sideBarGallery() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Data received:", data);
       const galleryContainer = document.querySelector(".main-side");
       Object.values(data).forEach((item) => {
         const galleryCardWrapper = document.createElement("div");

@@ -1,6 +1,6 @@
 {
   "image1": {
-    "src": "https://localhost:4000/uploads/1.png",
+    "src": "https://localhost/uploads/1.png",
     "likes": 0,
     "comments": [
       { "name": "dyao", "context": "this is the first comment" },
@@ -8,7 +8,7 @@
     ]
   },
   "image2": {
-    "src": "https://localhost:4000/uploads/2.png",
+    "src": "https://localhost/uploads/2.png",
     "likes": 0,
     "comments": [
       { "name": "dyao", "context": "this is the first comment" },
@@ -16,7 +16,7 @@
     ]
   },
   "image3": {
-    "src": "https://localhost:4000/uploads/3.png",
+    "src": "https://localhost/uploads/3.png",
     "likes": 0,
     "comments": [
       { "name": "dyao", "context": "this is the first comment" },

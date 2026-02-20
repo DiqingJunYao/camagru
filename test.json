@@ -1,0 +1,17 @@
+{
+	"image1": {
+		"src": "http://localhost:4000/uploads/1.png",
+		"likes": 0,
+		"comments": []
+	},
+	"image2": {
+		"src": "http://localhost:4000/uploads/2.png",
+		"likes": 0,
+		"comments": []
+	},
+	"image3": {
+		"src": "http://localhost:4000/uploads/3.png",
+		"likes": 0,
+		"comments": []
+	}
+}

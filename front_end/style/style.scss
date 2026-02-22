@@ -1,3 +1,20 @@
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 32px;
+$spacing-xl: 64px;
+
+$font-xl: 48px;
+$font-lg: 32px;
+$font-md: 20px;
+$font-sm: 16px;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -5,7 +22,7 @@
   height: 100vh;
   header {
     border: 1px solid black;
-    min-height: 100px;
+    min-height: auto;
     // height: 10%;
     display: flex;
     flex-wrap: wrap;
@@ -100,20 +117,20 @@
           label {
             flex: 1;
           }
-		  label {
-			text-align: center;
-		  }
+          label {
+            text-align: center;
+          }
         }
       }
       .main-side-gallery {
-        border: 5px solid rgb(0, 17, 255);
+        border: 5px solid rgb(0, 255, 34);
         width: 100%;
         display: flex;
         flex-direction: column;
         gap: 10px;
         overflow-y: auto;
         .gallery-card-wrapper {
-          border: solid 5px rgb(255, 255, 0);
+          border: solid 5px rgb(255, 0, 0);
           display: flex;
           flex-wrap: wrap;
           flex-direction: column;
@@ -159,6 +176,8 @@
             display: none;
             flex-direction: column;
             gap: 5px;
+            height: 150px;
+            overflow-x: auto;
             .comment {
               border: 1px solid black;
               display: flex;
@@ -172,5 +191,49 @@
   footer {
     border: 5px solid blue;
     height: 10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    header {
+      min-height: auto;
+      .logo-login-container {
+        flex-direction: column;
+        .logo-container {
+          margin-bottom: 10px;
+        }
+      }
+      nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    main {
+      flex-direction: column;
+      width: 100%;
+
+      .main-side {
+        order: -1;
+        width: 100%;
+        max-height: 30%;
+        .main-side-gallery {
+          flex-direction: row;
+          overflow-x: auto;
+          overflow-y: hidden;
+          .gallery-card-wrapper {
+            flex-wrap: nowrap;
+            img {
+              height: 40%;
+            }
+            .card-comments {
+              overflow-y: auto;
+              .comment {
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

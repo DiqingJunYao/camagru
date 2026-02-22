@@ -89,6 +89,63 @@ $font-sm: 16px;
     .main-container {
       border: 5px solid rgb(255, 0, 255);
       width: 80%;
+      overflow-y: auto;
+      .gallery-card-wrapper {
+        border: solid 5px rgb(255, 0, 0);
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        img {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+        }
+        .card-buttons {
+          display: flex;
+          justify-content: center;
+          .card-like {
+            border: 1px solid black;
+            padding: 5px 10px;
+            background-color: lightgray;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &:hover {
+              background-color: gray;
+              color: white;
+            }
+          }
+          .card-comment-button {
+            border: 1px solid black;
+            padding: 5px 10px;
+            background-color: lightgray;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &:hover {
+              background-color: gray;
+              color: white;
+            }
+          }
+        }
+        .card-comments {
+          border: 5px solid rgb(255, 0, 255);
+          display: none;
+          flex-direction: column;
+          gap: 5px;
+          height: 150px;
+          overflow-x: auto;
+          .comment {
+            border: 1px solid black;
+            display: flex;
+            gap: 10px;
+          }
+        }
+      }
     }
     .main-side {
       border: 5px solid rgb(0, 17, 255);
@@ -211,7 +268,9 @@ $font-sm: 16px;
     main {
       flex-direction: column;
       width: 100%;
-
+      .main-container {
+        width: 100%;
+      }
       .main-side {
         order: -1;
         width: 100%;

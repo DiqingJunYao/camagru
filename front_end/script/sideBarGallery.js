@@ -5,39 +5,7 @@ function createImg(galleryCardWrapper, item) {
   galleryCardWrapper.appendChild(img);
 }
 
-function createButtons(galleryCardWrapper, item) {
-  const cardButtons = document.createElement("div");
-  cardButtons.className = "card-buttons";
-  const cardLike = document.createElement("button");
-  cardLike.className = "card-like";
-  cardLike.textContent = `heart ${item.likes || 0}`;
-  const commentButton = document.createElement("button");
-  commentButton.id = "comment-button";
-  commentButton.className = "card-comment-button";
-  commentButton.textContent = "comments";
-  cardButtons.appendChild(cardLike);
-  cardButtons.appendChild(commentButton);
-  galleryCardWrapper.appendChild(cardButtons);
-}
-
-function createComments(galleryCardWrapper, item) {
-  const cardComments = document.createElement("div");
-  cardComments.className = "card-comments";
-  for (const comment of item.comments) {
-    const commentDiv = document.createElement("div");
-    commentDiv.className = "comment";
-    const nameDiv = document.createElement("div");
-    nameDiv.className = "name";
-    nameDiv.textContent = comment.name;
-    const contextDiv = document.createElement("div");
-    contextDiv.className = "comment-context";
-    contextDiv.textContent = comment.context;
-    commentDiv.appendChild(nameDiv);
-    commentDiv.appendChild(contextDiv);
-    cardComments.appendChild(commentDiv);
-  }
-  galleryCardWrapper.appendChild(cardComments);
-}
+import { createButtons, createComments } from "./mainButtons.js";
 
 function fetchData() {
   fetch("/test.json", {
@@ -60,9 +28,17 @@ function fetchData() {
       ) {
         const galleryCardWrapper = document.createElement("div");
         galleryCardWrapper.className = "gallery-card-wrapper";
+        console.log("resultArray[counter]:", resultArray[counter]);
         createImg(galleryCardWrapper, resultArray[counter]);
-        createButtons(galleryCardWrapper, resultArray[counter]);
-        createComments(galleryCardWrapper, resultArray[counter]);
+        galleryCardWrapper.querySelector("img").addEventListener("click", function () {
+        console.log("INNER: resultArray[counter]:", resultArray[counter]);
+          const mainContainer = document.querySelector(".main-container");
+          mainContainer.innerHTML = "";
+          mainContainer.appendChild(galleryCardWrapper.cloneNode(true));
+          const mainButtonsAndComments = mainContainer.querySelector(".gallery-card-wrapper")
+          createButtons(mainButtonsAndComments, resultArray[counter]);
+          createComments(mainButtonsAndComments, resultArray[counter]);
+        });
         galleryContainer.appendChild(galleryCardWrapper);
       }
     })
@@ -88,7 +64,7 @@ let maxPage = 0;
 let cardPerPage = 2;
 export function sideBarGallery() {
   fetchData();
-  const galleryContainer = document.querySelector(".main-side");
+  const galleryContainer = document.querySelector(".main-container");
   galleryContainer.addEventListener("click", function (event) {
     if (event.target.classList.contains("card-comment-button")) {
       const cardComments = event.target.parentElement.nextElementSibling;

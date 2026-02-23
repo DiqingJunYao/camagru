@@ -1,22 +1,12 @@
 function createUploadForm() {
   const newDiv = document.createElement("div");
   newDiv.id = "background_div";
-  newDiv.classList.add("background-overlay");
+  newDiv.classList.add("background_overlay");
   document.body.prepend(newDiv);
 
   const form = document.createElement("form");
   form.id = "uploadForm";
-  form.style.position = "absolute";
-  form.style.top = "50%";
-  form.style.left = "50%";
-  form.style.width = "300px";
-  form.style.display = "flex";
-  form.style.flexDirection = "column";
-  form.style.alignItems = "center";
-  form.style.transform = "translate(-50%, -50%)";
-  form.style.backgroundColor = "#fff";
-  form.style.padding = "20px";
-  form.style.borderRadius = "5px";
+  form.classList.add("modal_form");
 
   const imageInput = document.createElement("input");
   imageInput.type = "file";

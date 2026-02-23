@@ -15,11 +15,25 @@ $font-sm: 16px;
   box-sizing: border-box;
 }
 
-.background-overlay {
+.background_overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  
+  .modal_form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+  }
 }
 
 .container {

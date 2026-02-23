@@ -7,7 +7,7 @@ export function setCurrentUsername(username) {
 export function loginLogoutUsers() {
   document.getElementById("login").addEventListener("click", function () {
     const newDiv = document.createElement("div");
-    newDiv.id = "background-div";
+    newDiv.id = "background_div";
     document.body.insertBefore(newDiv, document.body.firstChild);
     newDiv.style.position = "fixed";
     newDiv.style.top = "0";
@@ -42,7 +42,7 @@ export function loginLogoutUsers() {
     passwordInput.name = "password";
 
     const submitButton = document.createElement("button");
-    submitButton.id = "submit-button";
+    submitButton.id = "submit_button";
     submitButton.type = "submit";
     submitButton.textContent = "Login";
 
@@ -83,7 +83,7 @@ export function loginLogoutUsers() {
       alert(
         "An email with the temporary password has been sent to your email address, please check your inbox.",
       );
-      fetch("forget-password", {
+      fetch("forget_password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -135,7 +135,7 @@ export function loginLogoutUsers() {
     }
 
     document
-      .getElementById("submit-button")
+      .getElementById("submit_button")
       .addEventListener("click", function (event) {
         event.preventDefault();
         const username = usernameInput.value;
@@ -172,7 +172,7 @@ export function loginLogoutUsers() {
 }
 
 export function verifyLoginStatus() {
-  fetch("verify-login", {
+  fetch("verify_login", {
     method: "GET",
   })
     .then((response) => response.json())

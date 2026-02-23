@@ -18,38 +18,38 @@
   justify-content: space-between;
   align-items: center;
 }
-.container header .logo-login-container {
+.container header .logo_login_container {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: space-between;
 }
-.container header .logo-login-container .logo-container {
+.container header .logo_login_container .logo_container {
   display: flex;
   align-items: center;
 }
-.container header .logo-login-container .logo-container h1 {
+.container header .logo_login_container .logo_container h1 {
   margin: 0;
   padding: 0;
 }
-.container header .logo-login-container .logo-container .logo {
+.container header .logo_login_container .logo_container .logo {
   height: 60px;
   width: 60px;
   border: 1px solid green;
 }
-.container header .logo-login-container .login-container {
+.container header .logo_login_container .login_container {
   display: flex;
   gap: 10px;
   margin-right: 50px;
   align-items: center;
 }
-.container header .logo-login-container .login-container button {
+.container header .logo_login_container .login_container button {
   padding: 5px 10px;
   border: 1px solid black;
   background-color: lightgray;
   cursor: pointer;
 }
-.container header .logo-login-container .login-container button:hover {
+.container header .logo_login_container .login_container button:hover {
   background-color: gray;
   color: white;
 }
@@ -75,49 +75,49 @@
   min-height: 900px;
   flex: 1 1 auto;
 }
-.container main .main-container {
+.container main .main_container {
   border: 5px solid rgb(255, 0, 255);
   width: 80%;
   overflow-y: auto;
 }
-.container main .main-container nav {
+.container main .main_container nav {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   width: 100%;
   border: 5px solid rgb(255, 0, 0);
 }
-.container main .main-container nav div {
+.container main .main_container nav div {
   width: auto;
   text-align: center;
   border: 5px solid rgb(0, 0, 0);
   background-color: aquamarine;
   cursor: pointer;
 }
-.container main .main-container nav div:hover {
+.container main .main_container nav div:hover {
   background-color: yellow;
 }
-.container main .main-container .main-container-gallery {
+.container main .main_container .main_container_gallery {
   border: 5px solid rgb(255, 0, 255);
   width: 100%;
   overflow-y: auto;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper {
+.container main .main_container .main_container_gallery .gallery_card_wrapper {
   border: solid 5px rgb(255, 0, 0);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper img {
+.container main .main_container .main_container_gallery .gallery_card_wrapper img {
   width: 100%;
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper .card-buttons {
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_buttons {
   display: flex;
   justify-content: center;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper .card-buttons .card-like {
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_buttons .card_like {
   border: 1px solid black;
   padding: 5px 10px;
   background-color: lightgray;
@@ -127,11 +127,11 @@
   justify-content: center;
   align-items: center;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper .card-buttons .card-like:hover {
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_buttons .card_like:hover {
   background-color: gray;
   color: white;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper .card-buttons .card-comment-button {
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_buttons .card_comment_button {
   border: 1px solid black;
   padding: 5px 10px;
   background-color: lightgray;
@@ -141,11 +141,11 @@
   justify-content: center;
   align-items: center;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper .card-buttons .card-comment-button:hover {
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_buttons .card_comment_button:hover {
   background-color: gray;
   color: white;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper .card-comments {
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_comments {
   border: 5px solid rgb(255, 0, 255);
   display: none;
   flex-direction: column;
@@ -153,43 +153,43 @@
   height: 150px;
   overflow-x: auto;
 }
-.container main .main-container .main-container-gallery .gallery-card-wrapper .card-comments .comment {
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_comments .comment {
   border: 1px solid black;
   display: flex;
   gap: 10px;
 }
-.container main .main-side {
+.container main .main_side {
   border: 5px solid rgb(0, 17, 255);
   width: 20%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
-.container main .main-side .main-side-page {
+.container main .main_side .main_side_page {
   border: 5px solid rgb(255, 255, 0);
   display: flex;
 }
-.container main .main-side .main-side-page #previous-page,
-.container main .main-side .main-side-page #next-page {
+.container main .main_side .main_side_page #previous_page,
+.container main .main_side .main_side_page #next_page {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.container main .main-side .main-side-page #page-numbers {
+.container main .main_side .main_side_page #page_numbers {
   flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.container main .main-side .main-side-page #page-numbers button,
-.container main .main-side .main-side-page #page-numbers label {
+.container main .main_side .main_side_page #page_numbers button,
+.container main .main_side .main_side_page #page_numbers label {
   flex: 1;
 }
-.container main .main-side .main-side-page #page-numbers label {
+.container main .main_side .main_side_page #page_numbers label {
   text-align: center;
 }
-.container main .main-side .main-side-gallery {
+.container main .main_side .main_side_gallery {
   border: 5px solid rgb(0, 255, 34);
   width: 100%;
   display: flex;
@@ -197,24 +197,24 @@
   gap: 10px;
   overflow-y: auto;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper {
+.container main .main_side .main_side_gallery .gallery_card_wrapper {
   border: solid 5px rgb(255, 0, 0);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper img {
+.container main .main_side .main_side_gallery .gallery_card_wrapper img {
   width: 100%;
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;
   cursor: pointer;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons {
+.container main .main_side .main_side_gallery .gallery_card_wrapper .card_buttons {
   display: flex;
   justify-content: center;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons .card-like {
+.container main .main_side .main_side_gallery .gallery_card_wrapper .card_buttons .card_like {
   border: 1px solid black;
   padding: 5px 10px;
   background-color: lightgray;
@@ -224,11 +224,11 @@
   justify-content: center;
   align-items: center;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons .card-like:hover {
+.container main .main_side .main_side_gallery .gallery_card_wrapper .card_buttons .card_like:hover {
   background-color: gray;
   color: white;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons .card-comment-button {
+.container main .main_side .main_side_gallery .gallery_card_wrapper .card_buttons .card_comment_button {
   border: 1px solid black;
   padding: 5px 10px;
   background-color: lightgray;
@@ -238,11 +238,11 @@
   justify-content: center;
   align-items: center;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper .card-buttons .card-comment-button:hover {
+.container main .main_side .main_side_gallery .gallery_card_wrapper .card_buttons .card_comment_button:hover {
   background-color: gray;
   color: white;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper .card-comments {
+.container main .main_side .main_side_gallery .gallery_card_wrapper .card_comments {
   border: 5px solid rgb(255, 0, 255);
   display: none;
   flex-direction: column;
@@ -250,7 +250,7 @@
   height: 150px;
   overflow-x: auto;
 }
-.container main .main-side .main-side-gallery .gallery-card-wrapper .card-comments .comment {
+.container main .main_side .main_side_gallery .gallery_card_wrapper .card_comments .comment {
   border: 1px solid black;
   display: flex;
   gap: 10px;
@@ -264,10 +264,10 @@
   .container header {
     min-height: auto;
   }
-  .container header .logo-login-container {
+  .container header .logo_login_container {
     flex-direction: column;
   }
-  .container header .logo-login-container .logo-container {
+  .container header .logo_login_container .logo_container {
     margin-bottom: 10px;
   }
   .container header nav {
@@ -277,29 +277,29 @@
     flex-direction: column;
     width: 100%;
   }
-  .container main .main-container {
+  .container main .main_container {
     width: 100%;
   }
-  .container main .main-side {
+  .container main .main_side {
     order: -1;
     width: 100%;
     max-height: 30%;
   }
-  .container main .main-side .main-side-gallery {
+  .container main .main_side .main_side_gallery {
     flex-direction: row;
     overflow-x: auto;
     overflow-y: hidden;
   }
-  .container main .main-side .main-side-gallery .gallery-card-wrapper {
+  .container main .main_side .main_side_gallery .gallery_card_wrapper {
     flex-wrap: nowrap;
   }
-  .container main .main-side .main-side-gallery .gallery-card-wrapper img {
+  .container main .main_side .main_side_gallery .gallery_card_wrapper img {
     height: 40%;
   }
-  .container main .main-side .main-side-gallery .gallery-card-wrapper .card-comments {
+  .container main .main_side .main_side_gallery .gallery_card_wrapper .card_comments {
     overflow-y: auto;
   }
-  .container main .main-side .main-side-gallery .gallery-card-wrapper .card-comments .comment {
+  .container main .main_side .main_side_gallery .gallery_card_wrapper .card_comments .comment {
     width: 100%;
   }
 }/*# sourceMappingURL=style.css.map */

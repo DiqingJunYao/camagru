@@ -113,7 +113,7 @@ export function registerLoginSettingsEndpoint(fastify) {
     }
   });
 
-  fastify.post("/forget-password", async (req, reply) => {
+  fastify.post("/forget_password", async (req, reply) => {
     const { username } = req.body;
     try {
       // find the user by username
@@ -153,7 +153,7 @@ export function registerLoginSettingsEndpoint(fastify) {
     }
   });
 
-  fastify.post("/get-user-info", async (req, reply) => {
+  fastify.post("/get_user_info", async (req, reply) => {
     const { username } = req.body;
     try {
       const [rows] = await db.execute(
@@ -173,7 +173,7 @@ export function registerLoginSettingsEndpoint(fastify) {
   });
 
   fastify.post(
-    "/update-settings",
+    "/update_settings",
     { preHandler: [fastify.authenticate] },
     async (req, reply) => {
       const { currentUsername, currentEmail, username, email, password } =
@@ -235,7 +235,7 @@ export function registerLoginSettingsEndpoint(fastify) {
   });
 
   fastify.get(
-    "/verify-login",
+    "/verify_login",
     { preHandler: [fastify.authenticate] },
     async (req, reply) => {
       reply.send({ loggedIn: true });

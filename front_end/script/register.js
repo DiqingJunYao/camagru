@@ -1,7 +1,7 @@
 export function registerUsers() {
   document.getElementById("register").addEventListener("click", function () {
     const newDiv = document.createElement("div");
-    newDiv.id = "background-div";
+    newDiv.id = "background_div";
     document.body.insertBefore(newDiv, document.body.firstChild);
     newDiv.style.position = "fixed";
     newDiv.style.top = "0";
@@ -42,7 +42,7 @@ export function registerUsers() {
     emailInput.name = "email";
 
     const submitButton = document.createElement("button");
-    submitButton.id = "submit-button";
+    submitButton.id = "submit_button";
     submitButton.type = "submit";
     submitButton.textContent = "Register";
 
@@ -86,7 +86,7 @@ export function registerUsers() {
       })
         .then((response) => response.json())
         .then((data) => {
-        //   console.log("Response from server:", data);
+          //   console.log("Response from server:", data);
           if (data.success) {
             alert(
               "Registration successful! Please check your email to verify your account. Or your account might be erased after two days if you don't verify it.",
@@ -103,16 +103,16 @@ export function registerUsers() {
     }
 
     document
-      .getElementById("submit-button")
+      .getElementById("submit_button")
       .addEventListener("click", function (event) {
         event.preventDefault();
         const username = usernameInput.value;
         const password = passwordInput.value;
         const email = emailInput.value;
-		if (!username || !password || !email) {
-			alert("Please fill in all fields to register.");
-			return;
-		}
+        if (!username || !password || !email) {
+          alert("Please fill in all fields to register.");
+          return;
+        }
         registerUser(username, password, email);
       });
   });

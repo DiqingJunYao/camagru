@@ -3,7 +3,7 @@ import { currentUsername, setCurrentUsername } from "./login.js";
 export function settings() {
   document.getElementById("settings").addEventListener("click", function () {
     const newDiv = document.createElement("div");
-    newDiv.id = "background-div";
+    newDiv.id = "background_div";
     document.body.insertBefore(newDiv, document.body.firstChild);
     newDiv.style.position = "fixed";
     newDiv.style.top = "0";
@@ -37,14 +37,14 @@ export function settings() {
     emailInput.type = "email";
     emailInput.name = "email";
 
-	const passwordLabel = document.createElement("label");
-	passwordLabel.textContent = "New Password:";
-	const passwordInput = document.createElement("input");
-	passwordInput.type = "password";
-	passwordInput.name = "password";
+    const passwordLabel = document.createElement("label");
+    passwordLabel.textContent = "New Password:";
+    const passwordInput = document.createElement("input");
+    passwordInput.type = "password";
+    passwordInput.name = "password";
 
     const submitButton = document.createElement("button");
-    submitButton.id = "submit-button";
+    submitButton.id = "submit_button";
     submitButton.type = "submit";
     submitButton.textContent = "Update Settings";
 
@@ -64,9 +64,9 @@ export function settings() {
     form.appendChild(emailLabel);
     form.appendChild(emailInput);
     form.appendChild(document.createElement("br"));
-	form.appendChild(passwordLabel);
-	form.appendChild(passwordInput);
-	form.appendChild(document.createElement("br"));
+    form.appendChild(passwordLabel);
+    form.appendChild(passwordInput);
+    form.appendChild(document.createElement("br"));
     form.appendChild(submitButton);
     form.appendChild(closeButton);
 
@@ -78,56 +78,66 @@ export function settings() {
       }
     });
 
-	let currentEmail = "";
-	fetch("/get-user-info", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ username: currentUsername }),
-	})
-	.then((response) => response.json())
-	.then((data) => {
-		if (data.success) {
-			currentEmail = data.email;
-			usernameInput.placeholder = currentUsername;
-			emailInput.placeholder = currentEmail;
-		} else {
-			alert("Error fetching user info: " + data.error);
-		}
-	})
-	.catch((error) => {
-		console.error("Error:", error);
-		alert("An error occurred while fetching user info.");
-	});
+    let currentEmail = "";
+    fetch("/get_user_info", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: currentUsername }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          currentEmail = data.email;
+          usernameInput.placeholder = currentUsername;
+          emailInput.placeholder = currentEmail;
+        } else {
+          alert("Error fetching user info: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while fetching user info.");
+      });
 
-	document.getElementById("submit-button").addEventListener("click", function (event) {
-		event.preventDefault();
-		const newUsername = usernameInput.value;
-		const newEmail = emailInput.value;
-		const newPassword = passwordInput.value;
-		fetch("/update-settings", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ currentUsername, currentEmail, username: newUsername, email: newEmail, password: newPassword }),
-		})
-		.then((response) => response.json())
-		.then((data) => {
-			if (data.success) {
-				alert("Settings updated successfully!");
-				document.body.removeChild(newDiv);
-				setCurrentUsername(newUsername || currentUsername);
-				console.log("this is the current username after update: " + currentUsername);
-			} else {
-				alert("Error updating settings: " + data.error);
-			}
-		})
-		.catch((error) => {
-			console.error("Error:", error);
-			alert("An error occurred while updating settings.");
-		});
-	});
+    document
+      .getElementById("submit_button")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        const newUsername = usernameInput.value;
+        const newEmail = emailInput.value;
+        const newPassword = passwordInput.value;
+        fetch("/update_settings", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            currentUsername,
+            currentEmail,
+            username: newUsername,
+            email: newEmail,
+            password: newPassword,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Settings updated successfully!");
+              document.body.removeChild(newDiv);
+              setCurrentUsername(newUsername || currentUsername);
+              console.log(
+                "this is the current username after update: " + currentUsername,
+              );
+            } else {
+              alert("Error updating settings: " + data.error);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while updating settings.");
+          });
+      });
   });
 }

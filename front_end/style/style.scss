@@ -28,12 +28,12 @@ $font-sm: 16px;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    .logo-login-container {
+    .logo_login_container {
       display: flex;
       align-items: center;
       width: 100%;
       justify-content: space-between;
-      .logo-container {
+      .logo_container {
         display: flex;
         align-items: center;
         h1 {
@@ -46,7 +46,7 @@ $font-sm: 16px;
           border: 1px solid green;
         }
       }
-      .login-container {
+      .login_container {
         display: flex;
         gap: 10px;
         margin-right: 50px;
@@ -86,7 +86,7 @@ $font-sm: 16px;
     // height: 80%;
     min-height: 900px;
     flex: 1 1 auto;
-    .main-container {
+    .main_container {
       border: 5px solid rgb(255, 0, 255);
       width: 80%;
       overflow-y: auto;
@@ -106,11 +106,11 @@ $font-sm: 16px;
           }
         }
       }
-      .main-container-gallery {
+      .main_container_gallery {
         border: 5px solid rgb(255, 0, 255);
         width: 100%;
         overflow-y: auto;
-        .gallery-card-wrapper {
+        .gallery_card_wrapper {
           border: solid 5px rgb(255, 0, 0);
           display: flex;
           flex-wrap: wrap;
@@ -120,10 +120,10 @@ $font-sm: 16px;
             height: auto;
             object-fit: cover;
           }
-          .card-buttons {
+          .card_buttons {
             display: flex;
             justify-content: center;
-            .card-like {
+            .card_like {
               border: 1px solid black;
               padding: 5px 10px;
               background-color: lightgray;
@@ -137,7 +137,7 @@ $font-sm: 16px;
                 color: white;
               }
             }
-            .card-comment-button {
+            .card_comment_button {
               border: 1px solid black;
               padding: 5px 10px;
               background-color: lightgray;
@@ -152,7 +152,7 @@ $font-sm: 16px;
               }
             }
           }
-          .card-comments {
+          .card_comments {
             border: 5px solid rgb(255, 0, 255);
             display: none;
             flex-direction: column;
@@ -168,29 +168,29 @@ $font-sm: 16px;
         }
       }
     }
-    .main-side {
+    .main_side {
       border: 5px solid rgb(0, 17, 255);
       width: 20%;
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      .main-side-page {
+      .main_side_page {
         border: 5px solid rgb(255, 255, 0);
         display: flex;
-        #previous-page,
-        #next-page {
+        #previous_page,
+        #next_page {
           flex: 1;
           display: flex;
           justify-content: center;
           align-items: center;
         }
-        #page-numbers {
+        #page_numbers {
           flex: 2;
           display: flex;
           justify-content: center;
           align-items: center;
         }
-        #page-numbers {
+        #page_numbers {
           button,
           label {
             flex: 1;
@@ -200,14 +200,14 @@ $font-sm: 16px;
           }
         }
       }
-      .main-side-gallery {
+      .main_side_gallery {
         border: 5px solid rgb(0, 255, 34);
         width: 100%;
         display: flex;
         flex-direction: column;
         gap: 10px;
         overflow-y: auto;
-        .gallery-card-wrapper {
+        .gallery_card_wrapper {
           border: solid 5px rgb(255, 0, 0);
           display: flex;
           flex-wrap: wrap;
@@ -218,10 +218,10 @@ $font-sm: 16px;
             object-fit: cover;
             cursor: pointer;
           }
-          .card-buttons {
+          .card_buttons {
             display: flex;
             justify-content: center;
-            .card-like {
+            .card_like {
               border: 1px solid black;
               padding: 5px 10px;
               background-color: lightgray;
@@ -235,7 +235,7 @@ $font-sm: 16px;
                 color: white;
               }
             }
-            .card-comment-button {
+            .card_comment_button {
               border: 1px solid black;
               padding: 5px 10px;
               background-color: lightgray;
@@ -250,7 +250,7 @@ $font-sm: 16px;
               }
             }
           }
-          .card-comments {
+          .card_comments {
             border: 5px solid rgb(255, 0, 255);
             display: none;
             flex-direction: column;
@@ -277,9 +277,9 @@ $font-sm: 16px;
   .container {
     header {
       min-height: auto;
-      .logo-login-container {
+      .logo_login_container {
         flex-direction: column;
-        .logo-container {
+        .logo_container {
           margin-bottom: 10px;
         }
       }
@@ -290,23 +290,23 @@ $font-sm: 16px;
     main {
       flex-direction: column;
       width: 100%;
-      .main-container {
+      .main_container {
         width: 100%;
       }
-      .main-side {
+      .main_side {
         order: -1;
         width: 100%;
         max-height: 30%;
-        .main-side-gallery {
+        .main_side_gallery {
           flex-direction: row;
           overflow-x: auto;
           overflow-y: hidden;
-          .gallery-card-wrapper {
+          .gallery_card_wrapper {
             flex-wrap: nowrap;
             img {
               height: 40%;
             }
-            .card-comments {
+            .card_comments {
               overflow-y: auto;
               .comment {
                 width: 100%;

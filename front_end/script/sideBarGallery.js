@@ -13,7 +13,7 @@ function fetchData() {
   })
     .then((response) => response.json())
     .then((data) => {
-      const galleryContainer = document.querySelector(".main-side-gallery");
+      const galleryContainer = document.querySelector(".main_side_gallery");
       const resultArray = Object.values(data);
       if (resultArray.length % cardPerPage === 0) {
         maxPage = resultArray.length / cardPerPage;
@@ -27,17 +27,23 @@ function fetchData() {
         counter++
       ) {
         const galleryCardWrapper = document.createElement("div");
-        galleryCardWrapper.className = "gallery-card-wrapper";
+        galleryCardWrapper.className = "gallery_card_wrapper";
         const currentItem = resultArray[counter];
         createImg(galleryCardWrapper, currentItem);
-        galleryCardWrapper.querySelector("img").addEventListener("click", function () {
-          const mainContainer = document.querySelector(".main-container-gallery");
-          mainContainer.innerHTML = "";
-          mainContainer.appendChild(galleryCardWrapper.cloneNode(true));
-          const mainButtonsAndComments = mainContainer.querySelector(".gallery-card-wrapper")
-          createButtons(mainButtonsAndComments, currentItem);
-          createComments(mainButtonsAndComments, currentItem);
-        });
+        galleryCardWrapper
+          .querySelector("img")
+          .addEventListener("click", function () {
+            const mainContainer = document.querySelector(
+              ".main_container_gallery",
+            );
+            mainContainer.innerHTML = "";
+            mainContainer.appendChild(galleryCardWrapper.cloneNode(true));
+            const mainButtonsAndComments = mainContainer.querySelector(
+              ".gallery_card_wrapper",
+            );
+            createButtons(mainButtonsAndComments, currentItem);
+            createComments(mainButtonsAndComments, currentItem);
+          });
         galleryContainer.appendChild(galleryCardWrapper);
       }
     })
@@ -45,14 +51,14 @@ function fetchData() {
       console.error("Error fetching test data:", error);
     });
   if (page === 1) {
-    document.getElementById("previous-page").style.display = "none";
+    document.getElementById("previous_page").style.display = "none";
   } else if (page > 1) {
-    document.getElementById("previous-page").style.display = "block";
+    document.getElementById("previous_page").style.display = "block";
   }
   if (page === maxPage) {
-    document.getElementById("next-page").style.display = "none";
+    document.getElementById("next_page").style.display = "none";
   } else if (page < maxPage) {
-    document.getElementById("next-page").style.display = "block";
+    document.getElementById("next_page").style.display = "block";
   }
   console.log("Current page:", page);
 }
@@ -63,9 +69,9 @@ let maxPage = 0;
 let cardPerPage = 2;
 export function sideBarGallery() {
   fetchData();
-  const galleryContainer = document.querySelector(".main-container");
+  const galleryContainer = document.querySelector(".main_container");
   galleryContainer.addEventListener("click", function (event) {
-    if (event.target.classList.contains("card-comment-button")) {
+    if (event.target.classList.contains("card_comment_button")) {
       const cardComments = event.target.parentElement.nextElementSibling;
       const style = getComputedStyle(cardComments).display;
       if (style === "none") {
@@ -77,28 +83,28 @@ export function sideBarGallery() {
   });
 
   document
-    .getElementById("previous-page")
+    .getElementById("previous_page")
     .addEventListener("click", function () {
       if (page > 1) {
         page--;
-        document.querySelector(".main-side-gallery").innerHTML = "";
+        document.querySelector(".main_side_gallery").innerHTML = "";
         fetchData();
       }
     });
-  document.getElementById("next-page").addEventListener("click", function () {
+  document.getElementById("next_page").addEventListener("click", function () {
     page++;
 
-    document.querySelector(".main-side-gallery").innerHTML = "";
+    document.querySelector(".main_side_gallery").innerHTML = "";
     fetchData();
   });
-  document.getElementById("page-1").addEventListener("click", function () {
+  document.getElementById("page_1").addEventListener("click", function () {
     page = 1;
-    document.querySelector(".main-side-gallery").innerHTML = "";
+    document.querySelector(".main_side_gallery").innerHTML = "";
     fetchData();
   });
-  document.getElementById("last-page").addEventListener("click", function () {
+  document.getElementById("last_page").addEventListener("click", function () {
     page = maxPage;
-    document.querySelector(".main-side-gallery").innerHTML = "";
+    document.querySelector(".main_side_gallery").innerHTML = "";
     fetchData();
   });
 }

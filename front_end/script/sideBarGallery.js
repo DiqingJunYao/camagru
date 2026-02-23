@@ -29,11 +29,9 @@ function fetchData() {
         const galleryCardWrapper = document.createElement("div");
         galleryCardWrapper.className = "gallery-card-wrapper";
         const currentItem = resultArray[counter];
-        console.log("resultArray[counter]:", currentItem);
         createImg(galleryCardWrapper, currentItem);
         galleryCardWrapper.querySelector("img").addEventListener("click", function () {
-        console.log("INNER: resultArray[counter]:", currentItem);
-          const mainContainer = document.querySelector(".main-container");
+          const mainContainer = document.querySelector(".main-container-gallery");
           mainContainer.innerHTML = "";
           mainContainer.appendChild(galleryCardWrapper.cloneNode(true));
           const mainButtonsAndComments = mainContainer.querySelector(".gallery-card-wrapper")

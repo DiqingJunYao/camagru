@@ -196,8 +196,7 @@ export function verifyLoginStatus() {
 
 export function windowLoad() {
   window.addEventListener("DOMContentLoaded", async () => {
-    const params = new URLSearchParams({ name: currentUsername });
-    fetch(`/verify_login?${params.toString()}`, {
+    fetch(`/verify_login`, {
       method: "GET",
     })
       .then((response) => response.json())

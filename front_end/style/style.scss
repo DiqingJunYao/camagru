@@ -15,6 +15,13 @@ $font-sm: 16px;
   box-sizing: border-box;
 }
 
+.background-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  
+}
+
 .container {
   display: flex;
   flex-direction: column;

@@ -53,22 +53,6 @@
   background-color: gray;
   color: white;
 }
-.container header nav {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 100%;
-  border: 5px solid rgb(255, 0, 0);
-}
-.container header nav div {
-  width: auto;
-  text-align: center;
-  border: 5px solid rgb(0, 0, 0);
-  background-color: aquamarine;
-  cursor: pointer;
-}
-.container header nav div:hover {
-  background-color: yellow;
-}
 .container main {
   display: flex;
   border: 5px solid rgb(4, 255, 0);
@@ -86,14 +70,14 @@
   width: 100%;
   border: 5px solid rgb(255, 0, 0);
 }
-.container main .main_container nav div {
+.container main .main_container nav button {
   width: auto;
   text-align: center;
   border: 5px solid rgb(0, 0, 0);
   background-color: aquamarine;
   cursor: pointer;
 }
-.container main .main_container nav div:hover {
+.container main .main_container nav button:hover {
   background-color: yellow;
 }
 .container main .main_container .main_container_gallery {

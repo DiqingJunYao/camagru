@@ -22,4 +22,8 @@ import { sideBarGallery } from "./sideBarGallery.js";
 
 sideBarGallery();
 
+import { uploadImages } from "./uploadImages.js";
+
+uploadImages();
+
 // docker exec -it camagru-db-1 mysql -u root -p

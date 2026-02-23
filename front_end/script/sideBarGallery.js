@@ -28,16 +28,17 @@ function fetchData() {
       ) {
         const galleryCardWrapper = document.createElement("div");
         galleryCardWrapper.className = "gallery-card-wrapper";
-        console.log("resultArray[counter]:", resultArray[counter]);
-        createImg(galleryCardWrapper, resultArray[counter]);
+        const currentItem = resultArray[counter];
+        console.log("resultArray[counter]:", currentItem);
+        createImg(galleryCardWrapper, currentItem);
         galleryCardWrapper.querySelector("img").addEventListener("click", function () {
-        console.log("INNER: resultArray[counter]:", resultArray[counter]);
+        console.log("INNER: resultArray[counter]:", currentItem);
           const mainContainer = document.querySelector(".main-container");
           mainContainer.innerHTML = "";
           mainContainer.appendChild(galleryCardWrapper.cloneNode(true));
           const mainButtonsAndComments = mainContainer.querySelector(".gallery-card-wrapper")
-          createButtons(mainButtonsAndComments, resultArray[counter]);
-          createComments(mainButtonsAndComments, resultArray[counter]);
+          createButtons(mainButtonsAndComments, currentItem);
+          createComments(mainButtonsAndComments, currentItem);
         });
         galleryContainer.appendChild(galleryCardWrapper);
       }

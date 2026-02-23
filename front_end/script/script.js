@@ -21,3 +21,5 @@ verifyLoginStatus();
 import { sideBarGallery } from "./sideBarGallery.js";
 
 sideBarGallery();
+
+// docker exec -it camagru-db-1 mysql -u root -p

@@ -238,7 +238,8 @@ export function registerLoginSettingsEndpoint(fastify) {
     "/verify_login",
     { preHandler: [fastify.authenticate] },
     async (req, reply) => {
-      reply.send({ loggedIn: true });
+      console.log(req.user);
+      reply.send({ loggedIn: true, username: req.user.username });
     },
   );
 }

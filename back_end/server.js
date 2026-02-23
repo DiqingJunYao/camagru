@@ -29,7 +29,12 @@ fastify.register(fastifyJwt, {
 });
 fastify.decorate("authenticate", async function (request, reply) {
   try {
-    await request.jwtVerify();
+    const token = request.cookies.token;
+    if (!token) {
+      return reply.code(401).send({ error: "No token" });
+    }
+    const decoded = fastify.jwt.verify(token);
+    request.user = decoded;
   } catch (err) {
     reply.code(401).send({ error: "Unauthorized: Please login first!" });
   }

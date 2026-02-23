@@ -5,7 +5,6 @@ import { registerUsers } from "./register.js";
 
 registerUsers();
 
-
 import { loginLogoutUsers } from "./login.js";
 
 loginLogoutUsers();
@@ -14,9 +13,10 @@ import { settings } from "./settings.js";
 
 settings();
 
-import { verifyLoginStatus } from "./login.js";
+import { verifyLoginStatus, windowLoad } from "./login.js";
 
 verifyLoginStatus();
+windowLoad();
 
 import { sideBarGallery } from "./sideBarGallery.js";
 

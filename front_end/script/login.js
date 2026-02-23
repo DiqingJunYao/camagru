@@ -172,7 +172,7 @@ export function loginLogoutUsers() {
 }
 
 export function verifyLoginStatus() {
-  fetch("verify_login", {
+  fetch(`/verify_login`, {
     method: "GET",
   })
     .then((response) => response.json())
@@ -192,4 +192,19 @@ export function verifyLoginStatus() {
     .catch((error) => {
       console.error("Error verifying login status:", error);
     });
+}
+
+export function windowLoad() {
+  window.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams({ name: currentUsername });
+    fetch(`/verify_login?${params.toString()}`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.loggedIn) {
+          currentUsername = data.username;
+        }
+      });
+  });
 }

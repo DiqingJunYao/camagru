@@ -23,6 +23,10 @@ export function registerLoginSettingsEndpoint(fastify) {
   fastify.post("/register", async (req, reply) => {
     const { username, password, email } = req.body;
     const saltRounds = 10;
+    if (!username || !password || !email || username === "" || password === "" || email === "") {
+      reply.status(400).send({success: false, message: "Input message incorrect!"});
+      return;
+    }
     try {
       // hash the password with bcrypt
       const hash = await bcrypt.hash(password, saltRounds);

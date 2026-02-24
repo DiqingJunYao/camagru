@@ -1,3 +1,5 @@
+import { useOptimistic } from "react";
+
 function createUploadForm() {
   const newDiv = document.createElement("div");
   newDiv.id = "background_div";
@@ -38,6 +40,10 @@ function createUploadForm() {
     if (event.target === newDiv) {
       document.body.removeChild(newDiv);
     }
+  });
+  uploadButton.addEventListener("click", (event) => {
+	event.preventDefault();
+	
   });
 }
 

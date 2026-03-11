@@ -1,5 +1,3 @@
-import { useOptimistic } from "react";
-
 function createUploadForm() {
   const newDiv = document.createElement("div");
   newDiv.id = "background_div";
@@ -41,9 +39,25 @@ function createUploadForm() {
       document.body.removeChild(newDiv);
     }
   });
-  uploadButton.addEventListener("click", (event) => {
-	event.preventDefault();
-	
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault(); // stop page reload
+
+    const formData = new FormData(form);
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    try {
+      const res = await fetch("/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.error("Upload failed:", err);
+    }
   });
 }
 

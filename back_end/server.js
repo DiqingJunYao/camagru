@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+export const __dirname = path.dirname(__filename);
 import Fastify from "fastify";
 const fastify = Fastify({
   https: {
@@ -52,14 +52,9 @@ import { registerLoginSettingsEndpoint } from "./register_login_settings_endpoin
 
 registerLoginSettingsEndpoint(fastify);
 
-// fastify.get("/uploads/:filename", async (req, reply) => {
-//   try {
-//     const filePath = path.join(__dirname, "../uploads", req.params.filename);
-//     reply.sendFile(filePath);
-//   } catch (err) {
-//     reply.code(404).send({ error: "File not found" });
-//   }
-// });
+import { uploadEndpoint } from "./upload.js"
+
+uploadEndpoint(fastify);
 
 fastify.get("/test.json", async (req, reply) => {
   const data = await fsPromises.readFile("./test.json", "utf-8");

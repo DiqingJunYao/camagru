@@ -5,7 +5,10 @@ import { pipeline } from "stream/promises";
 import { db } from "./database.js";
 
 export async function uploadEndpoint(fastify) {
-  fastify.post("/upload", async (req, reply) => {
+  fastify.post(
+    "/upload",
+    { preHandler: [fastify.authenticate] },
+    async (req, reply) => {
     const data = await req.file();
     if (!data || !data.file) {
       return reply.status(400).send({ error: "No file provided" });
@@ -20,7 +23,12 @@ export async function uploadEndpoint(fastify) {
 
     try {
       await pipeline(data.file, fs.createWriteStream(uploadPath, { flags: "wx" }));
-	  
+      const sizeBytes =
+        typeof data.file.bytesRead === "number" ? data.file.bytesRead : null;
+      await db.execute(
+        "INSERT INTO uploads (user_id, filename, original_name, mime_type, size_bytes) VALUES (?, ?, ?, ?, ?)",
+        [req.user.id, filename, filename, data.mimetype || null, sizeBytes],
+      );
       return reply.send({ success: true, message: "File uploaded successfully" });
     } catch (err) {
       if (err && err.code === "EEXIST") {

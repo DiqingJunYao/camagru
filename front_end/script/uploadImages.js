@@ -55,6 +55,7 @@ function createUploadForm() {
 
       const data = await res.json();
       console.log(data);
+      
     } catch (err) {
       console.error("Upload failed:", err);
     }

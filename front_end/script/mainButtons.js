@@ -70,18 +70,5 @@ export function createComments(galleryCardWrapper, item) {
       ? Math.floor(item.comments.length / commentPerPage)
       : Math.floor(item.comments.length / commentPerPage) + 1;
   loadComments(cardComments, item);
-  // for (const comment of item.comments) {
-  //   const commentDiv = document.createElement("div");
-  //   commentDiv.className = "comment";
-  //   const nameDiv = document.createElement("div");
-  //   nameDiv.className = "name";
-  //   nameDiv.textContent = comment.name;
-  //   const contextDiv = document.createElement("div");
-  //   contextDiv.className = "comment_context";
-  //   contextDiv.textContent = comment.context;
-  //   commentDiv.appendChild(nameDiv);
-  //   commentDiv.appendChild(contextDiv);
-  //   cardComments.appendChild(commentDiv);
-  // }
   galleryCardWrapper.appendChild(cardComments);
 }

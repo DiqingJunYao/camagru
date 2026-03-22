@@ -148,6 +148,20 @@
   background-color: gray;
   color: white;
 }
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_buttons .add_comment_button {
+  border: 1px solid black;
+  padding: 5px 10px;
+  background-color: lightgray;
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container main .main_container .main_container_gallery .gallery_card_wrapper .card_buttons .add_comment_button:hover {
+  background-color: gray;
+  color: white;
+}
 .container main .main_container .main_container_gallery .gallery_card_wrapper .card_comments {
   border: 5px solid rgb(255, 0, 255);
   display: none;

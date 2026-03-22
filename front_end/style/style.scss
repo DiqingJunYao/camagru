@@ -172,6 +172,20 @@ $font-sm: 16px;
                 color: white;
               }
             }
+            .add_comment_button {
+              border: 1px solid black;
+              padding: 5px 10px;
+              background-color: lightgray;
+              cursor: pointer;
+              flex: 1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              &:hover {
+                background-color: gray;
+                color: white;
+              }
+            }
           }
           .card_comments {
             border: 5px solid rgb(255, 0, 255);

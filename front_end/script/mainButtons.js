@@ -8,27 +8,80 @@ export function createButtons(galleryCardWrapper, item) {
   commentButton.id = "comment_button";
   commentButton.className = "card_comment_button";
   commentButton.textContent = "comments";
+  const addCommentButton = document.createElement("button");
+  addCommentButton.id = "add_comment_button";
+  addCommentButton.className = "add_comment_button";
+  addCommentButton.textContent = "add comments";
   cardButtons.appendChild(cardLike);
   cardButtons.appendChild(commentButton);
+  cardButtons.appendChild(addCommentButton);
   galleryCardWrapper.appendChild(cardButtons);
 }
 
-export function createComments(galleryCardWrapper, item) {
-  const cardComments = document.createElement("div");
-  cardComments.className = "card_comments";
-  console.log("item.comments:", item.comments);
-  for (const comment of item.comments) {
+let commentCounter = 0;
+let commentPage = 1;
+let commentMaxPage = 0;
+let commentPerPage = 5;
+
+function loadMoreButton(cardComments, item) {
+  if (commentPage >= commentMaxPage) 
+    return;
+  const loadMoreButton = document.createElement("button");
+  loadMoreButton.textContent = "Load More";
+  loadMoreButton.id = "load_more_button";
+  loadMoreButton.className = "load_more_button";
+  cardComments.appendChild(loadMoreButton);
+  loadMoreButton.addEventListener("click", () => {
+    document.querySelector("#load_more_button").remove();
+    commentPage++;
+    loadComments(cardComments, item);
+  });
+}
+
+function loadComments(cardComments, item) {
+  for (
+    commentCounter = (commentPage - 1) * commentPerPage;
+    commentCounter < commentPage * commentPerPage &&
+    commentCounter < item.comments.length;
+    commentCounter++
+  ) {
     const commentDiv = document.createElement("div");
     commentDiv.className = "comment";
     const nameDiv = document.createElement("div");
     nameDiv.className = "name";
-    nameDiv.textContent = comment.name;
+    nameDiv.textContent = item.comments[commentCounter].name;
     const contextDiv = document.createElement("div");
     contextDiv.className = "comment_context";
-    contextDiv.textContent = comment.context;
+    contextDiv.textContent = item.comments[commentCounter].context;
     commentDiv.appendChild(nameDiv);
     commentDiv.appendChild(contextDiv);
     cardComments.appendChild(commentDiv);
   }
+  loadMoreButton(cardComments, item);
+}
+
+export function createComments(galleryCardWrapper, item) {
+  commentPage = 1;
+  const cardComments = document.createElement("div");
+  cardComments.className = "card_comments";
+  console.log("item.comments:", item.comments.length);
+  commentMaxPage =
+    item.comments.length % commentPerPage === 0
+      ? Math.floor(item.comments.length / commentPerPage)
+      : Math.floor(item.comments.length / commentPerPage) + 1;
+  loadComments(cardComments, item);
+  // for (const comment of item.comments) {
+  //   const commentDiv = document.createElement("div");
+  //   commentDiv.className = "comment";
+  //   const nameDiv = document.createElement("div");
+  //   nameDiv.className = "name";
+  //   nameDiv.textContent = comment.name;
+  //   const contextDiv = document.createElement("div");
+  //   contextDiv.className = "comment_context";
+  //   contextDiv.textContent = comment.context;
+  //   commentDiv.appendChild(nameDiv);
+  //   commentDiv.appendChild(contextDiv);
+  //   cardComments.appendChild(commentDiv);
+  // }
   galleryCardWrapper.appendChild(cardComments);
 }

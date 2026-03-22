@@ -1,7 +1,9 @@
 function createImg(galleryCardWrapper, item) {
   const img = document.createElement("img");
   img.src = item.src;
-  img.alt = "this is the png";
+  const fileName = item.src.split("/").pop()
+  img.setAttribute("data-filename", fileName);
+  img.alt = "this is the picture";
   galleryCardWrapper.appendChild(img);
 }
 
@@ -86,9 +88,7 @@ export function sideBarGallery() {
     }
     if (event.target.classList.contains("add_comment_button")) {
       const img = mainContainerGallery.querySelector("img");
-      const imgSrc = img.src;
-      const fileName = imgSrc.split("/").pop();
-      addCommentsButton(fileName);
+        addCommentsButton(img.dataset.filename);
     }
   });
 

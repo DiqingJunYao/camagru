@@ -27,3 +27,26 @@ CREATE TABLE IF NOT EXISTS uploads (
     KEY idx_uploads_user_id (user_id),
     CONSTRAINT fk_uploads_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS comments (
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    upload_id INT NOT NULL,
+    comment_text TEXT NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_comments_user_id (user_id),
+    KEY idx_comments_upload_id (upload_id),
+    CONSTRAINT fk_comments_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_comments_upload FOREIGN KEY (upload_id) REFERENCES uploads(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS likes (
+    user_id INT NOT NULL,
+    upload_id INT NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, upload_id),
+    KEY idx_likes_upload_id (upload_id),
+    CONSTRAINT fk_likes_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_likes_upload FOREIGN KEY (upload_id) REFERENCES uploads(id) ON DELETE CASCADE
+);

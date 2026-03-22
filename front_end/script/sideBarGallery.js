@@ -63,14 +63,18 @@ function fetchData() {
   console.log("Current page:", page);
 }
 
+import { addCommentsButton } from "./addComments.js";
+
 let page = 1;
 let counter = 0;
 let maxPage = 0;
 let cardPerPage = 2;
 export function sideBarGallery() {
   fetchData();
-  const galleryContainer = document.querySelector(".main_container");
-  galleryContainer.addEventListener("click", function (event) {
+  const mainContainerGallery = document.querySelector(
+    ".main_container_gallery",
+  );
+  mainContainerGallery.addEventListener("click", function (event) {
     if (event.target.classList.contains("card_comment_button")) {
       const cardComments = event.target.parentElement.nextElementSibling;
       const style = getComputedStyle(cardComments).display;
@@ -79,6 +83,12 @@ export function sideBarGallery() {
       } else {
         cardComments.style.display = "none";
       }
+    }
+    if (event.target.classList.contains("add_comment_button")) {
+      const img = mainContainerGallery.querySelector("img");
+      const imgSrc = img.src;
+      const fileName = imgSrc.split("/").pop();
+      addCommentsButton(fileName);
     }
   });
 

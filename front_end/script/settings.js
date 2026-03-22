@@ -87,8 +87,7 @@ export function settings() {
         alert("An error occurred while fetching user info.");
       });
 
-    document
-      .getElementById("submit_button")
+    submitButton
       .addEventListener("click", function (event) {
         event.preventDefault();
         const newUsername = usernameInput.value;

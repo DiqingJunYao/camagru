@@ -46,10 +46,10 @@ function createAddCommentForm(fileName) {
   submitButton.addEventListener("click", (event) => {
     event.preventDefault();
     const commentContext = commentInput.value;
-	if (!commentContext || commentContext === "") {
-		alert("Please input something");
-		return;
-	}
+    if (!commentContext || commentContext === "") {
+      alert("Please input something");
+      return;
+    }
     console.log(fileName);
     fetch("/add_comment", {
       method: "POST",
@@ -57,7 +57,17 @@ function createAddCommentForm(fileName) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ fileName, context: commentContext }),
-    }).then();
+    }).then((response) => response.json().then((data) => {
+		if (data.success) {
+			alert("comment successful");
+			document.body.removeChild(newDiv);
+		} else {
+			alert("Publish comment failed: " + data.message);
+		}
+	}))
+	.catch((error) => {
+		console.error("Error:", error);
+	});
   });
 }
 

@@ -65,6 +65,9 @@ storeLikes(fastify);
 import { deleteLikes } from "./cardDislikes.js";
 deleteLikes(fastify);
 
+import { controlCommentEmail } from "./controlCommentEmail.js";
+controlCommentEmail(fastify);
+
 fastify.get("/test.json", async (req, reply) => {
   const data = await fsPromises.readFile("./test.json", "utf-8");
   const json = JSON.parse(data);

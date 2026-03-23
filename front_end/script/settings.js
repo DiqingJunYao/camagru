@@ -29,6 +29,14 @@ export function settings() {
     passwordInput.type = "password";
     passwordInput.name = "password";
 
+    const openCommentEmail = document.createElement("button");
+    openCommentEmail.id = "openCommentEmail";
+    openCommentEmail.textContent = "Receive Email When comment";
+
+    const closeCommentEmail = document.createElement("button");
+    closeCommentEmail.id = "closeCommentEmail";
+    closeCommentEmail.textContent = "Don't Receive Email When comment";
+
     const submitButton = document.createElement("button");
     submitButton.id = "submit_button";
     submitButton.type = "submit";
@@ -52,6 +60,9 @@ export function settings() {
     form.appendChild(document.createElement("br"));
     form.appendChild(passwordLabel);
     form.appendChild(passwordInput);
+    form.appendChild(document.createElement("br"));
+    form.appendChild(openCommentEmail);
+    form.appendChild(closeCommentEmail);
     form.appendChild(document.createElement("br"));
     form.appendChild(submitButton);
     form.appendChild(closeButton);
@@ -81,48 +92,90 @@ export function settings() {
         } else {
           alert("Error fetching user info: " + data.error);
         }
+        if (data.emailStatus === 1) {
+          openCommentEmail.style.display = "none";
+        } else {
+          closeCommentEmail.style.display = "none";
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
         alert("An error occurred while fetching user info.");
       });
 
-    submitButton
-      .addEventListener("click", function (event) {
-        event.preventDefault();
-        const newUsername = usernameInput.value;
-        const newEmail = emailInput.value;
-        const newPassword = passwordInput.value;
-        fetch("/update_settings", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            currentUsername,
-            currentEmail,
-            username: newUsername,
-            email: newEmail,
-            password: newPassword,
-          }),
+    openCommentEmail.addEventListener("click", (event) => {
+      event.preventDefault();
+      fetch("/open_comment_email")
+        .then((response) => {
+          response.json()
+        .then((data) => {
+          if (data.success) {
+            alert("Open comment email successfully!");
+            document.body.removeChild(newDiv);
+          } else {
+            alert("failed to open the comment email.");
+          }
+        })})
+        .catch((error) => {
+          alert("failed to open the comment email.");
+          console.error("Error:", error);
+        });
+    });
+
+    closeCommentEmail.addEventListener("click", (event) => {
+      event.preventDefault();
+      fetch("/close_comment_email")
+        .then((response) => {
+          response.json()
+        .then((data) => {
+          if (data.success) {
+            alert("Close comment email successfully!");
+            document.body.removeChild(newDiv);
+          } else {
+            alert("failed to close the comment email.");
+          }
+        })})
+        .catch((error) => {
+          alert("failed to close the comment email.");
+          console.error("Error:", error);
+        });
+    });
+
+    submitButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      const newUsername = usernameInput.value;
+      const newEmail = emailInput.value;
+      const newPassword = passwordInput.value;
+      fetch("/update_settings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          currentUsername,
+          currentEmail,
+          username: newUsername,
+          email: newEmail,
+          password: newPassword,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert("Settings updated successfully!");
+            document.body.removeChild(newDiv);
+            setCurrentUsername(newUsername || currentUsername);
+            console.log(
+              "this is the current username after update: " + currentUsername,
+            );
+          } else {
+            alert("Error updating settings: " + data.error);
+          }
         })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              alert("Settings updated successfully!");
-              document.body.removeChild(newDiv);
-              setCurrentUsername(newUsername || currentUsername);
-              console.log(
-                "this is the current username after update: " + currentUsername,
-              );
-            } else {
-              alert("Error updating settings: " + data.error);
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            alert("An error occurred while updating settings.");
-          });
-      });
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while updating settings.");
+        });
+    });
   });
 }

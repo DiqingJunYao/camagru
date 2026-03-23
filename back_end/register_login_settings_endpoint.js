@@ -18,13 +18,21 @@ export const transporter = nodemailer.createTransport({
  * @param {*} fastify
  */
 export function registerLoginSettingsEndpoint(fastify) {
-
   // password hashing
   fastify.post("/register", async (req, reply) => {
     const { username, password, email } = req.body;
     const saltRounds = 10;
-    if (!username || !password || !email || username === "" || password === "" || email === "") {
-      reply.status(400).send({success: false, message: "Input message incorrect!"});
+    if (
+      !username ||
+      !password ||
+      !email ||
+      username === "" ||
+      password === "" ||
+      email === ""
+    ) {
+      reply
+        .status(400)
+        .send({ success: false, message: "Input message incorrect!" });
       return;
     }
     try {
@@ -169,7 +177,20 @@ export function registerLoginSettingsEndpoint(fastify) {
         return;
       }
       const user = rows[0];
-      reply.send({ success: true, email: user.email });
+      const [rows2] = await db.execute(
+        "SELECT is_send_comment_email FROM users WHERE username = ?",
+        [username],
+      );
+      if (rows2.length === 0) {
+        reply.status(404).send({ error: "User not found" });
+        return;
+      }
+      const emailStatus = rows2[0];
+      reply.send({
+        success: true,
+        email: user.email,
+        emailStatus: emailStatus.is_send_comment_email,
+      });
     } catch (err) {
       console.error("Error fetching user info:", err);
       reply.status(500).send({ error: "Internal Server Error" });

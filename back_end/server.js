@@ -59,6 +59,9 @@ uploadEndpoint(fastify);
 import { storeComments } from "./storeComments.js";
 storeComments(fastify);
 
+import { storeLikes } from "./cardLikes.js";
+storeLikes(fastify);
+
 fastify.get("/test.json", async (req, reply) => {
   const data = await fsPromises.readFile("./test.json", "utf-8");
   const json = JSON.parse(data);

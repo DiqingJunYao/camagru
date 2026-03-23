@@ -1,7 +1,7 @@
 function createImg(galleryCardWrapper, item) {
   const img = document.createElement("img");
   img.src = item.src;
-  const fileName = item.src.split("/").pop()
+  const fileName = item.src.split("/").pop();
   img.setAttribute("data-filename", fileName);
   img.alt = "this is the picture";
   galleryCardWrapper.appendChild(img);
@@ -66,6 +66,7 @@ function fetchData() {
 }
 
 import { addCommentsButton } from "./addComments.js";
+import { likeCard } from "./likeCards.js";
 
 let page = 1;
 let counter = 0;
@@ -88,7 +89,11 @@ export function sideBarGallery() {
     }
     if (event.target.classList.contains("add_comment_button")) {
       const img = mainContainerGallery.querySelector("img");
-        addCommentsButton(img.dataset.filename);
+      addCommentsButton(img.dataset.filename);
+    }
+    if (event.target.classList.contains("card_like")) {
+      const img = mainContainerGallery.querySelector("img");
+      likeCard(img.dataset.filename);
     }
   });
 

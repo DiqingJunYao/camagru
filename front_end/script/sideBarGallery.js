@@ -67,6 +67,7 @@ function fetchData() {
 
 import { addCommentsButton } from "./addComments.js";
 import { likeCard } from "./likeCards.js";
+import { dislikeCard } from "./dislikeCards.js";
 
 let page = 1;
 let counter = 0;
@@ -94,6 +95,10 @@ export function sideBarGallery() {
     if (event.target.classList.contains("card_like")) {
       const img = mainContainerGallery.querySelector("img");
       likeCard(img.dataset.filename);
+    }
+    if (event.target.classList.contains("liked")) {
+      const img = mainContainerGallery.querySelector("img");
+      dislikeCard(img.dataset.filename);
     }
   });
 

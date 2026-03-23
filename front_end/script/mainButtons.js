@@ -3,7 +3,10 @@ export function createButtons(galleryCardWrapper, item) {
   cardButtons.className = "card_buttons";
   const cardLike = document.createElement("button");
   cardLike.className = "card_like";
-  cardLike.textContent = `heart ${item.likes || 0}`;
+  cardLike.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" class="like-icon">
+  			<path d="M12 21s-6.7-4.35-10-9C-1 7 2 3 6 3c2.5 0 4 1.5 6 4 2-2.5 3.5-4 6-4 4 0 7 4 4 9-3.3 4.65-10 9-10 9z"
+        	fill="none" stroke="black"/>
+			</svg>`;
   const commentButton = document.createElement("button");
   commentButton.id = "comment_button";
   commentButton.className = "card_comment_button";
@@ -24,8 +27,7 @@ let commentMaxPage = 0;
 let commentPerPage = 5;
 
 function loadMoreButton(cardComments, item) {
-  if (commentPage >= commentMaxPage) 
-    return;
+  if (commentPage >= commentMaxPage) return;
   const loadMoreButton = document.createElement("button");
   loadMoreButton.textContent = "Load More";
   loadMoreButton.id = "load_more_button";

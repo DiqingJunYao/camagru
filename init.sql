@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     is_verified TINYINT(1) DEFAULT 0,
+    is_send_comment_email TINYINT(1) DEFAULT 1,
     verification_token VARCHAR(255) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY unique_username (username),

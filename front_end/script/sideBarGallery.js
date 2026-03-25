@@ -10,7 +10,7 @@ function createImg(galleryCardWrapper, item) {
 import { createButtons, createComments } from "./mainButtons.js";
 
 function fetchData() {
-  fetch("/test.json", {
+  fetch("/start", {
     method: "GET",
   })
     .then((response) => response.json())

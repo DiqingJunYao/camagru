@@ -269,14 +269,15 @@ async function normalPreviousFetch(
       LEFT JOIN comments c ON c.upload_id = u.id
       LEFT JOIN users usr ON usr.id = c.user_id
       WHERE (u.created_at > ? OR (u.created_at = ? AND u.id > ?))
-      ORDER BY u.created_at DESC, c.created_at DESC
+      ORDER BY u.created_at ASC, c.created_at ASC
       LIMIT ?
     `,
         [firstImgCreateTime, firstImgCreateTime, firstImgId, cardPerPage],
       );
 
       const uploadsMap = new Map();
-      for (const row of rows) {
+      for (let i = rows.length - 1; i >= 0; i--) {
+        const row = rows[i];
         if (!uploadsMap.has(row.upload_id)) {
           uploadsMap.set(row.upload_id, {
             id: row.upload_id,
@@ -327,7 +328,7 @@ async function normalPreviousFetch(
         LEFT JOIN users usr ON usr.id = c.user_id
         LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
         WHERE (u.created_at > ? OR (u.created_at = ? AND u.id > ?))
-        ORDER BY u.created_at DESC, c.created_at DESC
+        ORDER BY u.created_at ASC, c.created_at ASC
         LIMIT ?
       `,
         [
@@ -340,7 +341,8 @@ async function normalPreviousFetch(
       );
 
       const uploadsMap = new Map();
-      for (const row of rows) {
+      for (let i = rows.length - 1; i >= 0; i--) {
+        const row = rows[i];
         if (!uploadsMap.has(row.upload_id)) {
           uploadsMap.set(row.upload_id, {
             id: row.upload_id,

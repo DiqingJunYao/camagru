@@ -27,16 +27,31 @@ fastify.register(fastifyJwt, {
     signed: false,
   },
 });
+// fastify.decorate("authenticate", async function (request, reply) {
+//   try {
+//     const token = request.cookies.token;
+//     if (!token) {
+//       return reply.code(401).send({ error: "No token" });
+//     }
+//     const decoded = fastify.jwt.verify(token);
+//     request.user = decoded;
+//   } catch (err) {
+//     reply.code(401).send({ error: "Unauthorized: Please login first!" });
+//   }
+// });
 fastify.decorate("authenticate", async function (request, reply) {
   try {
     const token = request.cookies.token;
+
     if (!token) {
-      return reply.code(401).send({ error: "No token" });
+      request.user = null;
+      return;
     }
+
     const decoded = fastify.jwt.verify(token);
     request.user = decoded;
   } catch (err) {
-    reply.code(401).send({ error: "Unauthorized: Please login first!" });
+    request.user = null;
   }
 });
 import fastifyMultipart from "@fastify/multipart";

@@ -259,12 +259,26 @@ export function registerLoginSettingsEndpoint(fastify) {
     }
   });
 
+  // fastify.get(
+  //   "/verify_login",
+  //   { preHandler: [fastify.authenticate] },
+  //   async (req, reply) => {
+  //     console.log(req.user);
+  //     reply.send({ loggedIn: true, username: req.user.username });
+  //   },
+  // );
   fastify.get(
     "/verify_login",
     { preHandler: [fastify.authenticate] },
     async (req, reply) => {
-      console.log(req.user);
-      reply.send({ loggedIn: true, username: req.user.username });
+      if (!req.user) {
+        return reply.send({ loggedIn: false });
+      }
+
+      return reply.send({
+        loggedIn: true,
+        username: req.user.username,
+      });
     },
   );
 }

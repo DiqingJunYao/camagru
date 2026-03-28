@@ -1,7 +1,7 @@
 import { db } from "./database.js";
 
-async function firstTimeFetch(rep, cardPerPage, username) {
-  if (username === null) {
+async function firstTimeFetch(rep, cardPerPage, userId) {
+  if (userId === null) {
     try {
       const [countRows] = await db.execute(
         "SELECT COUNT(*) AS total FROM uploads",
@@ -23,7 +23,6 @@ async function firstTimeFetch(rep, cardPerPage, username) {
       LIMIT ?`,
         [cardPerPage],
       );
-      console.log("rows fetched:", rows);
 
       const uploadsMap = new Map();
 
@@ -52,13 +51,70 @@ async function firstTimeFetch(rep, cardPerPage, username) {
           item,
         ]),
       );
-      console.log("first time fetch result:", resultObj);
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start:", err);
       rep.status(500).send({ error: "Internal Server Error" });
     }
   } else {
+    try {
+      const [countRows] = await db.execute(
+        "SELECT COUNT(*) AS total FROM uploads",
+      );
+      const totalUploads = countRows[0].total;
+      const maxPage = Math.ceil(totalUploads / cardPerPage);
+      const [rows] = await db.execute(
+        `
+        SELECT
+          u.id AS upload_id,
+          u.created_at,
+          u.filename,
+          c.comment_text,
+          usr.username,
+          CASE WHEN l.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS liked
+        FROM uploads u
+        LEFT JOIN comments c ON c.upload_id = u.id
+        LEFT JOIN users usr ON usr.id = c.user_id
+        LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
+        ORDER BY u.created_at DESC, c.created_at DESC
+        LIMIT ?
+        `,
+        [userId, cardPerPage],
+      );
+
+      const uploadsMap = new Map();
+
+      for (const row of rows) {
+        if (!uploadsMap.has(row.upload_id)) {
+          uploadsMap.set(row.upload_id, {
+            id: row.upload_id,
+            createTime: row.created_at,
+            maxPage: maxPage,
+            src: `/uploads/${row.filename}`,
+            comments: [],
+            likedByUser: row.liked ? true : false,
+          });
+        }
+
+        if (row.comment_text) {
+          uploadsMap.get(row.upload_id).comments.push({
+            name: row.username,
+            context: row.comment_text,
+          });
+        }
+      }
+
+      const resultObj = Object.fromEntries(
+        Array.from(uploadsMap.values()).map((item, index) => [
+          `image${index + 1}`,
+          item,
+        ]),
+      );
+      rep.status(200).send(resultObj);
+    } catch (err) {
+      console.error("Error start with like:", err);
+      rep.status(500).send({ error: "Internal Server Error" });
+    }
   }
 }
 
@@ -67,9 +123,9 @@ async function normalNextFetch(
   lastImgCreateTime,
   lastImgId,
   cardPerPage,
-  username,
+  userId,
 ) {
-  if (username === null) {
+  if (userId === null) {
     try {
       const [countRows] = await db.execute(
         "SELECT COUNT(*) AS total FROM uploads",
@@ -120,13 +176,70 @@ async function normalNextFetch(
           item,
         ]),
       );
-      console.log("normal fetch result:", resultObj);
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start:", err);
       rep.status(500).send({ error: "Internal Server Error" });
     }
   } else {
+    try {
+      const [countRows] = await db.execute(
+        "SELECT COUNT(*) AS total FROM uploads",
+      );
+      const totalUploads = countRows[0].total;
+      const maxPage = Math.ceil(totalUploads / cardPerPage);
+      const [rows] = await db.execute(
+        `
+      SELECT
+        u.id AS upload_id,
+        u.created_at,
+        u.filename,
+        c.comment_text,
+        usr.username,
+        CASE WHEN l.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS liked
+      FROM uploads u
+      LEFT JOIN comments c ON c.upload_id = u.id
+      LEFT JOIN users usr ON usr.id = c.user_id
+      LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
+      WHERE (u.created_at < ? OR (u.created_at = ? AND u.id < ?))
+      ORDER BY u.created_at DESC, c.created_at DESC
+      LIMIT ?
+    `,
+        [userId, lastImgCreateTime, lastImgCreateTime, lastImgId, cardPerPage],
+      );
+
+      const uploadsMap = new Map();
+      for (const row of rows) {
+        if (!uploadsMap.has(row.upload_id)) {
+          uploadsMap.set(row.upload_id, {
+            id: row.upload_id,
+            createTime: row.created_at,
+            maxPage: maxPage,
+            src: `/uploads/${row.filename}`,
+            comments: [],
+            likedByUser: row.liked ? true : false,
+          });
+        }
+
+        if (row.comment_text) {
+          uploadsMap.get(row.upload_id).comments.push({
+            name: row.username,
+            context: row.comment_text,
+          });
+        }
+      }
+
+      const resultObj = Object.fromEntries(
+        Array.from(uploadsMap.values()).map((item, index) => [
+          `image${index + 1}`,
+          item,
+        ]),
+      );
+      rep.status(200).send(resultObj);
+    } catch (err) {
+      console.error("Error start with like:", err);
+      rep.status(500).send({ error: "Internal Server Error" });
+    }
   }
 }
 
@@ -135,9 +248,9 @@ async function normalPreviousFetch(
   firstImgCreateTime,
   firstImgId,
   cardPerPage,
-  username,
+  userId,
 ) {
-  if (username === null) {
+  if (userId === null) {
     try {
       const [countRows] = await db.execute(
         "SELECT COUNT(*) AS total FROM uploads",
@@ -188,18 +301,81 @@ async function normalPreviousFetch(
           item,
         ]),
       );
-      console.log("normal previous fetch result:", resultObj);
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start:", err);
       rep.status(500).send({ error: "Internal Server Error" });
     }
   } else {
+    try {
+      const [countRows] = await db.execute(
+        "SELECT COUNT(*) AS total FROM uploads",
+      );
+      const totalUploads = countRows[0].total;
+      const maxPage = Math.ceil(totalUploads / cardPerPage);
+      const [rows] = await db.execute(
+        `
+        SELECT
+          u.id AS upload_id,
+          u.created_at,
+          u.filename,
+          c.comment_text,
+          usr.username,
+          CASE WHEN l.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS liked
+        FROM uploads u
+        LEFT JOIN comments c ON c.upload_id = u.id
+        LEFT JOIN users usr ON usr.id = c.user_id
+        LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
+        WHERE (u.created_at > ? OR (u.created_at = ? AND u.id > ?))
+        ORDER BY u.created_at DESC, c.created_at DESC
+        LIMIT ?
+      `,
+        [
+          userId,
+          firstImgCreateTime,
+          firstImgCreateTime,
+          firstImgId,
+          cardPerPage,
+        ],
+      );
+
+      const uploadsMap = new Map();
+      for (const row of rows) {
+        if (!uploadsMap.has(row.upload_id)) {
+          uploadsMap.set(row.upload_id, {
+            id: row.upload_id,
+            createTime: row.created_at,
+            maxPage: maxPage,
+            src: `/uploads/${row.filename}`,
+            comments: [],
+            likedByUser: row.liked ? true : false,
+          });
+        }
+
+        if (row.comment_text) {
+          uploadsMap.get(row.upload_id).comments.push({
+            name: row.username,
+            context: row.comment_text,
+          });
+        }
+      }
+
+      const resultObj = Object.fromEntries(
+        Array.from(uploadsMap.values()).map((item, index) => [
+          `image${index + 1}`,
+          item,
+        ]),
+      );
+      rep.status(200).send(resultObj);
+    } catch (err) {
+      console.error("Error start with like:", err);
+      rep.status(500).send({ error: "Internal Server Error" });
+    }
   }
 }
 
-async function lastPageFetch(rep, cardPerPage, username) {
-  if (username === null) {
+async function lastPageFetch(rep, cardPerPage, userId) {
+  if (userId === null) {
     try {
       const [countRows] = await db.execute(
         "SELECT COUNT(*) AS total FROM uploads",
@@ -207,20 +383,6 @@ async function lastPageFetch(rep, cardPerPage, username) {
       const totalUploads = countRows[0].total;
       const maxPage = Math.ceil(totalUploads / cardPerPage);
       const offset = (maxPage - 1) * cardPerPage;
-      console.log(
-        "total uploads:",
-        totalUploads,
-        "maxPage:",
-        maxPage,
-        "offset:",
-        offset,
-      );
-      console.log(
-        "this is the offset type:",
-        typeof offset,
-        "this is the cardPerPage type:",
-        typeof cardPerPage,
-      );
       const [rows] = await db.execute(
         `
       SELECT
@@ -264,13 +426,70 @@ async function lastPageFetch(rep, cardPerPage, username) {
           item,
         ]),
       );
-      console.log("last page fetch result:", resultObj);
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error last page fetch:", err);
       rep.status(500).send({ error: "Internal Server Error" });
     }
   } else {
+    try {
+      const [countRows] = await db.execute(
+        "SELECT COUNT(*) AS total FROM uploads",
+      );
+      const totalUploads = countRows[0].total;
+      const maxPage = Math.ceil(totalUploads / cardPerPage);
+      const offset = (maxPage - 1) * cardPerPage;
+      const [rows] = await db.execute(
+        `
+      SELECT
+        u.id AS upload_id,
+        u.created_at,
+        u.filename,
+        c.comment_text,
+        usr.username,
+        CASE WHEN l.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS liked
+      FROM uploads u
+      LEFT JOIN comments c ON c.upload_id = u.id
+      LEFT JOIN users usr ON usr.id = c.user_id
+      LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
+      ORDER BY u.created_at DESC, c.created_at DESC
+      LIMIT ? OFFSET ?
+    `,
+        [userId, cardPerPage, offset.toString()],
+      );
+
+      const uploadsMap = new Map();
+      for (const row of rows) {
+        if (!uploadsMap.has(row.upload_id)) {
+          uploadsMap.set(row.upload_id, {
+            id: row.upload_id,
+            createTime: row.created_at,
+            maxPage: maxPage,
+            src: `/uploads/${row.filename}`,
+            comments: [],
+            likedByUser: row.liked ? true : false,
+          });
+        }
+
+        if (row.comment_text) {
+          uploadsMap.get(row.upload_id).comments.push({
+            name: row.username,
+            context: row.comment_text,
+          });
+        }
+      }
+
+      const resultObj = Object.fromEntries(
+        Array.from(uploadsMap.values()).map((item, index) => [
+          `image${index + 1}`,
+          item,
+        ]),
+      );
+      rep.status(200).send(resultObj);
+    } catch (err) {
+      console.error("Error last page fetch with like:", err);
+      rep.status(500).send({ error: "Internal Server Error" });
+    }
   }
 }
 
@@ -294,10 +513,8 @@ export function createJsonFile(fastify) {
       return rep.status(400).send({ error: "Invalid cardPerPage parameter" });
     }
     if (status === "first") {
-      console.log("first time fetch");
       return firstTimeFetch(rep, cardPerPage, null);
     } else if (status === "next") {
-      console.log("normal next fetch");
       return normalNextFetch(
         rep,
         lastImgCreateTime,
@@ -306,7 +523,6 @@ export function createJsonFile(fastify) {
         null,
       );
     } else if (status === "previous") {
-      console.log("normal previous fetch");
       return normalPreviousFetch(
         rep,
         firstImgCreateTime,
@@ -315,7 +531,6 @@ export function createJsonFile(fastify) {
         null,
       );
     } else if (status === "last") {
-      console.log("last page fetch");
       return lastPageFetch(rep, cardPerPage, null);
     }
   });
@@ -331,7 +546,7 @@ export function createJsonFile(fastify) {
         firstImgId,
         status,
       } = req.query;
-      const username = req.user.username;
+      const userId = req.user.id;
       if (
         !cardPerPage ||
         isNaN(cardPerPage) ||
@@ -342,29 +557,25 @@ export function createJsonFile(fastify) {
         return rep.status(400).send({ error: "Invalid cardPerPage parameter" });
       }
       if (status === "first") {
-        console.log("first time fetch with like");
-        return firstTimeFetch(rep, cardPerPage, username);
+        return firstTimeFetch(rep, cardPerPage, userId);
       } else if (status === "next") {
-        console.log("normal next fetch with like");
         return normalNextFetch(
           rep,
           lastImgCreateTime,
           lastImgId,
           cardPerPage,
-          username,
+          userId,
         );
       } else if (status === "previous") {
-        console.log("normal previous fetch with like");
         return normalPreviousFetch(
           rep,
           firstImgCreateTime,
           firstImgId,
           cardPerPage,
-          username,
+          userId,
         );
       } else if (status === "last") {
-        console.log("last page fetch with like");
-        return lastPageFetch(rep, cardPerPage, username);
+        return lastPageFetch(rep, cardPerPage, userId);
       }
     },
   );

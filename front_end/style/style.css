@@ -189,6 +189,10 @@
   display: flex;
   gap: 10px;
 }
+.container main .main_container .main_container_gallery #video {
+  width: 100%;
+  pointer-events: none;
+}
 .container main .main_side {
   border: 5px solid rgb(0, 17, 255);
   width: 20%;

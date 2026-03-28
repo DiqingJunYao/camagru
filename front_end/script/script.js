@@ -26,4 +26,8 @@ import { uploadImages } from "./uploadImages.js";
 
 uploadImages();
 
+import { takePicture } from "./takePicture.js";
+
+takePicture();
+
 // docker exec -it camagru-db-1 mysql -u root -p

@@ -215,6 +215,11 @@ $font-sm: 16px;
             }
           }
         }
+        #video {
+          width: 100%;
+          pointer-events: none;
+        }
+        
       }
     }
     .main_side {

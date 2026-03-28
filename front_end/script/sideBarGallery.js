@@ -9,7 +9,7 @@ function createImg(galleryCardWrapper, item) {
 
 import { createButtons, createComments } from "./mainButtons.js";
 
-function fetchData() {
+function fetchDataNoLike() {
   fetch("/start", {
     method: "GET",
   })
@@ -52,6 +52,22 @@ function fetchData() {
     .catch((error) => {
       console.error("Error fetching test data:", error);
     });
+}
+
+function fetchData() {
+  fetch("/verify_login")
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.loggedIn) {
+        fetchDataNoLike();
+      } else {
+        // fetchDataWithLike();
+        fetchDataNoLike();
+      }
+    })
+    .catch((error) => {
+      console.log("this is the error:", error);
+    });
   if (page === 1) {
     document.getElementById("previous_page").style.display = "none";
   } else if (page > 1) {
@@ -65,16 +81,7 @@ function fetchData() {
   console.log("Current page:", page);
 }
 
-import { addCommentsButton } from "./addComments.js";
-import { likeCard } from "./likeCards.js";
-import { dislikeCard } from "./dislikeCards.js";
-
-let page = 1;
-let counter = 0;
-let maxPage = 0;
-let cardPerPage = 2;
-export function sideBarGallery() {
-  fetchData();
+function routerFunction() {
   const mainContainerGallery = document.querySelector(
     ".main_container_gallery",
   );
@@ -101,7 +108,19 @@ export function sideBarGallery() {
       dislikeCard(img.dataset.filename);
     }
   });
+}
 
+import { addCommentsButton } from "./addComments.js";
+import { likeCard } from "./likeCards.js";
+import { dislikeCard } from "./dislikeCards.js";
+
+let page = 1;
+let counter = 0;
+let maxPage = 0;
+let cardPerPage = 2;
+export function sideBarGallery() {
+  fetchData();
+  routerFunction();
   document
     .getElementById("previous_page")
     .addEventListener("click", function () {
@@ -113,7 +132,6 @@ export function sideBarGallery() {
     });
   document.getElementById("next_page").addEventListener("click", function () {
     page++;
-
     document.querySelector(".main_side_gallery").innerHTML = "";
     fetchData();
   });

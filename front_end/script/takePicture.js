@@ -12,13 +12,18 @@ async function uploadImage(blob) {
     Date.now() + "-" + Math.random().toString(36).slice(2) + ".jpg";
 
   formData.append("image", blob, filename);
-  const res = await fetch("/upload", {
+  fetch("/upload", {
     method: "POST",
     body: formData,
-  });
-
-  const data = await res.json();
-  console.log(data);
+  })
+    .then((response) => response.json())
+	.then((data) => {
+	  if (data.success) {
+		location.reload();
+		alert("Image taken successfully");
+		console.log("Image uploaded successfully");
+	  }
+	});
 }
 
 async function captureImg(button, canvas, video) {

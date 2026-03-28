@@ -108,6 +108,7 @@ export function loginLogoutUsers() {
             document.getElementById("register").style.display = "none";
             document.body.removeChild(newDiv);
             currentUsername = username;
+            location.reload();
           } else {
             alert("Login failed: " + data.message);
           }

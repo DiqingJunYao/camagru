@@ -25,7 +25,6 @@ export function storeLikes(fastify) {
         }
         imgId = rows[0].id;
       } catch (err) {
-        console.log("error here 1");
         console.error("Error fetching imgID:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;
@@ -42,7 +41,6 @@ export function storeLikes(fastify) {
         }
         userId = rows[0].id;
       } catch (err) {
-        console.log("error here 2");
         console.error("Error fetching userID:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;
@@ -58,7 +56,6 @@ export function storeLikes(fastify) {
           message: "User like img successfully",
         });
       } catch (err) {
-        console.log("error here 3");
         console.error("Error like imgs:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;

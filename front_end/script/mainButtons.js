@@ -74,7 +74,6 @@ export function createComments(galleryCardWrapper, item) {
   commentPage = 1;
   const cardComments = document.createElement("div");
   cardComments.className = "card_comments";
-  console.log("item.comments:", item.comments.length);
   commentMaxPage =
     item.comments.length % commentPerPage === 0
       ? Math.floor(item.comments.length / commentPerPage)

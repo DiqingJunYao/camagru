@@ -30,7 +30,6 @@ export function storeComments(fastify) {
         }
         imgId = rows[0].id;
       } catch (err) {
-        console.log("error here 1");
         console.error("Error fetching imgID:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;
@@ -47,7 +46,6 @@ export function storeComments(fastify) {
         }
         imgOwnerId = rows[0].user_id;
       } catch (err) {
-        console.log("error here 1");
         console.error("Error fetching imgID:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;
@@ -64,7 +62,6 @@ export function storeComments(fastify) {
         }
         userId = rows[0].id;
       } catch (err) {
-        console.log("error here 2");
         console.error("Error fetching userID:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;
@@ -81,7 +78,6 @@ export function storeComments(fastify) {
         }
         imgOwnerEmail = rows[0].email;
       } catch (err) {
-        console.log("error here 2");
         console.error("Error fetching userID:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;
@@ -99,33 +95,17 @@ export function storeComments(fastify) {
         
         sendEmail = rows[0].is_send_comment_email === 1 ? true: false;
       } catch (err) {
-        console.log("error here 2");
         console.error("Error fetching userID:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;
       }
 
-      console.log(
-        "the imgId: ",
-        imgId,
-        "the userid",
-        userId,
-        "the comments: ",
-        context,
-        "the img owner: ",
-        imgOwnerId,
-        "the img owner email: ",
-        imgOwnerEmail,
-        "the send email tag: ",
-        sendEmail
-      );
       try {
         await db.execute(
           "INSERT INTO comments (user_id, upload_id, comment_text) VALUES (?, ?, ?)",
           [userId, imgId, context],
         );
       } catch (err) {
-        console.log("error here 3");
         console.error("Error inserting comments:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;
@@ -147,7 +127,6 @@ export function storeComments(fastify) {
           message: "User upload comments successfully",
         });
       } catch (err) {
-        console.log("error here 3");
         console.error("Error inserting comments:", err);
         rep.status(500).send({ error: "Internal Server Error" });
         return;

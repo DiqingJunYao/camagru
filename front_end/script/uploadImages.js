@@ -44,9 +44,6 @@ function createUploadForm() {
     event.preventDefault(); // stop page reload
 
     const formData = new FormData(form);
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
     try {
       const res = await fetch("/upload", {
         method: "POST",
@@ -54,7 +51,6 @@ function createUploadForm() {
       });
 
       const data = await res.json();
-      console.log(data);
     } catch (err) {
       console.error("Upload failed:", err);
     }

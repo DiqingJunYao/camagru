@@ -168,11 +168,10 @@ function fetchData(status) {
         fetchDataNoLike(status);
       } else {
         fetchDataWithLike(status);
-        console.log("here");
       }
     })
     .catch((error) => {
-      console.log("this is the error:", error);
+      console.error("this is the error:", error);
     });
   if (page === 1) {
     document.getElementById("previous_page").style.display = "none";

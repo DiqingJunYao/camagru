@@ -165,9 +165,6 @@ export function settings() {
             alert("Settings updated successfully!");
             document.body.removeChild(newDiv);
             setCurrentUsername(newUsername || currentUsername);
-            console.log(
-              "this is the current username after update: " + currentUsername,
-            );
           } else {
             alert("Error updating settings: " + data.error);
           }

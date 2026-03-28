@@ -83,6 +83,6 @@ export function addCommentsButton(fileName) {
       }
     })
     .catch((error) => {
-      console.log("this is the error:", error);
+      console.error("this is the error:", error);
     });
 }

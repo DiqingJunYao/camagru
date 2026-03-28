@@ -39,7 +39,6 @@ export function createJsonFile(fastify) {
           item,
         ]),
       );
-console.log(resultObj);
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start:", err);

@@ -9,7 +9,7 @@ function createImg(galleryCardWrapper, item) {
 
 import { createButtons, createComments } from "./mainButtons.js";
 
-function fetchDataNoLike() {
+function oldfunction() {
   fetch("/start", {
     method: "GET",
   })
@@ -54,15 +54,121 @@ function fetchDataNoLike() {
     });
 }
 
-function fetchData() {
+let lastImgCreateTime = null;
+let lastImgId = null;
+let firstImgCreateTime = null;
+let firstImgId = null;
+function fetchDataNoLike(status) {
+  const params = new URLSearchParams({
+    lastImgCreateTime,
+    lastImgId,
+    cardPerPage,
+    firstImgCreateTime,
+    firstImgId,
+    status,
+  });
+  fetch(`/start?${params}` , {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const galleryContainer = document.querySelector(".main_side_gallery");
+      const resultArray = Object.values(data);
+      for (const item of resultArray) {
+        const galleryCardWrapper = document.createElement("div");
+        galleryCardWrapper.className = "gallery_card_wrapper";
+        createImg(galleryCardWrapper, item);
+        galleryCardWrapper
+          .querySelector("img")
+          .addEventListener("click", function () {
+            const mainContainer = document.querySelector(
+              ".main_container_gallery",
+            );
+            mainContainer.innerHTML = "";
+            mainContainer.appendChild(galleryCardWrapper.cloneNode(true));
+            const mainButtonsAndComments = mainContainer.querySelector(
+              ".gallery_card_wrapper",
+            );
+            createButtons(mainButtonsAndComments, item);
+            createComments(mainButtonsAndComments, item);
+          });
+        galleryContainer.appendChild(galleryCardWrapper);
+      }
+      if (resultArray.length > 0) {
+        const lastItem = resultArray[resultArray.length - 1];
+        lastImgCreateTime = lastItem.createTime;
+        lastImgId = lastItem.id;
+        const firstItem = resultArray[0];
+        firstImgCreateTime = firstItem.createTime;
+        firstImgId = firstItem.id;
+        maxPage = lastItem.maxPage;
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching test data:", error);
+    });
+}
+
+function fetchDataWithLike(status) {
+  const params = new URLSearchParams({
+    lastImgCreateTime,
+    lastImgId,
+    cardPerPage,
+    firstImgCreateTime,
+    firstImgId,
+    status,
+  });
+  fetch(`/start_with_like?${params}` , {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const galleryContainer = document.querySelector(".main_side_gallery");
+      const resultArray = Object.values(data);
+      for (const item of resultArray) {
+        const galleryCardWrapper = document.createElement("div");
+        galleryCardWrapper.className = "gallery_card_wrapper";
+        createImg(galleryCardWrapper, item);
+        galleryCardWrapper
+          .querySelector("img")
+          .addEventListener("click", function () {
+            const mainContainer = document.querySelector(
+              ".main_container_gallery",
+            );
+            mainContainer.innerHTML = "";
+            mainContainer.appendChild(galleryCardWrapper.cloneNode(true));
+            const mainButtonsAndComments = mainContainer.querySelector(
+              ".gallery_card_wrapper",
+            );
+            createButtons(mainButtonsAndComments, item);
+            createComments(mainButtonsAndComments, item);
+          });
+        galleryContainer.appendChild(galleryCardWrapper);
+      }
+      if (resultArray.length > 0) {
+        const lastItem = resultArray[resultArray.length - 1];
+        lastImgCreateTime = lastItem.createTime;
+        lastImgId = lastItem.id;
+        const firstItem = resultArray[0];
+        firstImgCreateTime = firstItem.createTime;
+        firstImgId = firstItem.id;
+        maxPage = lastItem.maxPage;
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching test data:", error);
+    });
+}
+
+function fetchData(status) {
   fetch("/verify_login")
     .then((response) => response.json())
     .then((data) => {
       if (!data.loggedIn) {
-        fetchDataNoLike();
+        fetchDataNoLike(status);
       } else {
-        // fetchDataWithLike();
-        fetchDataNoLike();
+        fetchDataWithLike(status);
+        console.log("here");
       }
     })
     .catch((error) => {
@@ -119,7 +225,7 @@ let counter = 0;
 let maxPage = 0;
 let cardPerPage = 2;
 export function sideBarGallery() {
-  fetchData();
+  fetchData("first");
   routerFunction();
   document
     .getElementById("previous_page")
@@ -127,22 +233,22 @@ export function sideBarGallery() {
       if (page > 1) {
         page--;
         document.querySelector(".main_side_gallery").innerHTML = "";
-        fetchData();
+        fetchData("previous");
       }
     });
   document.getElementById("next_page").addEventListener("click", function () {
     page++;
     document.querySelector(".main_side_gallery").innerHTML = "";
-    fetchData();
+    fetchData("next");
   });
   document.getElementById("page_1").addEventListener("click", function () {
     page = 1;
     document.querySelector(".main_side_gallery").innerHTML = "";
-    fetchData();
+    fetchData("first");
   });
   document.getElementById("last_page").addEventListener("click", function () {
     page = maxPage;
     document.querySelector(".main_side_gallery").innerHTML = "";
-    fetchData();
+    fetchData("last");
   });
 }

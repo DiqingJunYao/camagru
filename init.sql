@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS uploads (
     CONSTRAINT fk_uploads_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE INDEX IF NOT EXISTS idx_uploads_created_at ON uploads(created_at DESC, id DESC);
+
 CREATE TABLE IF NOT EXISTS comments (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,

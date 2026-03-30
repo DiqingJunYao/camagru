@@ -5,7 +5,7 @@ async function getStream(video) {
   video.srcObject = stream;
 }
 
-async function uploadImage(blob, bgImgName, topValue, leftValue) {
+async function upload(blob, bgImgName, topValue, leftValue) {
   const formData = new FormData();
 
   const filename =
@@ -20,20 +20,27 @@ async function uploadImage(blob, bgImgName, topValue, leftValue) {
     body: formData,
   })
     .then((response) => response.json())
-	.then((data) => {
-	  if (data.success) {
-		location.reload();
-		alert("Image taken successfully");
-		console.log("Image uploaded successfully");
-	  }
-	})
-	.catch((error) => {
-	  console.error("Error uploading image:", error);
-	  alert("An error occurred while uploading the image.");
-	});
+    .then((data) => {
+      if (data.success) {
+        location.reload();
+        alert("Image taken successfully");
+        console.log("Image uploaded successfully");
+      }
+    })
+    .catch((error) => {
+      console.error("Error uploading image:", error);
+      alert("An error occurred while uploading the image.");
+    });
 }
 
-async function captureImg(button, canvas, video, bgImgName, topValueInput, leftValueInput) {
+async function captureImg(
+  button,
+  canvas,
+  video,
+  bgImgName,
+  topValueInput,
+  leftValueInput,
+) {
   button.addEventListener("click", (event) => {
     event.preventDefault();
 
@@ -46,14 +53,14 @@ async function captureImg(button, canvas, video, bgImgName, topValueInput, leftV
     canvas.style.height = "auto";
 
     ctx.drawImage(video, 0, 0);
-	const topValue = parseInt(topValueInput.value, 10) || 0;
-	const leftValue = parseInt(leftValueInput.value, 10) || 0;
-	console.log("Top value:", topValue);
-	console.log("Left value:", leftValue);
+    const topValue = parseInt(topValueInput.value, 10) || 0;
+    const leftValue = parseInt(leftValueInput.value, 10) || 0;
+    console.log("Top value:", topValue);
+    console.log("Left value:", leftValue);
 
     // Convert to blob
     canvas.toBlob(async (blob) => {
-      await uploadImage(blob, bgImgName, topValue, leftValue);
+      await upload(blob, bgImgName, topValue, leftValue);
     }, "image/jpeg");
   });
 }
@@ -127,28 +134,103 @@ function combineImgFunction(bgImgName) {
     canvas.style.maxWidth = "100%";
     canvas.style.height = "auto";
 
+    const topLabel = document.createElement("label");
+    topLabel.textContent = "Top:";
+    const topValueInput = document.createElement("input");
+    topValueInput.type = "number";
+    topValueInput.name = "topValue";
+
+    const leftLabel = document.createElement("label");
+    leftLabel.textContent = "Left:";
+    const leftValueInput = document.createElement("input");
+    leftValueInput.type = "number";
+    leftValueInput.name = "leftValue";
+
+    form.appendChild(video);
+    form.appendChild(captureButton);
+    form.appendChild(canvas);
+    form.appendChild(topLabel);
+    form.appendChild(topValueInput);
+    form.appendChild(leftLabel);
+    form.appendChild(leftValueInput);
+
+    getStream(video);
+    captureImg(
+      captureButton,
+      canvas,
+      video,
+      bgImgName,
+      topValueInput,
+      leftValueInput,
+    );
+  });
+
+  choosePictureButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    form.removeChild(buttonDiv);
+    const imageInput = document.createElement("input");
+    imageInput.type = "file";
+    imageInput.id = "imageInput";
+    imageInput.name = "imageInput";
+    imageInput.accept = "image/*";
+
+    const uploadButton = document.createElement("button");
+    uploadButton.type = "submit";
+    uploadButton.textContent = "Upload";
+
 	const topLabel = document.createElement("label");
     topLabel.textContent = "Top:";
     const topValueInput = document.createElement("input");
     topValueInput.type = "number";
     topValueInput.name = "topValue";
 
-	const leftLabel = document.createElement("label");
+    const leftLabel = document.createElement("label");
     leftLabel.textContent = "Left:";
     const leftValueInput = document.createElement("input");
     leftValueInput.type = "number";
     leftValueInput.name = "leftValue";
 
-	form.appendChild(video);
-	form.appendChild(captureButton);
-	form.appendChild(canvas);
+    form.appendChild(imageInput);
+    form.appendChild(uploadButton);
 	form.appendChild(topLabel);
 	form.appendChild(topValueInput);
 	form.appendChild(leftLabel);
 	form.appendChild(leftValueInput);
 
-	getStream(video);
-    captureImg(captureButton, canvas, video, bgImgName, topValueInput, leftValueInput);
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault(); // stop page reload
+
+      const formData = new FormData(form);
+      const topValue = parseInt(topValueInput.value, 10) || 0;
+      const leftValue = parseInt(leftValueInput.value, 10) || 0;
+      formData.append("bgImgName", bgImgName);
+      formData.append("topValue", topValue);
+      formData.append("leftValue", leftValue);
+
+      try {
+        fetch("/combine", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              location.reload();
+              alert("Image uploaded successfully");
+              console.log("Image uploaded successfully");
+            } else {
+              alert("Failed to upload image");
+              console.error("Upload failed:", data.error);
+            }
+          })
+          .catch((error) => {
+            alert("An error occurred while uploading the image");
+            console.error("Upload failed:", error);
+          });
+      } catch (err) {
+        console.error("Upload failed:", err);
+      }
+    });
   });
 }
 

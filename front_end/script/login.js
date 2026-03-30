@@ -145,6 +145,7 @@ export function loginLogoutUsers() {
           document.getElementById("settings").style.display = "none";
           document.getElementById("login").style.display = "inline";
           document.getElementById("register").style.display = "inline";
+          location.reload();
         } else {
           alert("Logout failed: " + data.message);
         }

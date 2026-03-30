@@ -201,6 +201,7 @@ function combineImgFunction(bgImgName) {
       event.preventDefault(); // stop page reload
 
       const formData = new FormData(form);
+	  console.log("FormData :", formData);
       const topValue = parseInt(topValueInput.value, 10) || 0;
       const leftValue = parseInt(leftValueInput.value, 10) || 0;
       formData.append("bgImgName", bgImgName);

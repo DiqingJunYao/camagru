@@ -38,7 +38,8 @@ export function combine(fastify) {
         !imageBuffer ||
         !bgImgName ||
         topValue === null ||
-        leftValue === null
+        leftValue === null || 
+		imageBuffer.length === 0
       ) {
         return reply.status(400).send({ error: "Missing required fields" });
       }

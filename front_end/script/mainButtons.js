@@ -23,9 +23,14 @@ export function createButtons(galleryCardWrapper, item) {
   addCommentButton.id = "add_comment_button";
   addCommentButton.className = "add_comment_button";
   addCommentButton.textContent = "add comments";
+  const createImgWithButton = document.createElement("button");
+  createImgWithButton.id = "create_img_with_button";
+  createImgWithButton.className = "create_img_with_button";
+  createImgWithButton.textContent = "Create Img With This One";
   cardButtons.appendChild(cardLike);
   cardButtons.appendChild(commentButton);
   cardButtons.appendChild(addCommentButton);
+  cardButtons.appendChild(createImgWithButton);
   galleryCardWrapper.appendChild(cardButtons);
 }
 

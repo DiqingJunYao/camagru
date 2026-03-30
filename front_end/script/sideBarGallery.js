@@ -9,51 +9,6 @@ function createImg(galleryCardWrapper, item) {
 
 import { createButtons, createComments } from "./mainButtons.js";
 
-function oldfunction() {
-  fetch("/start", {
-    method: "GET",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      const galleryContainer = document.querySelector(".main_side_gallery");
-      const resultArray = Object.values(data);
-      if (resultArray.length % cardPerPage === 0) {
-        maxPage = resultArray.length / cardPerPage;
-      } else {
-        maxPage = Math.floor(resultArray.length / cardPerPage) + 1;
-      }
-      maxPage = Math.ceil(resultArray.length / cardPerPage);
-      for (
-        counter = (page - 1) * cardPerPage;
-        counter < page * cardPerPage && counter < resultArray.length;
-        counter++
-      ) {
-        const galleryCardWrapper = document.createElement("div");
-        galleryCardWrapper.className = "gallery_card_wrapper";
-        const currentItem = resultArray[counter];
-        createImg(galleryCardWrapper, currentItem);
-        galleryCardWrapper
-          .querySelector("img")
-          .addEventListener("click", function () {
-            const mainContainer = document.querySelector(
-              ".main_container_gallery",
-            );
-            mainContainer.innerHTML = "";
-            mainContainer.appendChild(galleryCardWrapper.cloneNode(true));
-            const mainButtonsAndComments = mainContainer.querySelector(
-              ".gallery_card_wrapper",
-            );
-            createButtons(mainButtonsAndComments, currentItem);
-            createComments(mainButtonsAndComments, currentItem);
-          });
-        galleryContainer.appendChild(galleryCardWrapper);
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching test data:", error);
-    });
-}
-
 let lastImgCreateTime = null;
 let lastImgId = null;
 let firstImgCreateTime = null;
@@ -212,15 +167,19 @@ function routerFunction() {
       const img = mainContainerGallery.querySelector("img");
       dislikeCard(img.dataset.filename);
     }
+    if (event.target.classList.contains("create_img_with_button")) {
+      const img = mainContainerGallery.querySelector("img");
+      combineImg(img.dataset.filename);
+    }
   });
 }
 
 import { addCommentsButton } from "./addComments.js";
 import { likeCard } from "./likeCards.js";
 import { dislikeCard } from "./dislikeCards.js";
+import { combineImg } from "./combineImg.js";
 
 let page = 1;
-let counter = 0;
 let maxPage = 0;
 let cardPerPage = 2;
 export function sideBarGallery() {

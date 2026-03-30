@@ -10,17 +10,13 @@ async function firstTimeFetch(rep, cardPerPage, userId) {
       const maxPage = Math.ceil(totalUploads / cardPerPage);
       const [rows] = await db.execute(
         `
-      SELECT
-        u.id AS upload_id,
-        u.created_at,
-        u.filename,
-        c.comment_text,
-        usr.username
-      FROM uploads u
-      LEFT JOIN comments c ON c.upload_id = u.id
-      LEFT JOIN users usr ON usr.id = c.user_id
-      ORDER BY u.created_at DESC, c.created_at DESC
-      LIMIT ?`,
+          SELECT
+            u.id AS upload_id,
+            u.created_at,
+            u.filename
+          FROM uploads u
+          ORDER BY u.created_at DESC, u.id DESC
+          LIMIT ?`,
         [cardPerPage],
       );
 
@@ -37,10 +33,18 @@ async function firstTimeFetch(rep, cardPerPage, userId) {
           });
         }
 
-        if (row.comment_text) {
+        const [commentRows] = await db.execute(
+          `SELECT c.comment_text, usr.username
+          FROM comments c
+          JOIN users usr ON usr.id = c.user_id
+          WHERE c.upload_id = ?
+          ORDER BY c.created_at DESC`,
+          [row.upload_id],
+        );
+        for (const commentRow of commentRows) {
           uploadsMap.get(row.upload_id).comments.push({
-            name: row.username,
-            context: row.comment_text,
+            name: commentRow.username,
+            context: commentRow.comment_text,
           });
         }
       }
@@ -69,14 +73,10 @@ async function firstTimeFetch(rep, cardPerPage, userId) {
           u.id AS upload_id,
           u.created_at,
           u.filename,
-          c.comment_text,
-          usr.username,
           CASE WHEN l.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS liked
         FROM uploads u
-        LEFT JOIN comments c ON c.upload_id = u.id
-        LEFT JOIN users usr ON usr.id = c.user_id
         LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
-        ORDER BY u.created_at DESC, c.created_at DESC
+        ORDER BY u.created_at DESC, u.id DESC
         LIMIT ?
         `,
         [userId, cardPerPage],
@@ -96,10 +96,18 @@ async function firstTimeFetch(rep, cardPerPage, userId) {
           });
         }
 
-        if (row.comment_text) {
+        const [commentRows] = await db.execute(
+          `SELECT c.comment_text, usr.username
+          FROM comments c
+          JOIN users usr ON usr.id = c.user_id
+          WHERE c.upload_id = ?
+          ORDER BY c.created_at DESC`,
+          [row.upload_id],
+        );
+        for (const commentRow of commentRows) {
           uploadsMap.get(row.upload_id).comments.push({
-            name: row.username,
-            context: row.comment_text,
+            name: commentRow.username,
+            context: commentRow.comment_text,
           });
         }
       }
@@ -134,19 +142,14 @@ async function normalNextFetch(
       const maxPage = Math.ceil(totalUploads / cardPerPage);
       const [rows] = await db.execute(
         `
-      SELECT
-        u.id AS upload_id,
-        u.created_at,
-        u.filename,
-        c.comment_text,
-        usr.username
-      FROM uploads u
-      LEFT JOIN comments c ON c.upload_id = u.id
-      LEFT JOIN users usr ON usr.id = c.user_id
-      WHERE (u.created_at < ? OR (u.created_at = ? AND u.id < ?))
-      ORDER BY u.created_at DESC, c.created_at DESC
-      LIMIT ?
-    `,
+        SELECT
+          u.id AS upload_id,
+          u.created_at,
+          u.filename
+        FROM uploads u
+        WHERE (u.created_at < ? OR (u.created_at = ? AND u.id < ?))
+        ORDER BY u.created_at DESC, u.id DESC
+        LIMIT ?`,
         [lastImgCreateTime, lastImgCreateTime, lastImgId, cardPerPage],
       );
 
@@ -162,10 +165,18 @@ async function normalNextFetch(
           });
         }
 
-        if (row.comment_text) {
+        const [commentRows] = await db.execute(
+          `SELECT c.comment_text, usr.username
+          FROM comments c
+          JOIN users usr ON usr.id = c.user_id
+          WHERE c.upload_id = ?
+          ORDER BY c.created_at DESC`,
+          [row.upload_id],
+        );
+        for (const commentRow of commentRows) {
           uploadsMap.get(row.upload_id).comments.push({
-            name: row.username,
-            context: row.comment_text,
+            name: commentRow.username,
+            context: commentRow.comment_text,
           });
         }
       }
@@ -194,15 +205,11 @@ async function normalNextFetch(
         u.id AS upload_id,
         u.created_at,
         u.filename,
-        c.comment_text,
-        usr.username,
         CASE WHEN l.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS liked
       FROM uploads u
-      LEFT JOIN comments c ON c.upload_id = u.id
-      LEFT JOIN users usr ON usr.id = c.user_id
       LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
       WHERE (u.created_at < ? OR (u.created_at = ? AND u.id < ?))
-      ORDER BY u.created_at DESC, c.created_at DESC
+      ORDER BY u.created_at DESC, u.id DESC
       LIMIT ?
     `,
         [userId, lastImgCreateTime, lastImgCreateTime, lastImgId, cardPerPage],
@@ -221,10 +228,18 @@ async function normalNextFetch(
           });
         }
 
-        if (row.comment_text) {
+        const [commentRows] = await db.execute(
+          `SELECT c.comment_text, usr.username
+          FROM comments c
+          JOIN users usr ON usr.id = c.user_id
+          WHERE c.upload_id = ?
+          ORDER BY c.created_at DESC`,
+          [row.upload_id],
+        );
+        for (const commentRow of commentRows) {
           uploadsMap.get(row.upload_id).comments.push({
-            name: row.username,
-            context: row.comment_text,
+            name: commentRow.username,
+            context: commentRow.comment_text,
           });
         }
       }
@@ -262,14 +277,10 @@ async function normalPreviousFetch(
       SELECT
         u.id AS upload_id,
         u.created_at,
-        u.filename,
-        c.comment_text,
-        usr.username
+        u.filename
       FROM uploads u
-      LEFT JOIN comments c ON c.upload_id = u.id
-      LEFT JOIN users usr ON usr.id = c.user_id
       WHERE (u.created_at > ? OR (u.created_at = ? AND u.id > ?))
-      ORDER BY u.created_at ASC, c.created_at ASC
+      ORDER BY u.created_at ASC, u.id ASC
       LIMIT ?
     `,
         [firstImgCreateTime, firstImgCreateTime, firstImgId, cardPerPage],
@@ -288,10 +299,18 @@ async function normalPreviousFetch(
           });
         }
 
-        if (row.comment_text) {
+        const [commentRows] = await db.execute(
+          `SELECT c.comment_text, usr.username
+          FROM comments c
+          JOIN users usr ON usr.id = c.user_id
+          WHERE c.upload_id = ?
+          ORDER BY c.created_at DESC`,
+          [row.upload_id],
+        );
+        for (const commentRow of commentRows) {
           uploadsMap.get(row.upload_id).comments.push({
-            name: row.username,
-            context: row.comment_text,
+            name: commentRow.username,
+            context: commentRow.comment_text,
           });
         }
       }
@@ -320,15 +339,11 @@ async function normalPreviousFetch(
           u.id AS upload_id,
           u.created_at,
           u.filename,
-          c.comment_text,
-          usr.username,
           CASE WHEN l.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS liked
         FROM uploads u
-        LEFT JOIN comments c ON c.upload_id = u.id
-        LEFT JOIN users usr ON usr.id = c.user_id
         LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
         WHERE (u.created_at > ? OR (u.created_at = ? AND u.id > ?))
-        ORDER BY u.created_at ASC, c.created_at ASC
+        ORDER BY u.created_at ASC, u.id ASC
         LIMIT ?
       `,
         [
@@ -354,10 +369,18 @@ async function normalPreviousFetch(
           });
         }
 
-        if (row.comment_text) {
+        const [commentRows] = await db.execute(
+          `SELECT c.comment_text, usr.username
+          FROM comments c
+          JOIN users usr ON usr.id = c.user_id
+          WHERE c.upload_id = ?
+          ORDER BY c.created_at DESC`,
+          [row.upload_id],
+        );
+        for (const commentRow of commentRows) {
           uploadsMap.get(row.upload_id).comments.push({
-            name: row.username,
-            context: row.comment_text,
+            name: commentRow.username,
+            context: commentRow.comment_text,
           });
         }
       }
@@ -390,13 +413,9 @@ async function lastPageFetch(rep, cardPerPage, userId) {
       SELECT
         u.id AS upload_id,
         u.created_at,
-        u.filename,
-        c.comment_text,
-        usr.username
+        u.filename
       FROM uploads u
-      LEFT JOIN comments c ON c.upload_id = u.id
-      LEFT JOIN users usr ON usr.id = c.user_id
-      ORDER BY u.created_at DESC, c.created_at DESC
+      ORDER BY u.created_at DESC, u.id DESC
       LIMIT ? OFFSET ?
     `,
         [cardPerPage, offset.toString()],
@@ -414,10 +433,18 @@ async function lastPageFetch(rep, cardPerPage, userId) {
           });
         }
 
-        if (row.comment_text) {
+        const [commentRows] = await db.execute(
+          `SELECT c.comment_text, usr.username
+          FROM comments c
+          JOIN users usr ON usr.id = c.user_id
+          WHERE c.upload_id = ?
+          ORDER BY c.created_at DESC`,
+          [row.upload_id],
+        );
+        for (const commentRow of commentRows) {
           uploadsMap.get(row.upload_id).comments.push({
-            name: row.username,
-            context: row.comment_text,
+            name: commentRow.username,
+            context: commentRow.comment_text,
           });
         }
       }
@@ -447,14 +474,10 @@ async function lastPageFetch(rep, cardPerPage, userId) {
         u.id AS upload_id,
         u.created_at,
         u.filename,
-        c.comment_text,
-        usr.username,
         CASE WHEN l.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS liked
       FROM uploads u
-      LEFT JOIN comments c ON c.upload_id = u.id
-      LEFT JOIN users usr ON usr.id = c.user_id
       LEFT JOIN likes l ON l.upload_id = u.id AND l.user_id = ?
-      ORDER BY u.created_at DESC, c.created_at DESC
+      ORDER BY u.created_at DESC, u.id DESC
       LIMIT ? OFFSET ?
     `,
         [userId, cardPerPage, offset.toString()],
@@ -473,10 +496,18 @@ async function lastPageFetch(rep, cardPerPage, userId) {
           });
         }
 
-        if (row.comment_text) {
+        const [commentRows] = await db.execute(
+          `SELECT c.comment_text, usr.username
+          FROM comments c
+          JOIN users usr ON usr.id = c.user_id
+          WHERE c.upload_id = ?
+          ORDER BY c.created_at DESC`,
+          [row.upload_id],
+        );
+        for (const commentRow of commentRows) {
           uploadsMap.get(row.upload_id).comments.push({
-            name: row.username,
-            context: row.comment_text,
+            name: commentRow.username,
+            context: commentRow.comment_text,
           });
         }
       }

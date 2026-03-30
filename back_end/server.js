@@ -86,6 +86,9 @@ controlCommentEmail(fastify);
 import { createJsonFile } from "./startJson.js";
 createJsonFile(fastify);
 
+import { combine } from "./combine.js";
+combine(fastify);
+
 fastify.get("/test.json", async (req, reply) => {
   const data = await fsPromises.readFile("./test.json", "utf-8");
   const json = JSON.parse(data);

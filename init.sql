@@ -26,10 +26,9 @@ CREATE TABLE IF NOT EXISTS uploads (
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     KEY idx_uploads_user_id (user_id),
+    KEY idx_uploads_created_at (created_at, id),
     CONSTRAINT fk_uploads_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
-CREATE INDEX IF NOT EXISTS idx_uploads_created_at ON uploads(created_at DESC, id DESC);
 
 CREATE TABLE IF NOT EXISTS comments (
     id INT NOT NULL AUTO_INCREMENT,

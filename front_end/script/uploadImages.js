@@ -45,12 +45,25 @@ function createUploadForm() {
 
     const formData = new FormData(form);
     try {
-      const res = await fetch("/upload", {
+      fetch("/upload", {
         method: "POST",
         body: formData,
-      });
-
-      const data = await res.json();
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            location.reload();
+            alert("Image uploaded successfully");
+            console.log("Image uploaded successfully");
+          } else {
+            alert("Failed to upload image");
+            console.error("Upload failed:", data.error);
+          }
+        })
+        .catch((error) => {
+          alert("An error occurred while uploading the image");
+          console.error("Upload failed:", error);
+        });
     } catch (err) {
       console.error("Upload failed:", err);
     }

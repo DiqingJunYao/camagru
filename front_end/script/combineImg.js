@@ -5,14 +5,17 @@ async function getStream(video) {
   video.srcObject = stream;
 }
 
-async function uploadImage(blob) {
+async function uploadImage(blob, bgImgName, topValue, leftValue) {
   const formData = new FormData();
 
   const filename =
     Date.now() + "-" + Math.random().toString(36).slice(2) + ".jpg";
 
   formData.append("image", blob, filename);
-  fetch("/upload", {
+  formData.append("bgImgName", bgImgName);
+  formData.append("topValue", topValue);
+  formData.append("leftValue", leftValue);
+  fetch("/combine", {
     method: "POST",
     body: formData,
   })
@@ -23,10 +26,14 @@ async function uploadImage(blob) {
 		alert("Image taken successfully");
 		console.log("Image uploaded successfully");
 	  }
+	})
+	.catch((error) => {
+	  console.error("Error uploading image:", error);
+	  alert("An error occurred while uploading the image.");
 	});
 }
 
-async function captureImg(button, canvas, video) {
+async function captureImg(button, canvas, video, bgImgName, topValueInput, leftValueInput) {
   button.addEventListener("click", (event) => {
     event.preventDefault();
 
@@ -39,11 +46,15 @@ async function captureImg(button, canvas, video) {
     canvas.style.height = "auto";
 
     ctx.drawImage(video, 0, 0);
+	const topValue = parseInt(topValueInput.value, 10) || 0;
+	const leftValue = parseInt(leftValueInput.value, 10) || 0;
+	console.log("Top value:", topValue);
+	console.log("Left value:", leftValue);
 
     // Convert to blob
-    // canvas.toBlob(async (blob) => {
-    //   await uploadImage(blob);
-    // }, "image/jpeg");
+    canvas.toBlob(async (blob) => {
+      await uploadImage(blob, bgImgName, topValue, leftValue);
+    }, "image/jpeg");
   });
 }
 
@@ -119,13 +130,13 @@ function combineImgFunction(bgImgName) {
 	const topLabel = document.createElement("label");
     topLabel.textContent = "Top:";
     const topValueInput = document.createElement("input");
-    topValueInput.type = "text";
+    topValueInput.type = "number";
     topValueInput.name = "topValue";
 
 	const leftLabel = document.createElement("label");
     leftLabel.textContent = "Left:";
     const leftValueInput = document.createElement("input");
-    leftValueInput.type = "text";
+    leftValueInput.type = "number";
     leftValueInput.name = "leftValue";
 
 	form.appendChild(video);
@@ -137,7 +148,7 @@ function combineImgFunction(bgImgName) {
 	form.appendChild(leftValueInput);
 
 	getStream(video);
-    captureImg(captureButton, canvas, video);
+    captureImg(captureButton, canvas, video, bgImgName, topValueInput, leftValueInput);
   });
 }
 

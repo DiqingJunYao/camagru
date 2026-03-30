@@ -1,3 +1,51 @@
+function createForm() {
+  const newDiv = document.createElement("div");
+  newDiv.classList.add("background_overlay");
+  document.body.prepend(newDiv);
+
+  const form = document.createElement("form");
+  form.classList.add("modal_form");
+
+  const buttonDiv = document.createElement("div");
+  buttonDiv.className = "button_div";
+
+  const takePictureButton = document.createElement("button");
+  takePictureButton.type = "button";
+  takePictureButton.id = "take_picture_button";
+  takePictureButton.className = "take_picture_button";
+  takePictureButton.textContent = "take a picture to combine";
+
+  const choosePictureButton = document.createElement("button");
+  choosePictureButton.type = "button";
+  choosePictureButton.id = "choose_picture_button";
+  choosePictureButton.className = "choose_picture_button";
+  choosePictureButton.textContent = "choose a picture to combine";
+
+  buttonDiv.appendChild(takePictureButton);
+  buttonDiv.appendChild(choosePictureButton);
+
+  const closeButton = document.createElement("button");
+  closeButton.type = "button";
+  closeButton.textContent = "X";
+  closeButton.style.position = "absolute";
+  closeButton.style.top = "0px";
+  closeButton.style.right = "0px";
+  closeButton.addEventListener("click", function () {
+    document.body.removeChild(newDiv);
+  });
+
+  form.appendChild(closeButton);
+  form.appendChild(buttonDiv);
+
+  newDiv.appendChild(form);
+
+  newDiv.addEventListener("click", function (event) {
+    if (event.target === newDiv) {
+      document.body.removeChild(newDiv);
+    }
+  });
+}
+
 async function getStream(video) {
   const stream = await navigator.mediaDevices.getUserMedia({
     video: true,
@@ -65,53 +113,10 @@ async function captureImg(
   });
 }
 
-function combineImgFunction(bgImgName) {
-  const newDiv = document.createElement("div");
-  newDiv.classList.add("background_overlay");
-  document.body.prepend(newDiv);
-
-  const form = document.createElement("form");
-  form.classList.add("modal_form");
-
-  const buttonDiv = document.createElement("div");
-  buttonDiv.className = "button_div";
-
-  const takePictureButton = document.createElement("button");
-  takePictureButton.type = "button";
-  takePictureButton.id = "take_picture_button";
-  takePictureButton.className = "take_picture_button";
-  takePictureButton.textContent = "take a picture to combine";
-
-  const choosePictureButton = document.createElement("button");
-  choosePictureButton.type = "button";
-  choosePictureButton.id = "choose_picture_button";
-  choosePictureButton.className = "choose_picture_button";
-  choosePictureButton.textContent = "choose a picture to combine";
-
-  buttonDiv.appendChild(takePictureButton);
-  buttonDiv.appendChild(choosePictureButton);
-
-  const closeButton = document.createElement("button");
-  closeButton.type = "button";
-  closeButton.textContent = "X";
-  closeButton.style.position = "absolute";
-  closeButton.style.top = "0px";
-  closeButton.style.right = "0px";
-  closeButton.addEventListener("click", function () {
-    document.body.removeChild(newDiv);
-  });
-
-  form.appendChild(closeButton);
-  form.appendChild(buttonDiv);
-
-  newDiv.appendChild(form);
-
-  newDiv.addEventListener("click", function (event) {
-    if (event.target === newDiv) {
-      document.body.removeChild(newDiv);
-    }
-  });
-
+function combineTakingPicture(bgImgName) {
+  const takePictureButton = document.getElementById("take_picture_button");
+  const form = document.querySelector(".modal_form");
+  const buttonDiv = document.querySelector(".button_div");
   takePictureButton.addEventListener("click", (event) => {
     event.preventDefault();
     form.removeChild(buttonDiv);
@@ -164,6 +169,12 @@ function combineImgFunction(bgImgName) {
       leftValueInput,
     );
   });
+}
+
+function combineChoosePicture(bgImgName) {
+  const choosePictureButton = document.getElementById("choose_picture_button");
+  const form = document.querySelector(".modal_form");
+  const buttonDiv = document.querySelector(".button_div");
 
   choosePictureButton.addEventListener("click", (event) => {
     event.preventDefault();
@@ -178,7 +189,7 @@ function combineImgFunction(bgImgName) {
     uploadButton.type = "submit";
     uploadButton.textContent = "Upload";
 
-	const topLabel = document.createElement("label");
+    const topLabel = document.createElement("label");
     topLabel.textContent = "Top:";
     const topValueInput = document.createElement("input");
     topValueInput.type = "number";
@@ -192,16 +203,16 @@ function combineImgFunction(bgImgName) {
 
     form.appendChild(imageInput);
     form.appendChild(uploadButton);
-	form.appendChild(topLabel);
-	form.appendChild(topValueInput);
-	form.appendChild(leftLabel);
-	form.appendChild(leftValueInput);
+    form.appendChild(topLabel);
+    form.appendChild(topValueInput);
+    form.appendChild(leftLabel);
+    form.appendChild(leftValueInput);
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault(); // stop page reload
 
       const formData = new FormData(form);
-	  console.log("FormData :", formData);
+      console.log("FormData :", formData);
       const topValue = parseInt(topValueInput.value, 10) || 0;
       const leftValue = parseInt(leftValueInput.value, 10) || 0;
       formData.append("bgImgName", bgImgName);
@@ -233,6 +244,12 @@ function combineImgFunction(bgImgName) {
       }
     });
   });
+}
+
+function combineImgFunction(bgImgName) {
+  createForm();
+  combineTakingPicture(bgImgName);
+  combineChoosePicture(bgImgName);
 }
 
 export function combineImg(bgImgName) {

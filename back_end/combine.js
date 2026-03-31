@@ -7,12 +7,6 @@ export function combine(fastify) {
     "/combine",
     { preHandler: [fastify.authenticate] },
     async (request, reply) => {
-      // const data = await request.file();
-      // if (!data || !data.file) {
-      //   return reply.status(400).send({ error: "No file provided" });
-      // }
-      // const buffer = await data.toBuffer();
-      // fs.writeFileSync("test.jpg", buffer);
       const parts = await request.parts();
       let imageBuffer = null;
       let bgImgName = null;

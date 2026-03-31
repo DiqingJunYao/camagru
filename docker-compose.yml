@@ -7,13 +7,8 @@ services:
       - ./:/app
       - /app/node_modules
       - uploads:/app/uploads
-    environment:
-      - NODE_ENV=production
-      - PORT=4000
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=password
-      - DB_NAME=camagru
+    env_file:
+      - .env
     restart: unless-stopped
     depends_on:
       - db
@@ -22,9 +17,8 @@ services:
   db:
     image: mysql:8.0
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: camagru
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     volumes:
@@ -34,3 +28,4 @@ services:
 volumes:
   db_data:
   uploads:
+  node_modules:

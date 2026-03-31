@@ -19,9 +19,11 @@ fastify.register(fastifyStatic, {
 });
 import fastifyCookie from "@fastify/cookie";
 import fastifyJwt from "@fastify/jwt";
+import dotenv from "dotenv";
+dotenv.config();
 fastify.register(fastifyCookie);
 fastify.register(fastifyJwt, {
-  secret: `Dyao is the best!`, //TODO: use environment variable for secret in production
+  secret: process.env.JWT_SECRET,
   cookie: {
     cookieName: "token",
     signed: false,

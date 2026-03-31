@@ -41,30 +41,45 @@ async function captureImg(button, canvas, video) {
     }, "image/jpeg");
   });
 }
+function takePictureFunction() {
+  const mainContainerGallery = document.querySelector(
+    ".main_container_gallery",
+  );
+  mainContainerGallery.innerHTML = "";
+  const video = document.createElement("video");
+  video.id = "video";
+  video.autoplay = true;
+  
+  const captureButton = document.createElement("button");
+  captureButton.id = "capture";
+  captureButton.textContent = "Take a photo";
+  
+  const canvas = document.createElement("canvas");
+  canvas.id = "canvas";
+  canvas.style.display = "none";
+  
+  mainContainerGallery.appendChild(video);
+  mainContainerGallery.appendChild(captureButton);
+  mainContainerGallery.appendChild(canvas);
+  
+  getStream(video);
+  captureImg(captureButton, canvas, video);
+}
 
 export function takePicture() {
   document.getElementById("take_picture").addEventListener("click", () => {
-    const mainContainerGallery = document.querySelector(
-      ".main_container_gallery",
-    );
-    mainContainerGallery.innerHTML = "";
-    const video = document.createElement("video");
-    video.id = "video";
-    video.autoplay = true;
-
-    const captureButton = document.createElement("button");
-    captureButton.id = "capture";
-    captureButton.textContent = "Take a photo";
-
-    const canvas = document.createElement("canvas");
-    canvas.id = "canvas";
-    canvas.style.display = "none";
-
-    mainContainerGallery.appendChild(video);
-    mainContainerGallery.appendChild(captureButton);
-    mainContainerGallery.appendChild(canvas);
-
-    getStream(video);
-    captureImg(captureButton, canvas, video);
+    fetch("/verify_login")
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.loggedIn) {
+        alert("Please login to take a picture");
+        return;
+      } else {
+        takePictureFunction();
+      }
+    })
+    .catch((error) => {
+      console.error("this is the error:", error);
+    });
   });
 }

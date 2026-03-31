@@ -104,6 +104,23 @@
   width: 100%;
   overflow-y: auto;
 }
+.container main .main_container .main_container_gallery .my_img_wrapper {
+  border: 5px solid rgb(13, 211, 79);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.container main .main_container .main_container_gallery .my_img_wrapper .my_img {
+  border: 5px solid rgb(255, 0, 0);
+  width: 200px;
+  height: auto;
+}
+.container main .main_container .main_container_gallery .my_img_wrapper .my_img img {
+  width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
 .container main .main_container .main_container_gallery .gallery_card_wrapper {
   border: solid 5px rgb(255, 0, 0);
   display: flex;

@@ -30,4 +30,8 @@ import { takePicture } from "./takePicture.js";
 
 takePicture();
 
+import { myImg } from "./myImg.js";
+
+myImg();
+
 // docker exec -it camagru-db-1 mysql -u root -p

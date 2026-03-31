@@ -27,18 +27,7 @@ fastify.register(fastifyJwt, {
     signed: false,
   },
 });
-// fastify.decorate("authenticate", async function (request, reply) {
-//   try {
-//     const token = request.cookies.token;
-//     if (!token) {
-//       return reply.code(401).send({ error: "No token" });
-//     }
-//     const decoded = fastify.jwt.verify(token);
-//     request.user = decoded;
-//   } catch (err) {
-//     reply.code(401).send({ error: "Unauthorized: Please login first!" });
-//   }
-// });
+
 fastify.decorate("authenticate", async function (request, reply) {
   try {
     const token = request.cookies.token;
@@ -57,7 +46,6 @@ fastify.decorate("authenticate", async function (request, reply) {
 import fastifyMultipart from "@fastify/multipart";
 fastify.register(fastifyMultipart);
 
-import fsPromises from "fs/promises";
 
 fastify.get("/", (req, reply) => {
   reply.sendFile("index.html");
@@ -89,30 +77,17 @@ createJsonFile(fastify);
 import { combine } from "./combine.js";
 combine(fastify);
 
-fastify.get("/test.json", async (req, reply) => {
-  const data = await fsPromises.readFile("./test.json", "utf-8");
-  const json = JSON.parse(data);
-  reply.send(json);
-});
-fastify.get("/uploads/:filename", async (req, reply) => {
-  try {
-    const filePath = path.join(__dirname, "../uploads", req.params.filename);
+import { getMyImg } from "./getMyImg.js";
 
-    // Read file as buffer
-    const file = await fsPromises.readFile(filePath);
+getMyImg(fastify);
 
-    // Determine content type from extension (simple version)
-    const ext = path.extname(filePath).toLowerCase();
-    let contentType = "application/octet-stream";
-    if (ext === ".png") contentType = "image/png";
-    if (ext === ".jpg" || ext === ".jpeg") contentType = "image/jpeg";
-    if (ext === ".gif") contentType = "image/gif";
+import { deleteMyImg } from "./deleteMyImg.js";
 
-    reply.type(contentType).send(file);
-  } catch (err) {
-    reply.code(404).send({ error: "File not found" });
-  }
-});
+deleteMyImg(fastify);
+
+import { normalFetch } from "./normalFetch.js";
+
+normalFetch(fastify);
 
 fastify.listen({ port: 4000, host: "0.0.0.0" }, (err, address) => {
   if (err) {

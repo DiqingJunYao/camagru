@@ -1,6 +1,5 @@
 import { db } from "./database.js";
 import sharp from "sharp";
-import fs from "fs";
 
 export function combine(fastify) {
   fastify.post(

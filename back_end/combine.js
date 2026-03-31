@@ -31,8 +31,8 @@ export function combine(fastify) {
         !imageBuffer ||
         !bgImgName ||
         topValue === null ||
-        leftValue === null || 
-		imageBuffer.length === 0
+        leftValue === null ||
+        imageBuffer.length === 0
       ) {
         return reply.status(400).send({ error: "Missing required fields" });
       }
@@ -48,12 +48,10 @@ export function combine(fastify) {
             },
           ])
           .toFile(`./uploads/${resultName}`);
-		await db.execute(`INSERT INTO uploads (user_id, filename, original_name, mime_type) VALUES (?, ?, ?, ?)`, [
-		  request.user.id,
-		  resultName,
-		  resultName,
-		  "image/jpg",
-		]);
+        await db.execute(
+          `INSERT INTO uploads (user_id, filename, original_name, mime_type) VALUES (?, ?, ?, ?)`,
+          [request.user.id, resultName, resultName, "image/jpg"],
+        );
       } catch (err) {
         console.error("Error combining images:", err);
         return reply.status(500).send({ error: "Failed to combine images" });

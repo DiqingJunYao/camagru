@@ -60,6 +60,7 @@ function createAddCommentForm(fileName) {
 		if (data.success) {
 			alert("comment successful");
 			document.body.removeChild(newDiv);
+      location.reload();
 		} else {
 			alert("Publish comment failed: " + data.message);
 		}

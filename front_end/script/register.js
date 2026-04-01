@@ -105,9 +105,9 @@ export function registerUsers() {
       .getElementById("submit_button")
       .addEventListener("click", function (event) {
         event.preventDefault();
-        const username = usernameInput.value;
-        const password = passwordInput.value;
-        const email = emailInput.value;
+        const username = usernameInput.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const password = passwordInput.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const email = emailInput.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           alert("Please enter a valid email address.");
           return;
@@ -128,9 +128,6 @@ export function registerUsers() {
           alert("Please fill in all fields to register.");
           return;
         }
-        username = username.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        password = password.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        email = email.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         registerUser(username, password, email);
       });
   });

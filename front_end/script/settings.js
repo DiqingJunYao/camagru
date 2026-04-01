@@ -143,9 +143,9 @@ export function settings() {
 
     submitButton.addEventListener("click", function (event) {
       event.preventDefault();
-      const newUsername = usernameInput.value;
-      const newEmail = emailInput.value;
-      const newPassword = passwordInput.value;
+      const newUsername = usernameInput.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const newEmail = emailInput.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const newPassword = passwordInput.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
         alert("Please enter a valid email address.");
         return;
@@ -164,9 +164,6 @@ export function settings() {
         );
         return;
       }
-      newUsername = newUsername.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      newEmail = newEmail.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      newPassword = newPassword.replace(/</g, "&lt;").replace(/>/g, "&gt;");
       fetch("/update_settings", {
         method: "POST",
         headers: {

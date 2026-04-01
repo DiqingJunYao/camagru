@@ -24,9 +24,6 @@ export function combine(fastify) {
           }
         }
       }
-      console.log("Received bgImgName:", bgImgName);
-      console.log("Received topValue:", topValue);
-      console.log("Received leftValue:", leftValue);
       if (
         !imageBuffer ||
         !bgImgName ||

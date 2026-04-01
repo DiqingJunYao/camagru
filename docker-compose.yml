@@ -6,7 +6,7 @@ services:
     volumes:
       - ./:/app
       - /app/node_modules
-      - uploads:/app/uploads
+      - ./uploads:/app/uploads
     env_file:
       - .env
     restart: unless-stopped

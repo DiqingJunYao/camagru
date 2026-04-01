@@ -53,7 +53,6 @@ export function registerLoginSettingsEndpoint(fastify) {
         "INSERT INTO users (username, password, email, verification_token) VALUES (?, ?, ?, ?)",
         [username, hash, email, verificationToken],
       );
-      console.log("Database Insert Result:", result);
       reply
         .status(201)
         .send({ success: true, message: "User registered successfully" });
@@ -259,14 +258,6 @@ export function registerLoginSettingsEndpoint(fastify) {
     }
   });
 
-  // fastify.get(
-  //   "/verify_login",
-  //   { preHandler: [fastify.authenticate] },
-  //   async (req, reply) => {
-  //     console.log(req.user);
-  //     reply.send({ loggedIn: true, username: req.user.username });
-  //   },
-  // );
   fastify.get(
     "/verify_login",
     { preHandler: [fastify.authenticate] },

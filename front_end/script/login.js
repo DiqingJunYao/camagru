@@ -1,7 +1,6 @@
 export let currentUsername = "";
 export function setCurrentUsername(username) {
   currentUsername = username;
-  console.log("Current username set to: " + currentUsername);
 }
 
 export function loginLogoutUsers() {
@@ -76,7 +75,6 @@ export function loginLogoutUsers() {
       })
         .then((response) => response.json())
         .then((data) => {
-          //   console.log("Response from server:", data);
           if (data.success) {
             alert("Temporary password sent to your email successfully!");
           } else {
@@ -99,7 +97,6 @@ export function loginLogoutUsers() {
       })
         .then((response) => response.json())
         .then((data) => {
-          //   console.log("Response from server:", data);
           if (data.success) {
             alert("Login successful!");
             document.getElementById("logout").style.display = "inline";

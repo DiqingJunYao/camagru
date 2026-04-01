@@ -30,7 +30,6 @@
   height: 100vh;
 }
 .container header {
-  border: 1px solid black;
   min-height: auto;
   display: flex;
   flex-wrap: wrap;
@@ -54,7 +53,6 @@
 .container header .logo_login_container .logo_container .logo {
   height: 60px;
   width: 60px;
-  border: 1px solid green;
 }
 .container header .logo_login_container .login_container {
   display: flex;
@@ -64,7 +62,6 @@
 }
 .container header .logo_login_container .login_container button {
   padding: 5px 10px;
-  border: 1px solid black;
   background-color: lightgray;
   cursor: pointer;
 }
@@ -74,12 +71,10 @@
 }
 .container main {
   display: flex;
-  border: 5px solid rgb(4, 255, 0);
   min-height: 900px;
   flex: 1 1 auto;
 }
 .container main .main_container {
-  border: 5px solid rgb(255, 0, 255);
   width: 80%;
   overflow-y: auto;
 }
@@ -87,31 +82,27 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
-  border: 5px solid rgb(255, 0, 0);
 }
 .container main .main_container nav button {
   width: auto;
   text-align: center;
-  border: 5px solid rgb(0, 0, 0);
-  background-color: aquamarine;
+  background-color: lightgray;
   cursor: pointer;
 }
 .container main .main_container nav button:hover {
-  background-color: yellow;
+  background-color: gray;
+  color: white;
 }
 .container main .main_container .main_container_gallery {
-  border: 5px solid rgb(255, 0, 255);
   width: 100%;
   overflow-y: auto;
 }
 .container main .main_container .main_container_gallery .my_img_wrapper {
-  border: 5px solid rgb(13, 211, 79);
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 .container main .main_container .main_container_gallery .my_img_wrapper .my_img {
-  border: 5px solid rgb(255, 0, 0);
   width: 200px;
   height: auto;
 }
@@ -122,7 +113,6 @@
      object-fit: cover;
 }
 .container main .main_container .main_container_gallery .gallery_card_wrapper {
-  border: solid 5px rgb(255, 0, 0);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -208,7 +198,6 @@
   color: white;
 }
 .container main .main_container .main_container_gallery .gallery_card_wrapper .card_comments {
-  border: 5px solid rgb(255, 0, 255);
   display: none;
   flex-direction: column;
   gap: 5px;
@@ -225,14 +214,12 @@
   pointer-events: none;
 }
 .container main .main_side {
-  border: 5px solid rgb(0, 17, 255);
   width: 20%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
 .container main .main_side .main_side_page {
-  border: 5px solid rgb(255, 255, 0);
   display: flex;
 }
 .container main .main_side .main_side_page #previous_page,
@@ -256,7 +243,6 @@
   text-align: center;
 }
 .container main .main_side .main_side_gallery {
-  border: 5px solid rgb(0, 255, 34);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -264,7 +250,6 @@
   overflow-y: auto;
 }
 .container main .main_side .main_side_gallery .gallery_card_wrapper {
-  border: solid 5px rgb(255, 0, 0);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -309,7 +294,6 @@
   color: white;
 }
 .container main .main_side .main_side_gallery .gallery_card_wrapper .card_comments {
-  border: 5px solid rgb(255, 0, 255);
   display: none;
   flex-direction: column;
   gap: 5px;
@@ -322,8 +306,8 @@
   gap: 10px;
 }
 .container footer {
-  border: 5px solid blue;
   height: 10%;
+  text-align: center;
 }
 
 @media (max-width: 768px) {

@@ -50,7 +50,6 @@ function createAddCommentForm(fileName) {
       alert("Please input something");
       return;
     }
-    console.log(fileName);
     fetch("/add_comment", {
       method: "POST",
       headers: {

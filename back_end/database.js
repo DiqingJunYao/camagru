@@ -20,7 +20,6 @@ async function cleanupUnverifiedUsers() {
     WHERE is_verified = FALSE
       AND created_at < NOW() - INTERVAL 2 DAY
   `);
-  console.log("Deleted unverified users:", result.affectedRows);
   await connection.end();
 }
 setInterval(cleanupUnverifiedUsers, 6 * 60 * 60 * 1000);

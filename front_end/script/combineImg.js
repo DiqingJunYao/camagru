@@ -103,10 +103,7 @@ async function captureImg(
     ctx.drawImage(video, 0, 0);
     const topValue = parseInt(topValueInput.value, 10) || 0;
     const leftValue = parseInt(leftValueInput.value, 10) || 0;
-    console.log("Top value:", topValue);
-    console.log("Left value:", leftValue);
 
-    // Convert to blob
     canvas.toBlob(async (blob) => {
       await upload(blob, bgImgName, topValue, leftValue);
     }, "image/jpeg");
@@ -212,7 +209,6 @@ function combineChoosePicture(bgImgName) {
       event.preventDefault(); // stop page reload
 
       const formData = new FormData(form);
-      console.log("FormData :", formData);
       const topValue = parseInt(topValueInput.value, 10) || 0;
       const leftValue = parseInt(leftValueInput.value, 10) || 0;
       formData.append("bgImgName", bgImgName);

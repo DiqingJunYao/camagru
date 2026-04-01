@@ -138,7 +138,6 @@ function fetchData(status) {
   } else if (page < maxPage) {
     document.getElementById("next_page").style.display = "block";
   }
-  console.log("Current page:", page);
 }
 
 function routerFunction() {

@@ -42,11 +42,25 @@ export function registerUsers() {
       document.body.removeChild(newDiv);
     });
 
+    const seePasswordButton = document.createElement("button");
+    seePasswordButton.type = "button";
+    seePasswordButton.textContent = "Show Password";
+    seePasswordButton.addEventListener("click", function () {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        seePasswordButton.textContent = "Hide Password";
+      } else {
+        passwordInput.type = "password";
+        seePasswordButton.textContent = "Show Password";
+      }
+    });
+
     form.appendChild(usernameLabel);
     form.appendChild(usernameInput);
     form.appendChild(document.createElement("br"));
     form.appendChild(passwordLabel);
     form.appendChild(passwordInput);
+    form.appendChild(seePasswordButton);
     form.appendChild(document.createElement("br"));
     form.appendChild(emailLabel);
     form.appendChild(emailInput);

@@ -107,15 +107,15 @@ export function settings() {
       event.preventDefault();
       fetch("/open_comment_email")
         .then((response) => {
-          response.json()
-        .then((data) => {
-          if (data.success) {
-            alert("Open comment email successfully!");
-            document.body.removeChild(newDiv);
-          } else {
-            alert("failed to open the comment email.");
-          }
-        })})
+          response.json().then((data) => {
+            if (data.success) {
+              alert("Open comment email successfully!");
+              document.body.removeChild(newDiv);
+            } else {
+              alert("failed to open the comment email.");
+            }
+          });
+        })
         .catch((error) => {
           alert("failed to open the comment email.");
           console.error("Error:", error);
@@ -126,15 +126,15 @@ export function settings() {
       event.preventDefault();
       fetch("/close_comment_email")
         .then((response) => {
-          response.json()
-        .then((data) => {
-          if (data.success) {
-            alert("Close comment email successfully!");
-            document.body.removeChild(newDiv);
-          } else {
-            alert("failed to close the comment email.");
-          }
-        })})
+          response.json().then((data) => {
+            if (data.success) {
+              alert("Close comment email successfully!");
+              document.body.removeChild(newDiv);
+            } else {
+              alert("failed to close the comment email.");
+            }
+          });
+        })
         .catch((error) => {
           alert("failed to close the comment email.");
           console.error("Error:", error);
@@ -146,6 +146,27 @@ export function settings() {
       const newUsername = usernameInput.value;
       const newEmail = emailInput.value;
       const newPassword = passwordInput.value;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+      if (newPassword.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return;
+      }
+      if (newPassword.length > 20) {
+        alert("Password must be no more than 20 characters long.");
+        return;
+      }
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(newPassword)) {
+        alert(
+          "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+        );
+        return;
+      }
+      newUsername = newUsername.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      newEmail = newEmail.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      newPassword = newPassword.replace(/</g, "&lt;").replace(/>/g, "&gt;");
       fetch("/update_settings", {
         method: "POST",
         headers: {

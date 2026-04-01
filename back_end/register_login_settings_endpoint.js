@@ -6,7 +6,7 @@ import nodemailer from "nodemailer";
 export const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
-  secure: true, // true for 465, false for other ports
+  secure: true,
   auth: {
     user: "nicolaswickens777@gmail.com",
     pass: "jqyjbvwyvpwfeayh",
@@ -18,9 +18,32 @@ export const transporter = nodemailer.createTransport({
  * @param {*} fastify
  */
 export function registerLoginSettingsEndpoint(fastify) {
-  // password hashing
   fastify.post("/register", async (req, reply) => {
     const { username, password, email } = req.body;
+    if (!username || !password || !email) {
+      reply
+        .status(400)
+        .send({ success: false, message: "Input message incorrect!" });
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      reply
+        .status(400)
+        .send({ success: false, message: "Invalid email address!" });
+      return;
+    }
+    if (
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,20}$/.test(
+        password,
+      ) === false
+    ) {
+      reply.status(400).send({
+        success: false,
+        message:
+          "Password must be 8-20 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character, at least 8 characters long, at most 20 characters long.",
+      });
+      return;
+    }
     const saltRounds = 10;
     if (
       !username ||
@@ -227,12 +250,30 @@ export function registerLoginSettingsEndpoint(fastify) {
           ]);
         }
         if (email && email !== currentEmail && email.length > 0) {
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            reply
+              .status(400)
+              .send({ success: false, message: "Invalid email address!" });
+            return;
+          }
           await db.execute("UPDATE users SET email = ? WHERE id = ?", [
             email,
             id,
           ]);
         }
         if (password && password.length > 0) {
+          if (
+            !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,20}$/.test(
+              password,
+            )
+          ) {
+            reply.status(400).send({
+              success: false,
+              message:
+                "Password must be 8-20 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character, at least 8 characters long, at most 20 characters long.",
+            });
+            return;
+          }
           const saltRounds = 10;
           const hash = await bcrypt.hash(password, saltRounds);
           await db.execute("UPDATE users SET password = ? WHERE id = ?", [

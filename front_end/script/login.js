@@ -63,6 +63,8 @@ export function loginLogoutUsers() {
     });
 
     forgetPasswordButton.addEventListener("click", function () {
+      const usernameContext = usernameInput.value;
+      usernameContext = usernameContext.replace(/</g, "&lt;").replace(/>/g, "&gt;");
       alert(
         "An email with the temporary password has been sent to your email address, please check your inbox.",
       );
@@ -71,7 +73,7 @@ export function loginLogoutUsers() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: usernameInput.value }),
+        body: JSON.stringify({ username: usernameContext }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -122,6 +124,8 @@ export function loginLogoutUsers() {
         event.preventDefault();
         const username = usernameInput.value;
         const password = passwordInput.value;
+        username = username.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        password = password.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         if (!username || !password) {
           alert("Please enter both username and password to login.");
           return;

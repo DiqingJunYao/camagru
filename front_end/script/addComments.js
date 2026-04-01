@@ -46,6 +46,7 @@ function createAddCommentForm(fileName) {
   submitButton.addEventListener("click", (event) => {
     event.preventDefault();
     const commentContext = commentInput.value;
+    commentContext = commentContext.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     if (!commentContext || commentContext === "") {
       alert("Please input something");
       return;

@@ -94,10 +94,29 @@ export function registerUsers() {
         const username = usernameInput.value;
         const password = passwordInput.value;
         const email = emailInput.value;
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          alert("Please enter a valid email address.");
+          return;
+        }
+        if (password.length < 6) {
+          alert("Password must be at least 6 characters long.");
+          return;
+        }
+        if (password.length > 20) {
+          alert("Password must be no more than 20 characters long.");
+          return;
+        }
+        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(password)) {
+          alert("Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.");
+          return;
+        }
         if (!username || !password || !email) {
           alert("Please fill in all fields to register.");
           return;
         }
+        username = username.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        password = password.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        email = email.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         registerUser(username, password, email);
       });
   });

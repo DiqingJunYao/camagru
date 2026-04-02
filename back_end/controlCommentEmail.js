@@ -16,7 +16,7 @@ export function controlCommentEmail(fastify) {
           .send({ success: true, message: "Open comment email successful." });
       } catch (err) {
         console.error("Error opening comment email:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
     },
@@ -37,7 +37,7 @@ export function controlCommentEmail(fastify) {
           .send({ success: true, message: "Close comment email successful." });
       } catch (err) {
         console.error("Error closing comment email:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
     },

@@ -26,10 +26,10 @@ export function storeLikes(fastify) {
         imgId = rows[0].id;
       } catch (err) {
         console.error("Error fetching imgID:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
-	  
+
       try {
         const [rows] = await db.execute(
           "SELECT id FROM users WHERE username = ?",
@@ -42,7 +42,7 @@ export function storeLikes(fastify) {
         userId = rows[0].id;
       } catch (err) {
         console.error("Error fetching userID:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
 
@@ -57,7 +57,7 @@ export function storeLikes(fastify) {
         });
       } catch (err) {
         console.error("Error like imgs:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
     },

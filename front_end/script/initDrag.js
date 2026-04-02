@@ -1,21 +1,35 @@
-export function initDrag(sticker, shrinkRatio) {
+export function initDrag(sticker, shrinkRatio, bgImgPreview) {
   let isDragging = false;
   let offsetX = 0;
   let offsetY = 0;
 
   sticker.addEventListener("click", (e) => {
-	console.log("sticker.style.width", sticker.style.width);
-	if (sticker.style.width === "") {
-		sticker.style.width = sticker.naturalWidth / shrinkRatio + "px";
-		sticker.style.height = "auto";
-		return;
-	}
+    if (sticker.style.width === "") {
+      sticker.style.width = sticker.naturalWidth / shrinkRatio + "px";
+      sticker.style.height = "auto";
+	  const width = parseFloat(sticker.style.width);
+      if (width > bgImgPreview.clientWidth) {
+        alert(
+          "The sticker is too large for the background image. Please choose a smaller sticker.",
+        );
+        sticker.style.width = "";
+        sticker.style.height = "";
+        const uploadButton = document.getElementById("upload_button_combine");
+        if (uploadButton) {
+          uploadButton.disabled = true;
+        }
+        return;
+      } else {
+        const uploadButton = document.getElementById("upload_button_combine");
+        if (uploadButton) {
+          uploadButton.disabled = false;
+        }
+      }
+      return;
+    }
     isDragging = !isDragging;
-	console.log("what is e.clientX and e.clientY?", e.clientX, e.clientY);
-	console.log("what is sticker.offsetLeft and sticker.offsetTop?", sticker.offsetLeft, sticker.offsetTop);
-	offsetX = e.clientX - sticker.offsetLeft;
-	offsetY = e.clientY - sticker.offsetTop;
-	console.log("click", offsetX, offsetY);
+    offsetX = e.clientX - sticker.offsetLeft;
+    offsetY = e.clientY - sticker.offsetTop;
     if (isDragging) {
       sticker.style.cursor = "grabbing";
     } else {
@@ -28,15 +42,6 @@ export function initDrag(sticker, shrinkRatio) {
 
     let x = e.clientX - offsetX;
     let y = e.clientY - offsetY;
-
-    // limit inside container
-    // const maxX = container.clientWidth - sticker.clientWidth;
-    // const maxY = container.clientHeight - sticker.clientHeight;
-	// console.log("mousemove", x, y, maxX, maxY);
-
-    // x = Math.max(0, Math.min(x, maxX));
-    // y = Math.max(0, Math.min(y, maxY));
-
     sticker.style.left = x + "px";
     sticker.style.top = y + "px";
   });

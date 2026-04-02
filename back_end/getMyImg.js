@@ -14,7 +14,7 @@ export function getMyImg(fastify) {
         return reply.send({ success: true, images: imageUrls });
       } catch (err) {
         console.error("Error fetching user images:", err);
-        return reply.status(500).send({ error: "Failed to load images" });
+        return reply.status(400).send({ error: "Failed to load images" });
       }
     },
   );

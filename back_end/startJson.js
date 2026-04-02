@@ -58,7 +58,7 @@ async function firstTimeFetch(rep, cardPerPage, userId) {
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start:", err);
-      rep.status(500).send({ error: "Internal Server Error" });
+      rep.status(400).send({ error: err });
     }
   } else {
     try {
@@ -121,7 +121,7 @@ async function firstTimeFetch(rep, cardPerPage, userId) {
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start with like:", err);
-      rep.status(500).send({ error: "Internal Server Error" });
+      rep.status(400).send({ error: err });
     }
   }
 }
@@ -190,7 +190,7 @@ async function normalNextFetch(
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start:", err);
-      rep.status(500).send({ error: "Internal Server Error" });
+      rep.status(400).send({ error: err });
     }
   } else {
     try {
@@ -253,7 +253,7 @@ async function normalNextFetch(
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start with like:", err);
-      rep.status(500).send({ error: "Internal Server Error" });
+      rep.status(400).send({ error: err });
     }
   }
 }
@@ -324,7 +324,7 @@ async function normalPreviousFetch(
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start:", err);
-      rep.status(500).send({ error: "Internal Server Error" });
+      rep.status(400).send({ error: err });
     }
   } else {
     try {
@@ -394,7 +394,7 @@ async function normalPreviousFetch(
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error start with like:", err);
-      rep.status(500).send({ error: "Internal Server Error" });
+      rep.status(400).send({ error: err });
     }
   }
 }
@@ -458,7 +458,7 @@ async function lastPageFetch(rep, cardPerPage, userId) {
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error last page fetch:", err);
-      rep.status(500).send({ error: "Internal Server Error" });
+      rep.status(400).send({ error: err });
     }
   } else {
     try {
@@ -521,7 +521,7 @@ async function lastPageFetch(rep, cardPerPage, userId) {
       rep.status(200).send(resultObj);
     } catch (err) {
       console.error("Error last page fetch with like:", err);
-      rep.status(500).send({ error: "Internal Server Error" });
+      rep.status(400).send({ error: err });
     }
   }
 }

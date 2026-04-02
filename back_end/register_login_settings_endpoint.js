@@ -81,7 +81,7 @@ export function registerLoginSettingsEndpoint(fastify) {
         .send({ success: true, message: "User registered successfully" });
     } catch (err) {
       console.error("Error:", err);
-      reply.status(500).send({ error: "Internal Server Error" });
+      reply.status(400).send({ error: err });
     }
   });
 
@@ -106,7 +106,7 @@ export function registerLoginSettingsEndpoint(fastify) {
       reply.send({ success: true, message: "Email verified successfully" });
     } catch (err) {
       console.error("Error verifying email:", err);
-      reply.status(500).send({ error: "Internal Server Error" });
+      reply.status(400).send({ error: err });
     }
   });
 
@@ -143,7 +143,7 @@ export function registerLoginSettingsEndpoint(fastify) {
         .send({ success: true, message: "Login successful" });
     } catch (err) {
       console.error("Error during login:", err);
-      reply.status(500).send({ error: "Internal Server Error" });
+      reply.status(400).send({ error: err });
     }
   });
 
@@ -183,7 +183,7 @@ export function registerLoginSettingsEndpoint(fastify) {
       });
     } catch (err) {
       console.error("Error during forget password:", err);
-      reply.status(500).send({ error: "Internal Server Error" });
+      reply.status(400).send({ error: err });
     }
   });
 
@@ -215,7 +215,7 @@ export function registerLoginSettingsEndpoint(fastify) {
       });
     } catch (err) {
       console.error("Error fetching user info:", err);
-      reply.status(500).send({ error: "Internal Server Error" });
+      reply.status(400).send({ error: err });
     }
   });
 
@@ -238,7 +238,7 @@ export function registerLoginSettingsEndpoint(fastify) {
         id = rows[0].id;
       } catch (err) {
         console.error("Error fetching user ID:", err);
-        reply.status(500).send({ error: "Internal Server Error" });
+        reply.status(400).send({ error: err });
         return;
       }
 
@@ -284,7 +284,7 @@ export function registerLoginSettingsEndpoint(fastify) {
         reply.send({ success: true, message: "Settings updated successfully" });
       } catch (err) {
         console.error("Error updating settings:", err);
-        reply.status(500).send({ error: "Internal Server Error" });
+        reply.status(400).send({ error: err });
       }
     },
   );
@@ -295,7 +295,7 @@ export function registerLoginSettingsEndpoint(fastify) {
       reply.send({ success: true, message: "Logout successful" });
     } catch (err) {
       console.error("Error during logout:", err);
-      reply.status(500).send({ error: "Internal Server Error" });
+      reply.status(400).send({ error: err });
     }
   });
 

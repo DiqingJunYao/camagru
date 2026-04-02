@@ -26,7 +26,7 @@ export function deleteMyImg(fastify) {
         return reply.send({ success: true });
       } catch (err) {
         console.error("Error deleting image:", err);
-        return reply.status(500).send({ error: "Failed to delete image" });
+        return reply.status(400).send({ error: "Failed to delete image" });
       }
     },
   );

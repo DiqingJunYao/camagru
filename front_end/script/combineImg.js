@@ -86,8 +86,9 @@ async function captureImg(
   canvas,
   video,
   bgImgName,
-  topValueInput,
-  leftValueInput,
+  previewImage,
+  bgImgPreview,
+  uploadButton,
 ) {
   button.addEventListener("click", (event) => {
     event.preventDefault();
@@ -101,12 +102,25 @@ async function captureImg(
     canvas.style.height = "auto";
 
     ctx.drawImage(video, 0, 0);
-    const topValue = parseInt(topValueInput.value, 10) || 0;
-    const leftValue = parseInt(leftValueInput.value, 10) || 0;
 
-    canvas.toBlob(async (blob) => {
-      await upload(blob, bgImgName, topValue, leftValue);
-    }, "image/jpeg");
+    previewImage.src = canvas.toDataURL("image/jpeg");
+
+    const shrinkRatio = bgImgPreview.naturalWidth / bgImgPreview.clientWidth;
+
+    initDrag(previewImage, shrinkRatio, bgImgPreview);
+    
+    uploadButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      const topValue = previewImage.style.top
+      ? parseInt(previewImage.style.top, 10) * shrinkRatio
+      : 0;
+      const leftValue = previewImage.style.left
+      ? parseInt(previewImage.style.left, 10) * shrinkRatio
+      : 0;
+      canvas.toBlob(async (blob) => {
+        await upload(blob, bgImgName, topValue, leftValue);
+      }, "image/jpeg");
+    });
   });
 }
 
@@ -117,6 +131,32 @@ function combineTakingPicture(bgImgName) {
   takePictureButton.addEventListener("click", (event) => {
     event.preventDefault();
     form.removeChild(buttonDiv);
+
+    const uploadButton = document.createElement("button");
+    uploadButton.id = "upload_button_combine";
+    uploadButton.type = "submit";
+    uploadButton.textContent = "Upload";
+    uploadButton.style.zIndex = "999";
+    uploadButton.disabled = true;
+    
+    const previewWrapper = document.createElement("div");
+    previewWrapper.style.position = "relative";
+    previewWrapper.style.maxWidth = "100%";
+    previewWrapper.style.height = "auto";
+    previewWrapper.style.display = "inline-block";
+
+    const bgImgPreview = document.createElement("img");
+    bgImgPreview.src = `/uploads/${bgImgName}`;
+    bgImgPreview.style.maxWidth = "100%";
+    bgImgPreview.style.height = "auto";
+
+    const previewImage = document.createElement("img");
+    previewImage.id = "previewImage";
+    previewImage.style.position = "absolute";
+    previewImage.style.top = "50px";
+    previewImage.style.left = "50px";
+    previewImage.style.cursor = "grab";
+    previewImage.style.opacity = "0.7";
 
     const video = document.createElement("video");
     video.id = "video";
@@ -135,26 +175,15 @@ function combineTakingPicture(bgImgName) {
     canvas.style.display = "none";
     canvas.style.maxWidth = "100%";
     canvas.style.height = "auto";
+    
 
-    const topLabel = document.createElement("label");
-    topLabel.textContent = "Top:";
-    const topValueInput = document.createElement("input");
-    topValueInput.type = "number";
-    topValueInput.name = "topValue";
-
-    const leftLabel = document.createElement("label");
-    leftLabel.textContent = "Left:";
-    const leftValueInput = document.createElement("input");
-    leftValueInput.type = "number";
-    leftValueInput.name = "leftValue";
-
+    previewWrapper.appendChild(bgImgPreview);
+    previewWrapper.appendChild(previewImage);
+    form.appendChild(previewWrapper);
     form.appendChild(video);
     form.appendChild(captureButton);
     form.appendChild(canvas);
-    form.appendChild(topLabel);
-    form.appendChild(topValueInput);
-    form.appendChild(leftLabel);
-    form.appendChild(leftValueInput);
+    form.appendChild(uploadButton);
 
     getStream(video);
     captureImg(
@@ -162,8 +191,9 @@ function combineTakingPicture(bgImgName) {
       canvas,
       video,
       bgImgName,
-      topValueInput,
-      leftValueInput,
+      previewImage,
+      bgImgPreview,
+      uploadButton,
     );
   });
 }
@@ -183,6 +213,7 @@ function combineChoosePicture(bgImgName) {
     imageInput.id = "imageInput";
     imageInput.name = "imageInput";
     imageInput.accept = "image/*";
+    imageInput.style.zIndex = "999";
 
     const previewWrapper = document.createElement("div");
     previewWrapper.id = "previewWrapper";
@@ -190,48 +221,35 @@ function combineChoosePicture(bgImgName) {
     previewWrapper.style.maxWidth = "100%";
     previewWrapper.style.height = "auto";
     previewWrapper.style.display = "inline-block";
-    
+
     const bgImgPreview = document.createElement("img");
     bgImgPreview.src = `/uploads/${bgImgName}`;
     bgImgPreview.style.maxWidth = "100%";
     bgImgPreview.style.height = "auto";
-    
+
     const previewImage = document.createElement("img");
     previewImage.id = "previewImage";
     previewImage.style.position = "absolute";
     previewImage.style.top = "50px";
     previewImage.style.left = "50px";
     previewImage.style.cursor = "grab";
-
+    previewImage.style.opacity = "0.7";
 
     const uploadButton = document.createElement("button");
+    uploadButton.id = "upload_button_combine";
     uploadButton.type = "submit";
     uploadButton.textContent = "Upload";
+    uploadButton.style.zIndex = "999";
+    uploadButton.disabled = true;
 
-    const topLabel = document.createElement("label");
-    topLabel.textContent = "Top:";
-    const topValueInput = document.createElement("input");
-    topValueInput.type = "number";
-    topValueInput.name = "topValue";
-    
-    const leftLabel = document.createElement("label");
-    leftLabel.textContent = "Left:";
-    const leftValueInput = document.createElement("input");
-    leftValueInput.type = "number";
-    leftValueInput.name = "leftValue";
-    
     previewWrapper.appendChild(previewImage);
     previewWrapper.appendChild(bgImgPreview);
     form.appendChild(previewWrapper);
     form.appendChild(imageInput);
     form.appendChild(uploadButton);
-    form.appendChild(topLabel);
-    form.appendChild(topValueInput);
-    form.appendChild(leftLabel);
-    form.appendChild(leftValueInput);
-    
+
     const shrinkRatio = bgImgPreview.naturalWidth / bgImgPreview.clientWidth;
-    
+
     imageInput.addEventListener("change", function () {
       const file = this.files[0];
       if (file) {
@@ -242,15 +260,19 @@ function combineChoosePicture(bgImgName) {
         reader.readAsDataURL(file);
       }
     });
-
-    initDrag(previewImage, shrinkRatio);
-
+    
+    initDrag(previewImage, shrinkRatio, bgImgPreview);
+    
     form.addEventListener("submit", async function (event) {
       event.preventDefault(); // stop page reload
 
       const formData = new FormData(form);
-      const topValue = previewImage.style.top ? parseInt(previewImage.style.top, 10) * shrinkRatio : 0;
-      const leftValue = previewImage.style.left ? parseInt(previewImage.style.left, 10) * shrinkRatio : 0;
+      const topValue = previewImage.style.top
+        ? parseInt(previewImage.style.top, 10) * shrinkRatio
+        : 0;
+      const leftValue = previewImage.style.left
+        ? parseInt(previewImage.style.left, 10) * shrinkRatio
+        : 0;
       formData.append("bgImgName", bgImgName);
       formData.append("topValue", topValue);
       formData.append("leftValue", leftValue);

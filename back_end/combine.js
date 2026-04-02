@@ -51,7 +51,7 @@ export function combine(fastify) {
         );
       } catch (err) {
         console.error("Error combining images:", err);
-        return reply.status(500).send({ error: "Failed to combine images" });
+        return reply.status(400).send({ error: "Failed to combine images" });
       }
       reply
         .status(200)

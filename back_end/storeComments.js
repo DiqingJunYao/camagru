@@ -31,7 +31,7 @@ export function storeComments(fastify) {
         imgId = rows[0].id;
       } catch (err) {
         console.error("Error fetching imgID:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
 
@@ -47,7 +47,7 @@ export function storeComments(fastify) {
         imgOwnerId = rows[0].user_id;
       } catch (err) {
         console.error("Error fetching imgID:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
 
@@ -63,7 +63,7 @@ export function storeComments(fastify) {
         userId = rows[0].id;
       } catch (err) {
         console.error("Error fetching userID:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
 
@@ -79,7 +79,7 @@ export function storeComments(fastify) {
         imgOwnerEmail = rows[0].email;
       } catch (err) {
         console.error("Error fetching userID:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
 
@@ -92,11 +92,11 @@ export function storeComments(fastify) {
           rep.status(404).send({ error: "User id not found" });
           return;
         }
-        
-        sendEmail = rows[0].is_send_comment_email === 1 ? true: false;
+
+        sendEmail = rows[0].is_send_comment_email === 1 ? true : false;
       } catch (err) {
         console.error("Error fetching userID:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
 
@@ -107,7 +107,7 @@ export function storeComments(fastify) {
         );
       } catch (err) {
         console.error("Error inserting comments:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
 
@@ -128,7 +128,7 @@ export function storeComments(fastify) {
         });
       } catch (err) {
         console.error("Error inserting comments:", err);
-        rep.status(500).send({ error: "Internal Server Error" });
+        rep.status(400).send({ error: err });
         return;
       }
     },

@@ -168,6 +168,8 @@ function combineTakingPicture(bgImgName) {
   });
 }
 
+import { initDrag } from "./initDrag.js";
+
 function combineChoosePicture(bgImgName) {
   const choosePictureButton = document.getElementById("choose_picture_button");
   const form = document.querySelector(".modal_form");
@@ -182,6 +184,26 @@ function combineChoosePicture(bgImgName) {
     imageInput.name = "imageInput";
     imageInput.accept = "image/*";
 
+    const previewWrapper = document.createElement("div");
+    previewWrapper.id = "previewWrapper";
+    previewWrapper.style.position = "relative";
+    previewWrapper.style.maxWidth = "100%";
+    previewWrapper.style.height = "auto";
+    previewWrapper.style.display = "inline-block";
+    
+    const bgImgPreview = document.createElement("img");
+    bgImgPreview.src = `/uploads/${bgImgName}`;
+    bgImgPreview.style.maxWidth = "100%";
+    bgImgPreview.style.height = "auto";
+    
+    const previewImage = document.createElement("img");
+    previewImage.id = "previewImage";
+    previewImage.style.position = "absolute";
+    previewImage.style.top = "50px";
+    previewImage.style.left = "50px";
+    previewImage.style.cursor = "grab";
+
+
     const uploadButton = document.createElement("button");
     uploadButton.type = "submit";
     uploadButton.textContent = "Upload";
@@ -191,26 +213,44 @@ function combineChoosePicture(bgImgName) {
     const topValueInput = document.createElement("input");
     topValueInput.type = "number";
     topValueInput.name = "topValue";
-
+    
     const leftLabel = document.createElement("label");
     leftLabel.textContent = "Left:";
     const leftValueInput = document.createElement("input");
     leftValueInput.type = "number";
     leftValueInput.name = "leftValue";
-
+    
+    previewWrapper.appendChild(previewImage);
+    previewWrapper.appendChild(bgImgPreview);
+    form.appendChild(previewWrapper);
     form.appendChild(imageInput);
     form.appendChild(uploadButton);
     form.appendChild(topLabel);
     form.appendChild(topValueInput);
     form.appendChild(leftLabel);
     form.appendChild(leftValueInput);
+    
+    const shrinkRatio = bgImgPreview.naturalWidth / bgImgPreview.clientWidth;
+    
+    imageInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    initDrag(previewImage, shrinkRatio);
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault(); // stop page reload
 
       const formData = new FormData(form);
-      const topValue = parseInt(topValueInput.value, 10) || 0;
-      const leftValue = parseInt(leftValueInput.value, 10) || 0;
+      const topValue = previewImage.style.top ? parseInt(previewImage.style.top, 10) * shrinkRatio : 0;
+      const leftValue = previewImage.style.left ? parseInt(previewImage.style.left, 10) * shrinkRatio : 0;
       formData.append("bgImgName", bgImgName);
       formData.append("topValue", topValue);
       formData.append("leftValue", leftValue);

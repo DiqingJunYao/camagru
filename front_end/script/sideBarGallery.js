@@ -7,6 +7,13 @@ function createImg(galleryCardWrapper, item) {
   galleryCardWrapper.appendChild(img);
 }
 
+function hideTheButtons() {
+  document.getElementById("previous_page").style.display = "none";
+  document.getElementById("next_page").style.display = "none";
+  document.getElementById("page_1").style.display = "none";
+  document.getElementById("last_page").style.display = "none";
+}
+
 import { createButtons, createComments } from "./mainButtons.js";
 
 let lastImgCreateTime = null;
@@ -29,6 +36,9 @@ function fetchDataNoLike(status) {
     .then((data) => {
       const galleryContainer = document.querySelector(".main_side_gallery");
       const resultArray = Object.values(data);
+      if (resultArray.length === 0) {
+        hideTheButtons();
+      }
       for (const item of resultArray) {
         const galleryCardWrapper = document.createElement("div");
         galleryCardWrapper.className = "gallery_card_wrapper";
@@ -80,6 +90,9 @@ function fetchDataWithLike(status) {
     .then((data) => {
       const galleryContainer = document.querySelector(".main_side_gallery");
       const resultArray = Object.values(data);
+      if (resultArray.length === 0) {
+        hideTheButtons();
+      }
       for (const item of resultArray) {
         const galleryCardWrapper = document.createElement("div");
         galleryCardWrapper.className = "gallery_card_wrapper";

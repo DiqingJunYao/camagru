@@ -119,8 +119,7 @@
 .container main .main_container .main_container_gallery .my_img_wrapper .my_img img {
   width: 100%;
   height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
+  display: block;
 }
 .container main .main_container .main_container_gallery .my_img_wrapper .my_img button {
   width: 100%;
@@ -140,8 +139,7 @@
 .container main .main_container .main_container_gallery .gallery_card_wrapper img {
   width: 100%;
   height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
+  display: block;
 }
 .container main .main_container .main_container_gallery .gallery_card_wrapper .card_buttons {
   display: flex;
@@ -278,8 +276,7 @@
 .container main .main_side .main_side_gallery .gallery_card_wrapper img {
   width: 100%;
   height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
+  display: block;
   cursor: pointer;
 }
 .container main .main_side .main_side_gallery .gallery_card_wrapper .card_buttons {
@@ -365,7 +362,8 @@
     flex-wrap: nowrap;
   }
   .container main .main_side .main_side_gallery .gallery_card_wrapper img {
-    height: 40%;
+    width: 100%;
+    height: auto;
   }
   .container main .main_side .main_side_gallery .gallery_card_wrapper .card_comments {
     overflow-y: auto;

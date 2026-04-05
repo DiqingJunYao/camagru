@@ -46,7 +46,12 @@ fastify.decorate("authenticate", async function (request, reply) {
   }
 });
 import fastifyMultipart from "@fastify/multipart";
-fastify.register(fastifyMultipart);
+fastify.register(fastifyMultipart, {
+  limits: {
+    fileSize: 20 * 1024 * 1024,
+  },
+  throwFileSizeLimit: true,
+});
 
 
 fastify.get("/", (req, reply) => {

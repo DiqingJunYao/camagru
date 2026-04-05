@@ -2,7 +2,7 @@ services:
   web:
     build: .
     ports:
-      - "443:4000"
+      - "8443:4000"
     volumes:
       - ./:/app
       - /app/node_modules

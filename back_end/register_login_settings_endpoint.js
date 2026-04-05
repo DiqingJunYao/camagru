@@ -20,7 +20,7 @@ export const transporter = nodemailer.createTransport({
 export function registerLoginSettingsEndpoint(fastify) {
   fastify.post("/register", async (req, reply) => {
     const { username, password, email } = req.body;
-    if (!username || !password || !email) {
+    if (!username || !password || !email || username === "" || password === "" || email === "") {
       reply
         .status(400)
         .send({ success: false, message: "Input message incorrect!" });
@@ -45,20 +45,21 @@ export function registerLoginSettingsEndpoint(fastify) {
       return;
     }
     const saltRounds = 10;
-    if (
-      !username ||
-      !password ||
-      !email ||
-      username === "" ||
-      password === "" ||
-      email === ""
-    ) {
-      reply
-        .status(400)
-        .send({ success: false, message: "Input message incorrect!" });
-      return;
-    }
     try {
+      const [users] = await db.execute("SELECT * FROM users WHERE username = ?", [username]);
+      if (users.length > 0) {
+        reply
+          .status(400)
+          .send({ success: false, message: "Username already exists!" });
+        return;
+      }
+      const [emails] = await db.execute("SELECT * FROM users WHERE email = ?", [email]);
+      if (emails.length > 0) {
+        reply
+          .status(400)
+          .send({ success: false, message: "Email already exists!" });
+        return;
+      }
       // hash the password with bcrypt
       const hash = await bcrypt.hash(password, saltRounds);
       // generate a random verification token

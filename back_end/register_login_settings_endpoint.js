@@ -64,6 +64,11 @@ export function registerLoginSettingsEndpoint(fastify) {
       // generate a random verification token
       const verificationToken = crypto.randomBytes(32).toString("hex");
       const verificationLink = `https://localhost:8443/verify?token=${verificationToken}`;
+      // insert user into database
+      const [result] = await db.execute(
+        "INSERT INTO users (username, password, email, verification_token) VALUES (?, ?, ?, ?)",
+        [username, hash, email, verificationToken],
+      );
       // send verification email
       await transporter.sendMail({
         from: '"Camagru" <no-reply@camagru.com>',
@@ -71,11 +76,6 @@ export function registerLoginSettingsEndpoint(fastify) {
         subject: "Please verify your account",
         html: `Click <a href="${verificationLink}">here</a> to verify your account.`,
       });
-      // insert user into database
-      const [result] = await db.execute(
-        "INSERT INTO users (username, password, email, verification_token) VALUES (?, ?, ?, ?)",
-        [username, hash, email, verificationToken],
-      );
       reply
         .status(201)
         .send({ success: true, message: "User registered successfully" });

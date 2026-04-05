@@ -6,6 +6,9 @@ up:
 down:
 	docker compose down
 
+down -v:
+	docker compose down -v
+
 build:
 	docker compose build --no-cache
 

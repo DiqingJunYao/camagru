@@ -63,7 +63,7 @@ export function registerLoginSettingsEndpoint(fastify) {
       const hash = await bcrypt.hash(password, saltRounds);
       // generate a random verification token
       const verificationToken = crypto.randomBytes(32).toString("hex");
-      const verificationLink = `https://localhost/verify?token=${verificationToken}`;
+      const verificationLink = `https://localhost:8443/verify?token=${verificationToken}`;
       // send verification email
       await transporter.sendMail({
         from: '"Camagru" <no-reply@camagru.com>',

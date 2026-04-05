@@ -5,13 +5,19 @@ Small Fastify server run via Docker.
 Run (from project root):
 
 ```bash
-docker compose up --build
+make
 ```
 
-Then open http://localhost:3000
+Then open http://localhost:8443
 
-Stop:
+Clean without Volume:
 
 ```bash
-docker compose down
+make down
+```
+
+Clean with Volume:
+
+```bash
+make down -v
 ```

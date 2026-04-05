@@ -8,6 +8,7 @@ function createImg(galleryCardWrapper, item) {
 }
 
 function hideTheButtons() {
+  document.querySelector("#page_numbers").style.display = "none";
   document.getElementById("previous_page").style.display = "none";
   document.getElementById("next_page").style.display = "none";
   document.getElementById("page_1").style.display = "none";
